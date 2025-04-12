@@ -70,7 +70,8 @@ export default function NavBar() {
   };
 
   return (
-    <main className="sticky">
+    // Removed the sticky class from main element
+    <div className="w-full fixed top-0 left-0 right-0 z-50">
       <div className="bg-gradient-to-r from-[#8b1a1a] to-[#a52a2a] text-[#f8f3e9] py-2 px-4 flex justify-between items-center">
         <div className="flex items-center space-x-6">
           <div className="flex items-center space-x-2">
@@ -104,10 +105,9 @@ export default function NavBar() {
         </div>
       </div>
       <nav
-        className={`bg-gradient-to-r from-[#f8f3e9] to-[#f0e6d2] border-b border-[#d4b483]/30 sticky top-0 z-50 
-      ${scrolled ? "shadow-xl backdrop-blur-sm bg-opacity-90" : "shadow-md"} 
-      transition-all duration-300`}
-        style={{ position: "sticky" }}
+        className={`bg-gradient-to-r from-[#f8f3e9] to-[#f0e6d2] border-b  border-[#d4b483]/30 
+        ${scrolled ? "shadow-xl backdrop-blur-sm bg-opacity-90" : "shadow-md"} 
+        transition-all duration-300`}
       >
         <div className="container mx-auto px-4">
           {/* Header */}
@@ -273,6 +273,6 @@ export default function NavBar() {
           )}
         </AnimatePresence>
       </nav>
-    </main>
+    </div>
   );
 }

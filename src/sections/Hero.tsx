@@ -15,7 +15,7 @@ export const Hero = () => {
   return (
     <main className="min-h-screen bg-[#f8f3e9] overflow-x-hidden">
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
+      <section className="relative  overflow-hidden">
         <div className="absolute inset-0 z-0">
           <CulturalPattern />
         </div>

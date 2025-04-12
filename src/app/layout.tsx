@@ -66,7 +66,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="relative" suppressHydrationWarning>
-      <body className={clsx(dmSans.className, "antialiased bg-white")}>
+      <body className={clsx(dmSans.className, "antialiased bg-white pt-24 ")}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
