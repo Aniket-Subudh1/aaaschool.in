@@ -64,9 +64,9 @@ export default function NavBar() {
               <Image
                 src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-aaa-CpIW78OZFZG6FBpF9os3cxpWu7bmcN.png"
                 alt="Aryavart Ancient Academy Logo"
-                width={60}
+                width={80}
                 height={60}
-                className="relative z-10 h-12 w-12 md:h-16 md:w-16 transition-transform duration-300 hover:scale-110"
+                className="relative z-10h-16 w-18 transition-transform duration-300 hover:scale-110"
               />
             </div>
             <div>
