@@ -8,7 +8,7 @@ const dmSans = DM_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.aaaschool.in/"),
-  title: "Aryavart Ancient Academy – Premier School in Khordha, Odisha",
+  title: "Aryavart Ancient Academy",
   description:
     "Aryavart Ancient Academy is a leading school located in Khordha, Odisha, offering a transformative blend of modern curriculum and ancient wisdom for holistic student development.",
   keywords: [

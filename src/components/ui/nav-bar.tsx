@@ -57,36 +57,41 @@ export default function NavBar() {
   return (
     <nav className="bg-gradient-to-r from-[#f8f3e9] to-[#f0e6d2] border-b border-[#d4b483]/30 sticky top-0 z-50 shadow-md">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center py-3">
-          <div className="flex items-center space-x-4">
-            <div className="relative">
-              <div className="absolute inset-0 bg-[#8b1a1a]/10 rounded-full blur-sm"></div>
+        {/* Header */}
+        <div className="flex justify-between items-center py-2">
+          <div className="flex items-center space-x-2">
+            {/* Logo */}
+            <div className="relative flex flex-col items-center justify-center text-[#8b1a1a]">
+              <div className="absolute items-center justify-center inset-0 bg-[#8b1a1a]/10 rounded-full blur-sm"></div>
               <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-aaa-CpIW78OZFZG6FBpF9os3cxpWu7bmcN.png"
+                src="./aaa.png"
                 alt="Aryavart Ancient Academy Logo"
-                width={80}
-                height={60}
-                className="relative z-10h-16 w-18 transition-transform duration-300 hover:scale-110"
+                width={48}
+                height={48}
+                className="relative z-10 h-12 w-12 transition-transform duration-300 hover:scale-105"
               />
+              <span className="text-[10px] font-bold mt-1 tracking-wide  z-10">
+                ESTD - 1995
+              </span>
             </div>
             <div>
-              <h2 className="text-xl md:text-2xl font-bold text-[#8b1a1a] font-serif">
+              <h2 className="text-lg md:text-sm font-bold text-[#8b1a1a] font-serif">
                 Aryavart Ancient Academy
               </h2>
-              <p className="text-xs text-[#8b1a1a]/80 font-medium">
-                Affiliated to CBSE New Delhi (1530380)
+              <p className="text-xs text-[#8b1a1a]/80">
+                Affiliated to CBSE (1530380)
               </p>
             </div>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center">
-            <div className="flex items-center space-x-1">
+            <div className="flex items-center space-x-2">
               {navItems.map((item) => (
                 <div key={item.name} className="relative group">
                   <a
                     href={item.href}
-                    className="flex items-center px-3 py-2 text-sm font-medium text-[#5a3e36] hover:text-[#8b1a1a] transition-colors rounded-md hover:bg-[#d4b483]/10 group"
+                    className="flex items-center px-2 py-1 text-sm font-medium text-[#5a3e36] hover:text-[#8b1a1a] transition-colors rounded-md hover:bg-[#d4b483]/10 group"
                     onClick={
                       item.submenu
                         ? (e) => {
@@ -108,18 +113,18 @@ export default function NavBar() {
                     <AnimatePresence>
                       {activeSubmenu === item.name && (
                         <motion.div
-                          initial={{ opacity: 0, y: -10 }}
+                          initial={{ opacity: 0, y: -5 }}
                           animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
+                          exit={{ opacity: 0, y: -5 }}
                           transition={{ duration: 0.2 }}
-                          className="absolute left-0 mt-1 w-48 bg-white rounded-md shadow-lg border border-[#d4b483]/30 z-50 overflow-hidden"
+                          className="absolute left-0 mt-1 w-40 bg-white rounded-md shadow-lg border border-[#d4b483]/30 z-50 overflow-hidden"
                         >
                           <div className="py-1">
                             {item.submenu.map((subitem) => (
                               <a
                                 key={subitem.name}
                                 href={subitem.href}
-                                className="block px-4 py-2 text-sm text-[#5a3e36] hover:bg-[#d4b483]/10 hover:text-[#8b1a1a]"
+                                className="block px-3 py-1 text-xs text-[#5a3e36] hover:bg-[#d4b483]/10 hover:text-[#8b1a1a]"
                               >
                                 {subitem.name}
                               </a>
@@ -139,7 +144,7 @@ export default function NavBar() {
             className="lg:hidden text-[#8b1a1a] p-2 rounded-md hover:bg-[#d4b483]/10 transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </div>
@@ -151,7 +156,7 @@ export default function NavBar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.2 }}
             className="lg:hidden bg-[#f8f3e9] border-t border-[#d4b483]/30 py-2 absolute w-full z-50 shadow-lg overflow-hidden"
           >
             <div className="container mx-auto px-4 flex flex-col">
@@ -162,7 +167,7 @@ export default function NavBar() {
                 >
                   <a
                     href={item.href}
-                    className="flex items-center justify-between py-3 text-sm font-medium text-[#5a3e36] hover:text-[#8b1a1a]"
+                    className="flex items-center justify-between py-2 text-sm font-medium text-[#5a3e36] hover:text-[#8b1a1a] transition-colors"
                     onClick={
                       item.submenu
                         ? (e) => {
@@ -173,7 +178,7 @@ export default function NavBar() {
                     }
                   >
                     <div className="flex items-center">
-                      <span className="w-2 h-2 bg-[#8b1a1a] rounded-full mr-3"></span>
+                      <span className="w-2 h-2 bg-[#8b1a1a] rounded-full mr-2"></span>
                       <span>{item.name}</span>
                     </div>
                     {item.submenu && (
@@ -193,13 +198,13 @@ export default function NavBar() {
                           animate={{ opacity: 1, height: "auto" }}
                           exit={{ opacity: 0, height: 0 }}
                           transition={{ duration: 0.2 }}
-                          className="ml-5 pl-3 border-l-2 border-[#d4b483]/30 mb-2"
+                          className="ml-4 pl-2 border-l-2 border-[#d4b483]/30 mb-1"
                         >
                           {item.submenu.map((subitem) => (
                             <a
                               key={subitem.name}
                               href={subitem.href}
-                              className="block py-2 text-sm text-[#5a3e36] hover:text-[#8b1a1a]"
+                              className="block py-1 text-xs text-[#5a3e36] hover:text-[#8b1a1a]"
                             >
                               {subitem.name}
                             </a>

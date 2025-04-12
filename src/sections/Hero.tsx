@@ -67,7 +67,7 @@ export const Hero = () => {
         <TempleDecoration />
         <TempleSilhouette />
 
-        <div className="relative z-10 container mx-auto px-4 py-16 md:py-24 lg:py-28 hero-content">
+        <div className="relative z-10 container lg:-top-16 mx-auto px-4 py-16 md:py-24 lg:py-28 hero-content">
           {/* Announcements Ticker */}
           <div className="mb-8">
             <AnnouncementsTicker />
@@ -90,10 +90,10 @@ export const Hero = () => {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.1 }}
-                  className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#8b1a1a] leading-tight font-serif hero-heading"
+                  className="text-3xl md:text-3xl lg:text-5xl font-bold text-[#8b1a1a] leading-tight font-serif hero-heading"
                 >
-                  <span className="block">Enhance Your</span>
-                  <span className="block">Child&apos;s Potential</span>
+                  <span className="block">Aryavart Ancient</span>
+                  <span className="block">Academy</span>
                 </motion.h1>
 
                 <motion.div
@@ -105,7 +105,7 @@ export const Hero = () => {
                   <div className="absolute inset-0 bg-[#f8f3e9] rounded-full shadow-lg opacity-75 blur-md"></div>
                   <div className="relative z-10 transform transition-transform duration-500 hover:scale-110 logo-pulse">
                     <Image
-                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-aaa-CpIW78OZFZG6FBpF9os3cxpWu7bmcN.png"
+                      src="./aaa.png"
                       alt="Aryavart Ancient Academy Logo"
                       width={120}
                       height={120}
