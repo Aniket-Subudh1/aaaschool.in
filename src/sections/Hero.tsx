@@ -10,6 +10,7 @@ import {
   BookOpen,
 } from "lucide-react";
 import NavBar from "@/components/ui/nav-bar";
+import KonarkWheel from "@/components/ui/konark-wheel";
 import CulturalPattern from "@/components/ui/cultural-pattern";
 import TempleDecoration from "@/components/ui/temple-decoration";
 import TempleSilhouette from "@/components/ui/temple-silhouette";
@@ -210,44 +211,7 @@ export const Hero = () => {
                   {/* Decorative Konark wheel inspired element */}
                   <div className="absolute bottom-6 right-6 bg-[#f8f3e9] p-3 rounded-full shadow-lg border border-[#d4b483]/30 animate-pulse">
                     <div className="relative">
-                      <svg
-                        viewBox="0 0 100 100"
-                        className="w-12 h-12 text-[#8b1a1a] absolute inset-0 animate-spin-slow opacity-20"
-                      >
-                        <circle
-                          cx="50"
-                          cy="50"
-                          r="45"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        />
-                        {Array.from({ length: 12 }).map((_, i) => {
-                          const angle = (i * Math.PI) / 6;
-                          const x1 = 50 + 20 * Math.cos(angle);
-                          const y1 = 50 + 20 * Math.sin(angle);
-                          const x2 = 50 + 45 * Math.cos(angle);
-                          const y2 = 50 + 45 * Math.sin(angle);
-                          return (
-                            <line
-                              key={i}
-                              x1={x1}
-                              y1={y1}
-                              x2={x2}
-                              y2={y2}
-                              stroke="currentColor"
-                              strokeWidth="2"
-                            />
-                          );
-                        })}
-                      </svg>
-                      <Image
-                        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-aaa-CpIW78OZFZG6FBpF9os3cxpWu7bmcN.png"
-                        alt="Aryavart Ancient Academy Logo"
-                        width={60}
-                        height={60}
-                        className="relative z-10"
-                      />
+                      <KonarkWheel />
                     </div>
                   </div>
                 </div>

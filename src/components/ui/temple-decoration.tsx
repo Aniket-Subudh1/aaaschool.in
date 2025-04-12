@@ -1,11 +1,23 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 export default function TempleDecoration() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return (
+      <div className="absolute inset-0 overflow-hidden pointer-events-none"></div>
+    );
+  }
+
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* Top temple-inspired border */}
       <div className="absolute top-0 left-0 right-0 h-8 overflow-hidden">
         <div className="flex justify-center w-full">
           {Array.from({ length: 40 }).map((_, i) => (
