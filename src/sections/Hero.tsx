@@ -1,15 +1,8 @@
 "use client";
 import type React from "react";
 import Image from "next/image";
-import {
-  ArrowRight,
-  Phone,
-  Mail,
-  Calendar,
-  Award,
-  BookOpen,
-} from "lucide-react";
-import NavBar from "@/components/ui/nav-bar";
+import { ArrowRight, Calendar, Award, BookOpen } from "lucide-react";
+
 import KonarkWheel from "@/components/ui/konark-wheel";
 import CulturalPattern from "@/components/ui/cultural-pattern";
 import TempleDecoration from "@/components/ui/temple-decoration";
@@ -21,43 +14,6 @@ import { motion } from "framer-motion";
 export const Hero = () => {
   return (
     <main className="min-h-screen bg-[#f8f3e9] overflow-x-hidden">
-      {/* Top Bar */}
-      <div className="bg-gradient-to-r from-[#8b1a1a] to-[#a52a2a] text-[#f8f3e9] py-2 px-4 flex justify-between items-center">
-        <div className="flex items-center space-x-6">
-          <div className="flex items-center space-x-2">
-            <Phone size={16} />
-            <span className="text-sm">9124654094</span>
-          </div>
-          <div className="hidden sm:flex items-center space-x-2">
-            <Mail size={16} />
-            <span className="text-sm">aryavartaa.krd@gmail.com</span>
-          </div>
-        </div>
-        <div className="flex space-x-4 text-sm">
-          <a
-            href="#"
-            className="hover:underline hidden sm:inline transition-colors hover:text-[#f0e6d2]"
-          >
-            Online Payment
-          </a>
-          <a
-            href="#"
-            className="hover:underline hidden md:inline transition-colors hover:text-[#f0e6d2]"
-          >
-            Online Classroom
-          </a>
-          <a
-            href="#"
-            className="hover:underline transition-colors hover:text-[#f0e6d2]"
-          >
-            Admin Login
-          </a>
-        </div>
-      </div>
-
-      {/* Navigation */}
-      <NavBar />
-
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 z-0">

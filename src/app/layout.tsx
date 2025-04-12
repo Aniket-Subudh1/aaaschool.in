@@ -3,7 +3,7 @@ import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import clsx from "clsx";
-
+import NavBar from "@/components/ui/nav-bar";
 const dmSans = DM_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -73,6 +73,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <NavBar />
           {children}
         </ThemeProvider>
       </body>
