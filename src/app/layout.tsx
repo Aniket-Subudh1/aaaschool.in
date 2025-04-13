@@ -7,7 +7,7 @@ import NavBar from "@/components/ui/nav-bar";
 const dmSans = DM_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.aaaschool.in/"),
+  metadataBase: new URL("https://www.aaaschool.in"),
   title: "Aryavart Ancient Academy",
   description:
     "Aryavart Ancient Academy is a leading school located in Khordha, Odisha, offering a transformative blend of modern curriculum and ancient wisdom for holistic student development.",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     title: "Aryavart Ancient Academy – Premier School in Khordha, Odisha",
     description:
       "Join Aryavart Ancient Academy, a pioneering institution in Odisha embracing both modern and ancient educational approaches to nurture well-rounded global citizens.",
-    url: "https://aryavartancientacademy.com",
+    url: "https://www.aaaschool.in",
     type: "website",
     images: [
       {

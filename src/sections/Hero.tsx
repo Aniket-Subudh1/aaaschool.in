@@ -7,9 +7,15 @@ import KonarkWheel from "@/components/ui/konark-wheel";
 import CulturalPattern from "@/components/ui/cultural-pattern";
 import TempleDecoration from "@/components/ui/temple-decoration";
 import TempleSilhouette from "@/components/ui/temple-silhouette";
-import UserPortals from "@/components/ui/user-portals";
+import AcademicPrograms from "@/components/ui/academic-programs"
+import SchoolLevels from "@/components/ui/school-levels"
+import NotificationSection from "@/components/ui/notification-section"
 import AnnouncementsTicker from "@/components/ui/announcements-ticker";
 import { motion } from "framer-motion";
+import ImageSlider from "@/components/ui/image-slider";
+import SchoolCalendar from "@/components/ui/school-calendar";
+import SchoolActivities from "@/components/ui/school-activities";
+import AryavartHouses from "@/components/ui/aryavart-houses";
 
 export const Hero = () => {
   return (
@@ -192,11 +198,23 @@ export const Hero = () => {
               </div>
             </motion.div>
           </div>
-
-          {/* User portals section */}
-          <UserPortals />
         </div>
       </section>
+     
+      <ImageSlider/>
+    
+      <SchoolLevels />
+
+{/* Academic Programs Section */}
+<div id="academic-programs">
+  <AcademicPrograms />
+</div>
+
+{/* Notification Section */}
+<NotificationSection />
+<SchoolCalendar />
+<SchoolActivities />
+<AryavartHouses />
     </main>
   );
 };

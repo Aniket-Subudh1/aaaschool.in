@@ -1,59 +1,132 @@
 @media (max-width: 1024px) {
-    .hero-content {
-      padding: 2rem 1rem;
-    }
+  .hero-content {
+    padding: 2rem 1rem;
   }
-  
-  @media (max-width: 768px) {
-    .hero-grid {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-  
-    .logo-heading {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  
-    .logo-container {
-      margin-top: 1rem;
-      margin-bottom: 1rem;
-      align-self: center;
-    }
+}
+
+@media (max-width: 768px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
-  
-  @media (max-width: 640px) {
-    .hero-content {
-      padding: 1.5rem 1rem;
-    }
-  
-    .hero-heading {
-      font-size: 2.25rem;
-      line-height: 1.2;
-    }
-  
-    .hero-description {
-      font-size: 1rem;
-    }
-  
-    .cta-buttons {
-      flex-direction: column;
-      width: 100%;
-    }
-  
-    .cta-button {
-      width: 100%;
-      text-align: center;
-    }
+
+  .logo-heading {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
-  @media (max-width: 480px) {
-    .hero-heading {
-      font-size: 2rem;
-    }
-  
-    .floating-card {
-      display: none;
-    }
+
+  .logo-container {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    align-self: center;
   }
-  
+}
+
+@media (max-width: 640px) {
+  .hero-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .hero-heading {
+    font-size: 2.25rem;
+    line-height: 1.2;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .cta-button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .activity-card {
+    height: 100%;
+  }
+
+  .activity-image {
+    height: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-heading {
+    font-size: 2rem;
+  }
+
+  .floating-card {
+    display: none;
+  }
+
+  .calendar-day {
+    height: 40px;
+    font-size: 0.75rem;
+  }
+
+  .house-card {
+    padding: 1rem;
+  }
+
+  .house-icon {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (hover: none) {
+  .touch-highlight {
+    background-color: rgba(139, 26, 26, 0.05);
+  }
+
+  .touch-card:active {
+    transform: scale(0.98);
+  }
+}
+
+@media (max-width: 360px) {
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  .xs-text {
+    font-size: 0.7rem;
+  }
+
+  .xs-padding {
+    padding: 0.5rem;
+  }
+
+  .xs-margin {
+    margin: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px; 
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  .sticky-element {
+    position: relative;
+    top: 0;
+  }
+}
