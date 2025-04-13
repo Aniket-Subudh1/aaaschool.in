@@ -16,6 +16,9 @@ import ImageSlider from "@/components/ui/image-slider";
 import SchoolCalendar from "@/components/ui/school-calendar";
 import SchoolActivities from "@/components/ui/school-activities";
 import AryavartHouses from "@/components/ui/aryavart-houses";
+import BeyondAcademics from "@/components/ui/beyond-academics";
+import FeedbackSection from "@/components/ui/feedback-section";
+
 
 export const Hero = () => {
   return (
@@ -215,6 +218,8 @@ export const Hero = () => {
 <SchoolCalendar />
 <SchoolActivities />
 <AryavartHouses />
+<BeyondAcademics/>
+<FeedbackSection/>
     </main>
   );
 };
