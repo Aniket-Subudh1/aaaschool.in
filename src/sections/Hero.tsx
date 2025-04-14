@@ -18,11 +18,15 @@ import SchoolActivities from "@/components/ui/school-activities";
 import AryavartHouses from "@/components/ui/aryavart-houses";
 import BeyondAcademics from "@/components/ui/beyond-academics";
 import FeedbackSection from "@/components/ui/feedback-section";
+import PrincipalMessage from "@/components/ui/principal-message";
+import NavBar from "@/components/ui/nav-bar";
+import Footer from "@/components/ui/footer";
 
 
 export const Hero = () => {
   return (
     <main className="min-h-screen bg-[#f8f3e9] overflow-x-hidden">
+      <NavBar />
       {/* Hero Section */}
       <section className="relative  overflow-hidden">
         <div className="absolute inset-0 z-0">
@@ -219,7 +223,9 @@ export const Hero = () => {
 <SchoolActivities />
 <AryavartHouses />
 <BeyondAcademics/>
+<PrincipalMessage/>
 <FeedbackSection/>
+<Footer/>
     </main>
   );
 };

@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Calendar } from 'lucide-react';
+import { ArrowLeft, Calendar, CheckCircle } from 'lucide-react';
 import { FormControls } from '@/components/admin/FormControls';
+import { authFetch } from '@/lib/authFetch';
 
 const holidayTypeOptions = [
   { value: 'national', label: 'National Holiday' },
@@ -22,6 +23,7 @@ export default function NewHolidayPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const router = useRouter();
   
   const handleChange = (
@@ -46,7 +48,8 @@ export default function NewHolidayPage() {
       setIsSubmitting(true);
       setError(null);
       
-      const res = await fetch('/api/holidays', {
+      // Use authFetch instead of fetch
+      const res = await authFetch('/api/holidays', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -54,13 +57,28 @@ export default function NewHolidayPage() {
         body: JSON.stringify(formData),
       });
       
+      const data = await res.json();
+      
       if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || 'Failed to create holiday');
+        throw new Error(data.message || 'Failed to create holiday');
       }
       
-      router.push('/admin/holidays');
-      router.refresh();
+      // Set success message
+      setSuccessMessage('Holiday added successfully!');
+      
+      // Clear form after successful submission
+      setFormData({
+        name: '',
+        date: '',
+        type: 'national',
+        description: '',
+        active: true,
+      });
+      
+      // Optionally redirect after a short delay
+      setTimeout(() => {
+        router.push('/admin/holidays');
+      }, 2000);
     } catch (err: any) {
       console.error('Error creating holiday:', err);
       setError(err.message || 'Failed to create holiday');
@@ -95,6 +113,13 @@ export default function NewHolidayPage() {
       {error && (
         <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md mb-6">
           {error}
+        </div>
+      )}
+
+      {successMessage && (
+        <div className="bg-green-50 border border-green-200 text-green-700 p-4 rounded-md mb-6 flex items-center">
+          <CheckCircle className="mr-2 h-5 w-5" />
+          {successMessage}
         </div>
       )}
       

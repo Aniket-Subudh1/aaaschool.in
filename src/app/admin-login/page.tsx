@@ -61,7 +61,7 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#f8f3e9]">
+    <div className="min-h-screen -mt-24 flex items-center justify-center bg-[#f8f3e9]">
       <div className="absolute inset-0 bg-cultural-pattern opacity-5"></div>
       
       <div className="w-full max-w-md p-8 bg-white rounded-xl shadow-lg relative z-10 border border-[#d4b483]/30">

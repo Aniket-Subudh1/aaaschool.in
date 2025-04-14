@@ -101,10 +101,6 @@ export async function getHolidays(onlyActive = false) {
   return collection.find(query).sort({ date: 1 }).toArray();
 }
 
-export async function getHolidayById(id: string) {
-  const collection = await getCollection("holidays");
-  return collection.findOne({ _id: new ObjectId(id) });
-}
 
 export async function createHoliday(holiday: Omit<Holiday, "_id" | "createdAt" | "updatedAt">) {
   const collection = await getCollection("holidays");
@@ -133,6 +129,11 @@ export async function deleteHoliday(id: string) {
   const collection = await getCollection("holidays");
   const result = await collection.deleteOne({ _id: new ObjectId(id) });
   return result;
+}
+
+export async function getHolidayById(id: string) {
+  const collection = await getCollection("holidays");
+  return collection.findOne({ _id: new ObjectId(id) });
 }
 
 // Feedback methods

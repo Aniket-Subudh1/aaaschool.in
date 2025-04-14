@@ -8,7 +8,11 @@ export async function GET(request: NextRequest) {
     const onlyActive = searchParams.get('active') === 'true';
     
     const holidays = await getHolidays(onlyActive);
-    return NextResponse.json(holidays);
+    return NextResponse.json({
+      message: 'Holidays retrieved successfully',
+      holidays: holidays,
+      count: holidays.length
+    });
   } catch (error) {
     console.error('Error fetching holidays:', error);
     return NextResponse.json(
@@ -47,11 +51,17 @@ export async function POST(request: NextRequest) {
       active,
     });
 
-    return NextResponse.json(newHoliday, { status: 201 });
+    return NextResponse.json({
+      message: 'Holiday added successfully',
+      holiday: newHoliday
+    }, { status: 201 });
   } catch (error) {
     console.error('Error creating holiday:', error);
     return NextResponse.json(
-      { message: 'Failed to create holiday' },
+      { 
+        message: 'Failed to create holiday',
+        error: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }
