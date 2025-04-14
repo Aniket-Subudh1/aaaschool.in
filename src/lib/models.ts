@@ -12,6 +12,7 @@ export interface Announcement {
     title: string;
     icon: string;
     date?: string;
+    description?: string;
     active: boolean;
     createdAt: Date;
     updatedAt: Date;

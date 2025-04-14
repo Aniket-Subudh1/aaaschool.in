@@ -30,8 +30,8 @@ export default function SchoolCalendar() {
       setIsLoading(true);
       setError(null);
       
-      // Fix the API path - using the correct /api/holidays route
-      const res = await fetch('/api/holidays?active=true');
+      // Use ?format=raw to get raw array
+      const res = await fetch('/api/holidays?active=true&format=raw');
       if (!res.ok) {
         console.error('Response status:', res.status);
         throw new Error('Failed to fetch holidays');
@@ -39,7 +39,7 @@ export default function SchoolCalendar() {
       
       const data = await res.json();
       
-      if (data && data.length > 0) {
+      if (data && Array.isArray(data) && data.length > 0) {
         setHolidays(data);
       } else {
         // Fallback holidays if none are available
@@ -93,7 +93,6 @@ export default function SchoolCalendar() {
       setIsLoading(false);
     }
   };
-  
 
   const monthNames = [
     "January",
