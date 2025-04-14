@@ -1,31 +1,94 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronLeft, ChevronRight, CalendarIcon, Info } from "lucide-react"
 
 interface Holiday {
-  date: string 
-  name: string
-  type: "national" | "religious" | "school" | "exam"
+  _id?: string;
+  date: string;
+  name: string;
+  type: "national" | "religious" | "school" | "exam";
+  description?: string;
 }
 
 export default function SchoolCalendar() {
-  const [currentMonth, setCurrentMonth] = useState(3) 
+  const [currentMonth, setCurrentMonth] = useState(3) // April
   const [currentYear, setCurrentYear] = useState(2025)
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<"month" | "week" | "day">("month")
+  const [holidays, setHolidays] = useState<Holiday[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  // Sample holidays data
-  const holidays: Holiday[] = [
-    { date: "2025-04-13", name: "Baisakhi", type: "religious" },
-    { date: "2025-04-14", name: "Dr. Ambedkar Jayanti", type: "national" },
-    { date: "2025-04-19", name: "Ram Navami", type: "religious" },
-    { date: "2025-04-22", name: "Earth Day Celebration", type: "school" },
-    { date: "2025-05-01", name: "Labor Day", type: "national" },
-    { date: "2025-05-05", name: "Summer Camp Begins", type: "school" },
-    { date: "2025-05-15", name: "Final Exam Preparation Week", type: "exam" },
-  ]
+  useEffect(() => {
+    fetchHolidays();
+  }, []);
+
+  const fetchHolidays = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      
+      const res = await fetch('/api/holidays?active=true');
+      if (!res.ok) throw new Error('Failed to fetch holidays');
+      
+      const data = await res.json();
+      
+      if (data && data.length > 0) {
+        setHolidays(data);
+      } else {
+        // Fallback holidays if none are available
+        setHolidays([
+          { 
+            _id: "1",
+            date: "2025-04-13", 
+            name: "Baisakhi", 
+            type: "religious" 
+          },
+          { 
+            _id: "2",
+            date: "2025-04-14", 
+            name: "Dr. Ambedkar Jayanti", 
+            type: "national" 
+          },
+          { 
+            _id: "3",
+            date: "2025-04-19", 
+            name: "Ram Navami", 
+            type: "religious" 
+          },
+        ]);
+      }
+    } catch (err) {
+      console.error('Error fetching holidays:', err);
+      setError('Failed to load holidays');
+      
+      // Fallback holidays if fetch fails
+      setHolidays([
+        { 
+          _id: "1",
+          date: "2025-04-13", 
+          name: "Baisakhi", 
+          type: "religious" 
+        },
+        { 
+          _id: "2",
+          date: "2025-04-14", 
+          name: "Dr. Ambedkar Jayanti", 
+          type: "national" 
+        },
+        { 
+          _id: "3",
+          date: "2025-04-19", 
+          name: "Ram Navami", 
+          type: "religious" 
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const monthNames = [
     "January",
@@ -79,7 +142,21 @@ export default function SchoolCalendar() {
     return holiday ? holiday.type : null
   }
 
+  const getHolidayDetails = (date: string) => {
+    return holidays.find((holiday) => holiday.date === date)
+  }
+
   const renderCalendar = () => {
+    if (isLoading) {
+      return (
+        <div className="grid grid-cols-7 gap-1">
+          {Array(35).fill(0).map((_, index) => (
+            <div key={`loading-${index}`} className="h-14 md:h-20 p-1 animate-pulse bg-gray-200 rounded"></div>
+          ))}
+        </div>
+      );
+    }
+
     const daysInMonth = getDaysInMonth(currentYear, currentMonth)
     const firstDayOfMonth = getFirstDayOfMonth(currentYear, currentMonth)
 
@@ -250,20 +327,27 @@ export default function SchoolCalendar() {
                   {isHoliday(selectedDate) ? (
                     <div className="mt-2">
                       <p className="text-[#5a3e36]">
-                        <span className="font-medium">{holidays.find((h) => h.date === selectedDate)?.name}</span> -
+                        <span className="font-medium">{getHolidayDetails(selectedDate)?.name}</span> -
                         {getHolidayType(selectedDate) === "national" && " National Holiday"}
                         {getHolidayType(selectedDate) === "religious" && " Religious Holiday"}
                         {getHolidayType(selectedDate) === "school" && " School Event"}
                         {getHolidayType(selectedDate) === "exam" && " Examination Period"}
                       </p>
-                      <p className="text-sm text-[#5a3e36] mt-2">
-                        {getHolidayType(selectedDate) === "national" && "School will remain closed on this day."}
-                        {getHolidayType(selectedDate) === "religious" &&
-                          "Optional holiday for students of the respective religion."}
-                        {getHolidayType(selectedDate) === "school" && "Special activities planned for students."}
-                        {getHolidayType(selectedDate) === "exam" &&
-                          "Students should prepare according to the exam schedule."}
-                      </p>
+                      {getHolidayDetails(selectedDate)?.description && (
+                        <p className="text-sm text-[#5a3e36] mt-2">
+                          {getHolidayDetails(selectedDate)?.description}
+                        </p>
+                      )}
+                      {!getHolidayDetails(selectedDate)?.description && (
+                        <p className="text-sm text-[#5a3e36] mt-2">
+                          {getHolidayType(selectedDate) === "national" && "School will remain closed on this day."}
+                          {getHolidayType(selectedDate) === "religious" &&
+                            "Optional holiday for students of the respective religion."}
+                          {getHolidayType(selectedDate) === "school" && "Special activities planned for students."}
+                          {getHolidayType(selectedDate) === "exam" &&
+                            "Students should prepare according to the exam schedule."}
+                        </p>
+                      )}
                     </div>
                   ) : (
                     <p className="text-[#5a3e36] mt-2">Regular school day. No special events scheduled.</p>

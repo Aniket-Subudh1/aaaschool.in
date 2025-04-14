@@ -17,7 +17,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
-  { name: "HOME", href: "#", icon: null },
+  { name: "HOME", href: "/", icon: null },
   {
     name: "ADMISSION",
     href: "#",
@@ -97,7 +97,7 @@ export default function NavBar() {
             Online Classroom
           </a>
           <a
-            href="#"
+            href="/admin-login"
             className="hover:underline transition-colors hover:text-[#f0e6d2]"
           >
             Admin Login

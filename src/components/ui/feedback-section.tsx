@@ -17,6 +17,7 @@ export default function FeedbackSection() {
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -29,16 +30,34 @@ export default function FeedbackSection() {
     setFormData((prev) => ({ ...prev, rating }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsSubmitting(true)
+    
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim() || !formData.type) {
+      setError("Please fill in all required fields");
+      return;
+    }
+    
+    try {
+      setIsSubmitting(true)
+      setError(null)
+      
+      const res = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || 'Failed to submit feedback');
+      }
 
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false)
       setIsSubmitted(true)
 
-      // Reset form after 3 seconds
+      // Reset form after some time
       setTimeout(() => {
         setIsSubmitted(false)
         setFormData({
@@ -49,8 +68,13 @@ export default function FeedbackSection() {
           rating: 0,
           type: "parent",
         })
-      }, 3000)
-    }, 1500)
+      }, 5000)
+    } catch (err: any) {
+      console.error('Error submitting feedback:', err);
+      setError(err.message || 'Failed to submit feedback. Please try again later.');
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -151,6 +175,9 @@ export default function FeedbackSection() {
                       <p className="text-[#5a3e36]">
                         Your feedback has been submitted successfully. We appreciate your input!
                       </p>
+                      <p className="text-[#5a3e36] mt-4">
+                        We've sent a confirmation to your email address.
+                      </p>
                     </motion.div>
                   ) : (
                     <motion.form
@@ -160,13 +187,18 @@ export default function FeedbackSection() {
                       onSubmit={handleSubmit}
                       className="space-y-4"
                     >
+                      {error && (
+                        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md mb-4">
+                          {error}
+                        </div>
+                      )}
+                    
                       <div>
                         <label className="block text-sm font-medium text-[#5a3e36] mb-1">I am a</label>
                         <select
                           name="type"
                           value={formData.type}
                           onChange={handleChange}
-                          // ▼ Force a white background & dark text:
                           className="w-full px-4 py-2 bg-white text-[#5a3e36] border border-[#d4b483]/30 rounded-lg 
                                      focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
                           required
@@ -190,134 +222,130 @@ export default function FeedbackSection() {
                               name="name"
                               value={formData.name}
                               onChange={handleChange}
-                              // ▼ Force a white background & dark text:
                               className="w-full bg-white text-[#5a3e36] pl-10 pr-4 py-2 border border-[#d4b483]/30 rounded-lg 
-                                         focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
-                              placeholder="Your name"
-                              required
-                            />
-                          </div>
-                        </div>
+                              focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
+                   placeholder="Your name"
+                   required
+                 />
+               </div>
+             </div>
 
-                        <div>
-                          <label className="block text-sm font-medium text-[#5a3e36] mb-1">Email</label>
-                          <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                              <Mail className="h-5 w-5 text-[#8b1a1a]/50" />
-                            </div>
-                            <input
-                              type="email"
-                              name="email"
-                              value={formData.email}
-                              onChange={handleChange}
-                              // ▼ Force a white background & dark text:
-                              className="w-full bg-white text-[#5a3e36] pl-10 pr-4 py-2 border border-[#d4b483]/30 rounded-lg 
-                                         focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
-                              placeholder="Your email"
-                              required
-                            />
-                          </div>
-                        </div>
-                      </div>
+             <div>
+               <label className="block text-sm font-medium text-[#5a3e36] mb-1">Email</label>
+               <div className="relative">
+                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                   <Mail className="h-5 w-5 text-[#8b1a1a]/50" />
+                 </div>
+                 <input
+                   type="email"
+                   name="email"
+                   value={formData.email}
+                   onChange={handleChange}
+                   className="w-full bg-white text-[#5a3e36] pl-10 pr-4 py-2 border border-[#d4b483]/30 rounded-lg 
+                              focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
+                   placeholder="Your email"
+                   required
+                 />
+               </div>
+             </div>
+           </div>
 
-                      <div>
-                        <label className="block text-sm font-medium text-[#5a3e36] mb-1">Phone (Optional)</label>
-                        <div className="relative">
-                          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <Phone className="h-5 w-5 text-[#8b1a1a]/50" />
-                          </div>
-                          <input
-                            type="tel"
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            // ▼ Force a white background & dark text:
-                            className="w-full bg-white text-[#5a3e36] pl-10 pr-4 py-2 border border-[#d4b483]/30 rounded-lg 
-                                       focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
-                            placeholder="Your phone number"
-                          />
-                        </div>
-                      </div>
+           <div>
+             <label className="block text-sm font-medium text-[#5a3e36] mb-1">Phone (Optional)</label>
+             <div className="relative">
+               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                 <Phone className="h-5 w-5 text-[#8b1a1a]/50" />
+               </div>
+               <input
+                 type="tel"
+                 name="phone"
+                 value={formData.phone}
+                 onChange={handleChange}
+                 className="w-full bg-white text-[#5a3e36] pl-10 pr-4 py-2 border border-[#d4b483]/30 rounded-lg 
+                            focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
+                 placeholder="Your phone number"
+               />
+             </div>
+           </div>
 
-                      <div>
-                        <label className="block text-sm font-medium text-[#5a3e36] mb-1">Your Feedback</label>
-                        <textarea
-                          name="message"
-                          value={formData.message}
-                          onChange={handleChange}
-                          rows={4}
-                          // ▼ Force a white background & dark text:
-                          className="w-full bg-white text-[#5a3e36] px-4 py-2 border border-[#d4b483]/30 rounded-lg 
-                                     focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
-                          placeholder="Share your thoughts, suggestions, or concerns..."
-                          required
-                        ></textarea>
-                      </div>
+           <div>
+             <label className="block text-sm font-medium text-[#5a3e36] mb-1">Your Feedback</label>
+             <textarea
+               name="message"
+               value={formData.message}
+               onChange={handleChange}
+               rows={4}
+               className="w-full bg-white text-[#5a3e36] px-4 py-2 border border-[#d4b483]/30 rounded-lg 
+                          focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
+               placeholder="Share your thoughts, suggestions, or concerns..."
+               required
+             ></textarea>
+           </div>
 
-                      <div>
-                        <label className="block text-sm font-medium text-[#5a3e36] mb-2">Rate Your Experience</label>
-                        <div className="flex space-x-2">
-                          {[1, 2, 3, 4, 5].map((rating) => (
-                            <button
-                              key={rating}
-                              type="button"
-                              onClick={() => handleRatingClick(rating)}
-                              className="focus:outline-none"
-                            >
-                              <Star
-                                className={`h-8 w-8 ${
-                                  rating <= formData.rating
-                                    ? "text-yellow-500 fill-yellow-500"
-                                    : "text-gray-300"
-                                }`}
-                              />
-                            </button>
-                          ))}
-                        </div>
-                      </div>
+           <div>
+             <label className="block text-sm font-medium text-[#5a3e36] mb-2">Rate Your Experience</label>
+             <div className="flex space-x-2">
+               {[1, 2, 3, 4, 5].map((rating) => (
+                 <button
+                   key={rating}
+                   type="button"
+                   onClick={() => handleRatingClick(rating)}
+                   className="focus:outline-none"
+                 >
+                   <Star
+                     className={`h-8 w-8 ${
+                       rating <= formData.rating
+                         ? "text-yellow-500 fill-yellow-500"
+                         : "text-gray-300"
+                     }`}
+                   />
+                 </button>
+               ))}
+             </div>
+           </div>
 
-                      <div className="pt-2">
-                        <button
-                          type="submit"
-                          disabled={isSubmitting}
-                          className="w-full bg-[#8b1a1a] text-white py-3 px-6 rounded-lg hover:bg-[#8b1a1a]/90 transition-colors flex items-center justify-center"
-                        >
-                          {isSubmitting ? (
-                            <svg
-                              className="animate-spin h-5 w-5 text-white"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                            >
-                              <circle
-                                className="opacity-25"
-                                cx="12"
-                                cy="12"
-                                r="10"
-                                stroke="currentColor"
-                                strokeWidth="4"
-                              ></circle>
-                              <path
-                                className="opacity-75"
-                                fill="currentColor"
-                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                              ></path>
-                            </svg>
-                          ) : (
-                            <>
-                              Submit Feedback <Send className="ml-2 h-5 w-5" />
-                            </>
-                          )}
-                        </button>
-                      </div>
-                    </motion.form>
-                  )}
-                </AnimatePresence>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
+           <div className="pt-2">
+             <button
+               type="submit"
+               disabled={isSubmitting}
+               className="w-full bg-[#8b1a1a] text-white py-3 px-6 rounded-lg hover:bg-[#8b1a1a]/90 transition-colors flex items-center justify-center"
+             >
+               {isSubmitting ? (
+                 <svg
+                   className="animate-spin h-5 w-5 text-white"
+                   xmlns="http://www.w3.org/2000/svg"
+                   fill="none"
+                   viewBox="0 0 24 24"
+                 >
+                   <circle
+                     className="opacity-25"
+                     cx="12"
+                     cy="12"
+                     r="10"
+                     stroke="currentColor"
+                     strokeWidth="4"
+                   ></circle>
+                   <path
+                     className="opacity-75"
+                     fill="currentColor"
+                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                   ></path>
+                 </svg>
+               ) : (
+                 <>
+                   Submit Feedback <Send className="ml-2 h-5 w-5" />
+                 </>
+               )}
+             </button>
+           </div>
+         </motion.form>
+       )}
+     </AnimatePresence>
+   </div>
+ </div>
+</div>
+</div>
+</div>
+</section>
+)
 }
