@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Home, BellRing, CalendarDays, MessageSquare } from 'lucide-react';
 import AdminStats from '@/components/admin/AdminStats';
 import RecentFeedback from '@/components/admin/RecentFeedback';
+import { authFetch } from '@/lib/authFetch';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -27,31 +28,39 @@ export default function AdminDashboard() {
         setError(null);
         
         // Fetch announcements
-        const announcementsRes = await fetch('/api/announcements');
+        const announcementsRes = await authFetch('/api/announcements');
         const announcements = await announcementsRes.json();
         
         // Fetch notifications
-        const notificationsRes = await fetch('/api/notifications');
+        const notificationsRes = await authFetch('/api/notifications');
         const notifications = await notificationsRes.json();
         
         // Fetch holidays
-        const holidaysRes = await fetch('/api/holidays');
+        const holidaysRes = await authFetch('/api/holidays');
         const holidays = await holidaysRes.json();
         
         // Fetch feedback
-        const feedbackRes = await fetch('/api/feedback');
+        const feedbackRes = await authFetch('/api/feedback');
+        
+        if (!feedbackRes.ok) {
+          throw new Error('Failed to fetch feedback');
+        }
+        
         const feedback = await feedbackRes.json();
         
+        // Make sure feedback is an array before filtering
+        const feedbackArray = Array.isArray(feedback) ? feedback : [];
+        
         // Count feedback by status
-        const newFeedback = feedback.filter((f: any) => f.status === 'new').length;
-        const respondedFeedback = feedback.filter((f: any) => f.status === 'responded').length;
+        const newFeedback = feedbackArray.filter((f: any) => f.status === 'new').length;
+        const respondedFeedback = feedbackArray.filter((f: any) => f.status === 'responded').length;
         
         setStats({
           announcements: announcements.length,
           notifications: notifications.length,
           holidays: holidays.length,
           feedback: {
-            total: feedback.length,
+            total: feedbackArray.length,
             new: newFeedback,
             responded: respondedFeedback,
           },

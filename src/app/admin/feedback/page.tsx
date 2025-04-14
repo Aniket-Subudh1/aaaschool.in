@@ -6,6 +6,7 @@ import { MessageSquare, Trash2, Search, Star, Filter, User, Mail, Phone } from '
 import NoData from '@/components/admin/NoData';
 import DeleteConfirmation from '@/components/admin/DeleteConfirmation';
 import { Feedback } from '@/lib/models';
+import { authFetch } from '@/lib/authFetch';
 
 export default function FeedbackPage() {
   const [feedbackList, setFeedbackList] = useState<Feedback[]>([]);
@@ -34,11 +35,11 @@ export default function FeedbackPage() {
       setError(null);
       
       const query = filterStatus ? `?status=${filterStatus}` : '';
-      const res = await fetch(`/api/feedback${query}`);
+      const res = await authFetch(`/api/feedback${query}`);
       if (!res.ok) throw new Error('Failed to fetch feedback');
       
       const data = await res.json();
-      setFeedbackList(data);
+      setFeedbackList(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Error fetching feedback:', err);
       setError('Failed to load feedback. Please try again.');
@@ -69,7 +70,7 @@ export default function FeedbackPage() {
     try {
       setDeleteModal((prev) => ({ ...prev, isDeleting: true }));
       
-      const res = await fetch(`/api/feedback/${deleteModal.feedback._id}`, {
+      const res = await authFetch(`/api/feedback/${deleteModal.feedback._id}`, {
         method: 'DELETE',
       });
       
@@ -414,5 +415,3 @@ export default function FeedbackPage() {
     </div>
   );
 }
-
-                

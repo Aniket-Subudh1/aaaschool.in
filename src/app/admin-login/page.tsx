@@ -27,18 +27,33 @@ export default function AdminLoginPage() {
         body: JSON.stringify({ username, password }),
       });
 
+      // Log response status for debugging
+      console.log('Login response status:', response.status);
+
       const data = await response.json();
 
       if (!response.ok) {
         throw new Error(data.message || "Login failed");
       }
 
-      // Save token in cookie
-      Cookies.set("admin-token", data.token, { expires: 1 }); // Expires in 1 day
+      // Log token for debugging (only the first few characters)
+      console.log('Token received:', data.token ? data.token.substring(0, 10) + '...' : 'None');
+
+      // Save token in cookie with specific attributes
+      Cookies.set("admin-token", data.token, { 
+        expires: 1, // Expires in 1 day
+        path: '/',
+        sameSite: 'Lax' 
+      });
       
+      // Verify cookie was set
+      const savedToken = Cookies.get('admin-token');
+      console.log('Cookie set successfully:', !!savedToken);
+
       // Redirect to admin dashboard
       router.push("/admin");
     } catch (err: any) {
+      console.error('Login error:', err);
       setError(err.message || "An error occurred during login");
     } finally {
       setIsLoading(false);

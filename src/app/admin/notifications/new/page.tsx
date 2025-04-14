@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Bell, BookOpen, AlertCircle, Award, Dumbbell } from 'lucide-react';
 import { FormControls } from '@/components/admin/FormControls';
+import { authFetch } from '@/lib/authFetch';
 
 // Icon options for notifications
 const iconOptions = [
@@ -47,7 +48,8 @@ export default function NewNotificationPage() {
       setIsSubmitting(true);
       setError(null);
       
-      const res = await fetch('/api/notifications', {
+      // Use authFetch instead of fetch
+      const res = await authFetch('/api/notifications', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

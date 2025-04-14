@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, BellRing } from 'lucide-react';
 import { FormControls } from '@/components/admin/FormControls';
+import { authFetch } from '@/lib/authFetch';
+import Cookies from 'js-cookie';
 
 export default function NewAnnouncementPage() {
   const [formData, setFormData] = useState({
@@ -37,17 +39,49 @@ export default function NewAnnouncementPage() {
       setIsSubmitting(true);
       setError(null);
       
+      // Check if token exists before making request
+      const token = Cookies.get('admin-token');
+      console.log("Token exists before fetch:", !!token);
+      
+      if (!token) {
+        // If no token, try setting a test token to see if cookies are working
+        console.log("No token found, testing cookie functionality...");
+        Cookies.set('test-cookie', 'working');
+        const testCookie = Cookies.get('test-cookie');
+        console.log("Test cookie set and retrieved:", !!testCookie);
+        
+        setError("Authentication token not found. Please log in again.");
+        return;
+      }
+      
+      // Manual implementation instead of using authFetch to better debug
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      headers.append('Authorization', `Bearer ${token}`);
+      
+      console.log("Sending request with headers:");
+      console.log("- Content-Type:", headers.get('Content-Type'));
+      console.log("- Authorization:", "Bearer " + token.substring(0, 10) + "...");
+      
       const res = await fetch('/api/announcements', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers,
         body: JSON.stringify(formData),
       });
       
+      console.log("Response status:", res.status, res.statusText);
+      
+      // Try to get the response body
+      let errorData;
+      try {
+        errorData = await res.json();
+        console.log("Response body:", errorData);
+      } catch (parseError) {
+        console.error("Error parsing response:", parseError);
+      }
+      
       if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || 'Failed to create announcement');
+        throw new Error(errorData?.message || 'Failed to create announcement');
       }
       
       router.push('/admin/announcements');
@@ -63,6 +97,18 @@ export default function NewAnnouncementPage() {
   const handleCancel = () => {
     router.back();
   };
+  
+  // Check token on page load
+  const checkToken = () => {
+    const token = Cookies.get('admin-token');
+    console.log("Admin token exists on page load:", !!token);
+    if (token) {
+      console.log("Token begins with:", token.substring(0, 10) + "...");
+    }
+  };
+  
+  // Run token check
+  checkToken();
   
   return (
     <div>

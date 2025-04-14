@@ -30,8 +30,12 @@ export default function SchoolCalendar() {
       setIsLoading(true);
       setError(null);
       
+      // Fix the API path - using the correct /api/holidays route
       const res = await fetch('/api/holidays?active=true');
-      if (!res.ok) throw new Error('Failed to fetch holidays');
+      if (!res.ok) {
+        console.error('Response status:', res.status);
+        throw new Error('Failed to fetch holidays');
+      }
       
       const data = await res.json();
       
@@ -89,6 +93,7 @@ export default function SchoolCalendar() {
       setIsLoading(false);
     }
   };
+  
 
   const monthNames = [
     "January",

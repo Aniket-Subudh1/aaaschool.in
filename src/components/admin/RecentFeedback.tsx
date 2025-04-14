@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Feedback } from '@/lib/models';
 import { MessageSquare, ChevronRight } from 'lucide-react';
+import { authFetch } from '@/lib/authFetch';
 
 interface RecentFeedbackProps {
   isLoading: boolean;
@@ -17,11 +18,11 @@ export default function RecentFeedback({ isLoading }: RecentFeedbackProps) {
     if (!isLoading) {
       const fetchRecentFeedback = async () => {
         try {
-          const res = await fetch('/api/feedback?status=new');
+          const res = await authFetch('/api/feedback?status=new');
           if (!res.ok) throw new Error('Failed to fetch feedback');
           
           const data = await res.json();
-          setFeedback(data.slice(0, 5)); // Get only 5 most recent
+          setFeedback(Array.isArray(data) ? data.slice(0, 5) : []); // Get only 5 most recent and ensure it's an array
         } catch (err) {
           console.error('Error fetching recent feedback:', err);
           setError('Failed to load recent feedback');

@@ -1,86 +1,74 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getFeedbackById, updateFeedbackStatus, deleteFeedback } from '@/lib/db';
-import { verifyAuth } from '@/lib/auth';
-
+import { NextRequest, NextResponse } from "next/server";
+import { getFeedbackById, updateFeedbackStatus, deleteFeedback } from "@/lib/db";
+import { verifyAuth } from "@/lib/auth";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> } 
 ) {
   try {
+    const { id } = await params; 
+
     // Verify authentication
     const authResult = await verifyAuth(request);
     if (!authResult.isAuthenticated) {
-      return NextResponse.json(
-        { message: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const feedback = await getFeedbackById(params.id);
-    
+    const feedback = await getFeedbackById(id);
+
     if (!feedback) {
-      return NextResponse.json(
-        { message: 'Feedback not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ message: "Feedback not found" }, { status: 404 });
     }
-    
+
     return NextResponse.json(feedback);
   } catch (error) {
-    console.error('Error fetching feedback:', error);
-    return NextResponse.json(
-      { message: 'Failed to fetch feedback' },
-      { status: 500 }
-    );
+    console.error("Error fetching feedback:", error);
+    return NextResponse.json({ message: "Failed to fetch feedback" }, { status: 500 });
   }
 }
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> } 
 ) {
   try {
-    // Verify authentication
+    const { id } = await params;
+
+  
     const authResult = await verifyAuth(request);
     if (!authResult.isAuthenticated) {
-      return NextResponse.json(
-        { message: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     const body = await request.json();
     const { status, responseMessage } = body;
 
-    if (!status || (status === 'responded' && !responseMessage)) {
+    if (!status || (status === "responded" && !responseMessage)) {
       return NextResponse.json(
-        { message: 'Status is required, and a response message is required when marking as responded' },
+        { message: "Status is required, and a response message is required when marking as responded" },
         { status: 400 }
       );
     }
 
-    const updateResult = await updateFeedbackStatus(params.id, status, responseMessage);
-    
-    if (updateResult.matchedCount === 0) {
-      return NextResponse.json(
-        { message: 'Feedback not found' },
-        { status: 404 }
-      );
-    }
-    
-    const updatedFeedback = await getFeedbackById(params.id);
+    const updateResult = await updateFeedbackStatus(id, status, responseMessage);
 
-    // If marking as responded, send email to the user
+    if (updateResult.matchedCount === 0) {
+      return NextResponse.json({ message: "Feedback not found" }, { status: 404 });
+    }
+
+    const updatedFeedback = await getFeedbackById(id);
+
+
     if (
-      status === 'responded' && 
-      responseMessage && 
-      updatedFeedback && 
+      status === "responded" &&
+      responseMessage &&
+      updatedFeedback &&
       process.env.FEEDBACK_NOTIFICATION_EMAIL
     ) {
-      const nodemailer = require('nodemailer');
+      const nodemailer = require("nodemailer");
       const transporter = nodemailer.createTransport({
-        service: 'gmail',
+        service: "gmail",
         auth: {
           user: process.env.EMAIL_USER,
           pass: process.env.EMAIL_PASS,
@@ -89,7 +77,7 @@ export async function PUT(
       await transporter.sendMail({
         from: process.env.FEEDBACK_NOTIFICATION_EMAIL,
         to: updatedFeedback.email,
-        subject: 'Response to Your Feedback - Aryavart Ancient Academy',
+        subject: "Response to Your Feedback - Aryavart Ancient Academy",
         text: `
           Dear ${updatedFeedback.name},
           
@@ -134,43 +122,33 @@ export async function PUT(
 
     return NextResponse.json(updatedFeedback);
   } catch (error) {
-    console.error('Error updating feedback:', error);
-    return NextResponse.json(
-      { message: 'Failed to update feedback' },
-      { status: 500 }
-    );
+    console.error("Error updating feedback:", error);
+    return NextResponse.json({ message: "Failed to update feedback" }, { status: 500 });
   }
 }
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> } 
 ) {
   try {
-    // Verify authentication
+    const { id } = await params;
+
+   
     const authResult = await verifyAuth(request);
     if (!authResult.isAuthenticated) {
-      return NextResponse.json(
-        { message: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const deleteResult = await deleteFeedback(params.id);
-    
+    const deleteResult = await deleteFeedback(id);
+
     if (deleteResult.deletedCount === 0) {
-      return NextResponse.json(
-        { message: 'Feedback not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ message: "Feedback not found" }, { status: 404 });
     }
-    
-    return NextResponse.json({ message: 'Feedback deleted successfully' });
+
+    return NextResponse.json({ message: "Feedback deleted successfully" });
   } catch (error) {
-    console.error('Error deleting feedback:', error);
-    return NextResponse.json(
-      { message: 'Failed to delete feedback' },
-      { status: 500 }
-    );
+    console.error("Error deleting feedback:", error);
+    return NextResponse.json({ message: "Failed to delete feedback" }, { status: 500 });
   }
 }
