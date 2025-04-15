@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bell, ChevronRight, ChevronLeft } from "lucide-react";
+import AnnouncementsModal from "./announcements-modal";
 
 export default function AnnouncementsTicker() {
   const [announcements, setAnnouncements] = useState<string[]>([]);
@@ -35,12 +36,12 @@ export default function AnnouncementsTicker() {
       
       const data = await res.json();
       
-      // Extract titles from announcements
+   
       if (data && data.length > 0) {
         const announcementTitles = data.map((item: any) => item.title);
         setAnnouncements(announcementTitles);
       } else {
-        // Fallback announcements if none are available
+        
         setAnnouncements([
           "Admission for the new academic year 2025-26 is now open",
           "Parent-Teacher Meeting scheduled for next Friday",
@@ -124,6 +125,10 @@ export default function AnnouncementsTicker() {
         >
           <ChevronRight className="h-4 w-4" />
         </button>
+      </div>
+
+      <div className="ml-3">
+        <AnnouncementsModal />
       </div>
     </div>
   );

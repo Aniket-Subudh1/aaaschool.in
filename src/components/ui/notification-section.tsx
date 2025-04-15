@@ -5,6 +5,7 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Bell, ChevronRight, ChevronLeft, Calendar, Award, Flag, Dumbbell, BookOpen, AlertCircle } from "lucide-react"
+import NotificationsModal from "./notifications-modal"
 
 interface Notification {
   _id?: string
@@ -36,7 +37,7 @@ export default function NotificationSection() {
       if (data && data.length > 0) {
         setNotifications(data);
       } else {
-        // Fallback notifications if none are available
+      
         setNotifications([
           {
             _id: "1",
@@ -62,7 +63,6 @@ export default function NotificationSection() {
       console.error('Error fetching notifications:', err);
       setError('Failed to load notifications');
       
-      // Fallback notifications if fetch fails
       setNotifications([
         {
           _id: "1",
@@ -203,9 +203,7 @@ export default function NotificationSection() {
                     />
                   ))}
                 </div>
-                <a href="#" className="text-sm font-medium text-[#8b1a1a] hover:underline flex items-center">
-                  View All Notifications <ChevronRight className="h-4 w-4 ml-1" />
-                </a>
+                <NotificationsModal />
               </div>
             </div>
           </div>
@@ -213,4 +211,3 @@ export default function NotificationSection() {
       </section>
     )
   }
-  
