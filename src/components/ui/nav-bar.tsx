@@ -65,12 +65,7 @@ export default function NavBar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const toggleSubmenu = (name: string) => {
-    setActiveSubmenu(activeSubmenu === name ? null : name);
-  };
-
   return (
-    // Removed the sticky class from main element
     <div className="w-full fixed top-0 left-0 right-0 z-50">
       <div className="bg-gradient-to-r from-[#8b1a1a] to-[#a52a2a] text-[#f8f3e9] py-2 px-4 flex justify-between items-center">
         <div className="flex items-center space-x-6">
@@ -105,7 +100,7 @@ export default function NavBar() {
         </div>
       </div>
       <nav
-        className={`bg-gradient-to-r from-[#f8f3e9] to-[#f0e6d2] border-b  border-[#d4b483]/30 
+        className={`bg-gradient-to-r from-[#f8f3e9] to-[#f0e6d2] border-b border-[#d4b483]/30 
         ${scrolled ? "shadow-xl backdrop-blur-sm bg-opacity-90" : "shadow-md"} 
         transition-all duration-300`}
       >
@@ -123,7 +118,7 @@ export default function NavBar() {
                   height={48}
                   className="relative z-10 h-12 w-12 transition-transform duration-300 hover:scale-105"
                 />
-                <span className="text-[10px] font-bold mt-1 tracking-wide  z-10">
+                <span className="text-[10px] font-bold mt-1 tracking-wide z-10">
                   ESTD - 1995
                 </span>
               </div>
@@ -141,18 +136,15 @@ export default function NavBar() {
             <div className="hidden lg:flex items-center">
               <div className="flex items-center space-x-2">
                 {navItems.map((item) => (
-                  <div key={item.name} className="relative group">
+                  <div 
+                    key={item.name} 
+                    className="relative group"
+                    onMouseEnter={() => item.submenu && setActiveSubmenu(item.name)}
+                    onMouseLeave={() => item.submenu && setActiveSubmenu(null)}
+                  >
                     <a
                       href={item.href}
                       className="flex items-center px-2 py-1 text-sm font-medium text-[#5a3e36] hover:text-[#8b1a1a] transition-colors rounded-md hover:bg-[#d4b483]/10 group"
-                      onClick={
-                        item.submenu
-                          ? (e) => {
-                              e.preventDefault();
-                              toggleSubmenu(item.name);
-                            }
-                          : undefined
-                      }
                     >
                       {item.icon && <item.icon className="mr-1 h-4 w-4" />}
                       {item.name}
@@ -225,7 +217,7 @@ export default function NavBar() {
                         item.submenu
                           ? (e) => {
                               e.preventDefault();
-                              toggleSubmenu(item.name);
+                              setActiveSubmenu(activeSubmenu === item.name ? null : item.name);
                             }
                           : undefined
                       }

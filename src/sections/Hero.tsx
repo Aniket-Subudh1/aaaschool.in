@@ -21,6 +21,7 @@ import FeedbackSection from "@/components/ui/feedback-section";
 import PrincipalMessage from "@/components/ui/principal-message";
 import NavBar from "@/components/ui/nav-bar";
 import Footer from "@/components/ui/footer";
+import StudentTestimonials from "@/components/ui/student-testimonials";
 
 
 export const Hero = () => {
@@ -224,6 +225,7 @@ export const Hero = () => {
 <AryavartHouses />
 <BeyondAcademics/>
 <PrincipalMessage/>
+<StudentTestimonials/>
 <FeedbackSection/>
 <Footer/>
     </main>

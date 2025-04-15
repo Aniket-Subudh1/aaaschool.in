@@ -73,19 +73,18 @@ export default function ImageSlider() {
     return () => clearInterval(interval)
   }, [autoplay, images.length])
 
-  // Calculate visible indices
+  // Calculate visible indices for desktop
   const getVisibleIndices = () => {
-    const indices = []
     const totalImages = images.length
+    const indices = []
     
-    // Current image
+    // Center slide
     indices.push(currentIndex)
     
-    // Next 2 images
-    for (let i = 1; i <= 2; i++) {
-      indices.push((currentIndex + i) % totalImages)
-    }
-    
+    // Slides before and after
+    indices.push((currentIndex - 1 + totalImages) % totalImages)
+    indices.push((currentIndex + 1) % totalImages)
+
     return indices
   }
 
@@ -135,22 +134,25 @@ export default function ImageSlider() {
           {/* Card slider */}
           <div className="overflow-hidden py-8">
             <div className="flex justify-center">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-                <AnimatePresence mode="popLayout">
+              <AnimatePresence mode="popLayout">
+                <div key="desktop-slider" className="hidden md:grid md:grid-cols-3 gap-4 md:gap-6 w-full">
                   {visibleIndices.map((index, i) => (
                     <motion.div
-                      key={`${index}-${i}`}
+                      key={`desktop-${index}-${i}`}
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ 
-                        opacity: 1, 
-                        scale: 1,
+                        opacity: i === 1 ? 1 : 0.6, 
+                        scale: i === 1 ? 1 : 0.9,
                         x: 0
                       }}
                       exit={{ opacity: 0, scale: 0.8 }}
                       transition={{ duration: 0.5 }}
-                      className={`relative ${i === 0 ? 'md:col-span-1' : ''}`}
+                      className={`
+                        ${i === 1 ? 'col-span-1 z-20' : 'col-span-1 z-10'}
+                        ${i === 1 ? 'transform scale-100 opacity-100' : 'transform scale-90 opacity-60'}
+                      `}
                     >
-                      <div className="bg-white rounded-xl overflow-hidden shadow-lg border border-[#d4b483]/20 h-full transform transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+                      <div className="bg-white rounded-xl overflow-hidden shadow-lg border border-[#d4b483]/20 h-full transition-transform duration-300 hover:scale-105 hover:shadow-xl">
                         <div className="relative h-48 md:h-56 lg:h-64">
                           <Image
                             src={images[index].src || "/placeholder.svg"}
@@ -170,8 +172,43 @@ export default function ImageSlider() {
                       </div>
                     </motion.div>
                   ))}
-                </AnimatePresence>
-              </div>
+                </div>
+                
+                {/* Mobile view */}
+                <div key="mobile-slider" className="md:hidden w-full flex justify-center">
+                  <motion.div
+                    key={`mobile-${currentIndex}`}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ 
+                      opacity: 1, 
+                      scale: 1,
+                      x: 0
+                    }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.5 }}
+                    className="w-full max-w-md"
+                  >
+                    <div className="bg-white rounded-xl overflow-hidden shadow-lg border border-[#d4b483]/20 w-full transform transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+                      <div className="relative h-48 md:h-56 lg:h-64">
+                        <Image
+                          src={images[currentIndex].src || "/placeholder.svg"}
+                          alt={images[currentIndex].alt}
+                          fill
+                          className="object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#8b1a1a]/70 to-transparent opacity-60"></div>
+                      </div>
+                      <div className="p-4">
+                        <h3 className="text-lg font-bold text-[#8b1a1a] mb-2">{images[currentIndex].title}</h3>
+                        <p className="text-sm text-[#5a3e36]">{images[currentIndex].description}</p>
+                      </div>
+                      <div className="absolute top-3 right-3 bg-white/80 backdrop-blur-sm text-[#8b1a1a] w-8 h-8 rounded-full flex items-center justify-center font-bold">
+                        {currentIndex + 1}
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              </AnimatePresence>
             </div>
           </div>
 
@@ -186,7 +223,7 @@ export default function ImageSlider() {
                   setTimeout(() => setAutoplay(true), 5000)
                 }}
                 className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  visibleIndices.includes(index) ? "bg-[#8b1a1a] w-6" : "bg-[#8b1a1a]/30"
+                  index === currentIndex ? "bg-[#8b1a1a] w-6" : "bg-[#8b1a1a]/30"
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
