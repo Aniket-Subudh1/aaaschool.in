@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Bell, BookOpen, AlertCircle, Award, Dumbbell } from 'lucide-react';
+import { ArrowLeft, Bell, BookOpen, AlertCircle, Award, Dumbbell, Send } from 'lucide-react';
 import { FormControls } from '@/components/admin/FormControls';
 import { authFetch } from '@/lib/authFetch';
 
@@ -20,10 +20,12 @@ export default function NewNotificationPage() {
     title: '',
     icon: 'Bell',
     date: '',
+    description: '',
     active: true,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const router = useRouter();
   
   const handleChange = (
@@ -62,8 +64,22 @@ export default function NewNotificationPage() {
         throw new Error(errorData.message || 'Failed to create notification');
       }
       
-      router.push('/admin/notifications');
-      router.refresh();
+      // Set success message
+      setSuccessMessage('Notification created successfully!');
+      
+      // Reset form after successful submission
+      setFormData({
+        title: '',
+        icon: 'Bell',
+        date: '',
+        description: '',
+        active: true,
+      });
+      
+      // Optionally redirect after a short delay
+      setTimeout(() => {
+        router.push('/admin/notifications');
+      }, 2000);
     } catch (err: any) {
       console.error('Error creating notification:', err);
       setError(err.message || 'Failed to create notification');
@@ -98,6 +114,13 @@ export default function NewNotificationPage() {
       {error && (
         <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md mb-6">
           {error}
+        </div>
+      )}
+
+      {successMessage && (
+        <div className="bg-green-50 border border-green-200 text-green-700 p-4 rounded-md mb-6 flex items-center">
+          <Send className="mr-2 h-5 w-5" />
+          {successMessage}
         </div>
       )}
       
@@ -168,6 +191,24 @@ export default function NewNotificationPage() {
               </p>
             </div>
             
+            <div>
+              <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+                Description (Optional)
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                rows={4}
+                className="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
+                placeholder="Provide additional details about the notification"
+              ></textarea>
+              <p className="mt-1 text-sm text-gray-500">
+                Add context or more information about the notification
+              </p>
+            </div>
+            
             <div className="flex items-center">
               <input
                 type="checkbox"
@@ -183,13 +224,51 @@ export default function NewNotificationPage() {
             </div>
           </div>
           
-          <FormControls
-            isSubmitting={isSubmitting}
-            onCancel={handleCancel}
-            submitText="Create Notification"
-          />
+          <div className="mt-8 flex justify-between items-center">
+            <button
+              type="button"
+              onClick={handleCancel}
+              className="px-4 py-2 text-sm border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="px-6 py-2 bg-[#8b1a1a] text-white rounded-md hover:bg-[#8b1a1a]/90 disabled:opacity-50 flex items-center"
+            >
+              {isSubmitting ? (
+                <svg 
+                  className="animate-spin h-5 w-5 text-white mr-2" 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  fill="none" 
+                  viewBox="0 0 24 24"
+                >
+                  <circle 
+                    className="opacity-25" 
+                    cx="12" 
+                    cy="12" 
+                    r="10" 
+                    stroke="currentColor" 
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+              ) : (
+                <>
+                  <Send className="mr-2 h-5 w-5" />
+                  Create Notification
+                </>
+              )}
+            </button>
+          </div>
         </form>
       </div>
     </div>
-  );
-}
+  )
+} 
+      

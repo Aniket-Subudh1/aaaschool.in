@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, icon, active = true } = body;
+    const { title, icon, active = true, date, description } = body;
 
     if (!title || !icon) {
       return NextResponse.json(
@@ -43,7 +43,8 @@ export async function POST(request: NextRequest) {
       title,
       icon,
       active,
-      date: body.date,
+      date,
+      description,
     });
 
     return NextResponse.json(newNotification, { status: 201 });
