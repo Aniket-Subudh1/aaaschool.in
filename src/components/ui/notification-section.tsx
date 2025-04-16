@@ -141,24 +141,25 @@ export default function NotificationSection() {
         <div className="flex flex-col md:flex-row gap-6">
           {/* Video Card */}
           <div className="w-full md:w-1/2">
-  <div className="bg-white rounded-lg shadow-md border border-[#d4b483]/20 overflow-hidden relative">
-    <div className="absolute top-0 left-0 w-full h-2 bg-[#8b1a1a]/10"></div>
-    <div className="p-6">
-      <video
-        ref={videoRef}
-        src="./aaaschool_vdo.mp4"
-        controls
-        loop
-        muted
-        className="w-[800px] h-[400px] object-cover bg-black rounded-md"
-      />
-      <div className="mt-4 text-center text-[#8b1a1a] font-medium text-base">
-        Introduction to AAA Culture & Campus Life
-      </div>
-    </div>
-  </div>
-</div>
-
+            <div className="bg-white rounded-lg shadow-md border border-[#d4b483]/20 overflow-hidden relative">
+              <div className="absolute top-0 left-0 w-full h-2 bg-[#8b1a1a]/10"></div>
+              <div className="p-6">
+                <div className="relative w-full pt-[56.25%]"> {/* 16:9 aspect ratio (9/16 = 0.5625 = 56.25%) */}
+                  <video
+                    ref={videoRef}
+                    src="./aaaschool_vdo.mp4"
+                    controls
+                    loop
+                    muted
+                    className="absolute top-0 left-0 w-full h-full object-cover bg-black rounded-md"
+                  />
+                </div>
+                <div className="mt-4 text-center text-[#8b1a1a] font-medium text-base">
+                  Introduction to AAA Culture & Campus Life
+                </div>
+              </div>
+            </div>
+          </div>
 
           {/* Notification Card */}
           <div className="w-full md:w-1/2">
