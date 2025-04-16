@@ -104,7 +104,7 @@ export default function NavBar() {
         ${scrolled ? "shadow-xl backdrop-blur-sm bg-opacity-90" : "shadow-md"} 
         transition-all duration-300`}
       >
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-6">
           {/* Header */}
           <div className="flex justify-between items-center py-2">
             <div className="flex items-center space-x-2">
@@ -112,15 +112,12 @@ export default function NavBar() {
               <div className="relative flex flex-col items-center justify-center text-[#8b1a1a]">
                 <div className="absolute items-center justify-center inset-0 bg-[#8b1a1a]/10 rounded-full blur-sm"></div>
                 <Image
-                  src="./aaa.png"
+                  src="./aaalogo.png"
                   alt="Aryavart Ancient Academy Logo"
-                  width={48}
-                  height={48}
-                  className="relative z-10 h-12 w-12 transition-transform duration-300 hover:scale-105"
+                  width={100}
+                  height={100}
+                  className="relative z-10 h-16 w-16 transition-transform duration-300 hover:scale-105"
                 />
-                <span className="text-[10px] font-bold mt-1 tracking-wide z-10">
-                  ESTD - 1995
-                </span>
               </div>
               <div>
                 <h2 className="text-lg md:text-sm font-bold text-[#8b1a1a] font-serif">
@@ -136,10 +133,12 @@ export default function NavBar() {
             <div className="hidden lg:flex items-center">
               <div className="flex items-center space-x-2">
                 {navItems.map((item) => (
-                  <div 
-                    key={item.name} 
+                  <div
+                    key={item.name}
                     className="relative group"
-                    onMouseEnter={() => item.submenu && setActiveSubmenu(item.name)}
+                    onMouseEnter={() =>
+                      item.submenu && setActiveSubmenu(item.name)
+                    }
                     onMouseLeave={() => item.submenu && setActiveSubmenu(null)}
                   >
                     <a
@@ -217,7 +216,9 @@ export default function NavBar() {
                         item.submenu
                           ? (e) => {
                               e.preventDefault();
-                              setActiveSubmenu(activeSubmenu === item.name ? null : item.name);
+                              setActiveSubmenu(
+                                activeSubmenu === item.name ? null : item.name
+                              );
                             }
                           : undefined
                       }

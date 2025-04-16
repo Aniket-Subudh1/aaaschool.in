@@ -16,6 +16,17 @@ export const metadata: Metadata = {
     "AAA school",
     "best school in Odisha",
     "top school in Khordha",
+    "top school 10 in Khordha",
+    "top school 5 in Khordha",
+    "top school 20 in Khordha",
+    "top school in Bhubaneswar",
+    "top school 10 in Bhubaneswar",
+    "top school 5 in Bhubaneswar",
+    "top school 20 in Bhubaneswar",
+    "top school in Bbsr",
+    "top school 10 in Bbsr",
+    "top school 5 in Bbsr",
+    "top school 20 in Bbsr",
     "School in Khordha",
     "School in Odisha",
     "Holistic Education",
@@ -40,7 +51,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/academy-og-image.jpg",
+        url: "/seo.png",
         width: 1200,
         height: 630,
         alt: "Aryavart Ancient Academy in Khordha, Odisha",
@@ -53,7 +64,7 @@ export const metadata: Metadata = {
     title: "Aryavart Ancient Academy – Premier School in Khordha, Odisha",
     description:
       "Discover a world-class educational experience that fuses modern curriculum with India's ancient heritage at Aryavart Ancient Academy in Khordha, Odisha.",
-    images: "/academy-og-image.jpg",
+    images: "/seo.png",
   },
   robots: "index, follow",
 };
