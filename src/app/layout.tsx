@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/seo.png",
+        url: "./seo.png",
         width: 1200,
         height: 630,
         alt: "Aryavart Ancient Academy in Khordha, Odisha",
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     title: "Aryavart Ancient Academy – Premier School in Khordha, Odisha",
     description:
       "Discover a world-class educational experience that fuses modern curriculum with India's ancient heritage at Aryavart Ancient Academy in Khordha, Odisha.",
-    images: "/seo.png",
+    images: "./seo.png",
   },
   robots: "index, follow",
 };
