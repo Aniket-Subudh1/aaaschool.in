@@ -1,21 +1,40 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getFeedbackById, updateFeedbackStatus, deleteFeedback } from "@/lib/db";
 import { verifyAuth } from "@/lib/auth";
+import nodemailer from 'nodemailer';
+
+// Email setup
+let transporter: nodemailer.Transporter | null = null;
+
+if (
+  process.env.EMAIL_HOST &&
+  process.env.EMAIL_PORT &&
+  process.env.EMAIL_USER &&
+  process.env.EMAIL_PASS
+) {
+  transporter = nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: parseInt(process.env.EMAIL_PORT),
+    secure: process.env.EMAIL_PORT === '465',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+}
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> } 
+  { params }: { params: { id: string } } 
 ) {
   try {
-    const { id } = await params; 
-
-    // Verify authentication
+    // Verify authentication for GET requests
     const authResult = await verifyAuth(request);
     if (!authResult.isAuthenticated) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const feedback = await getFeedbackById(id);
+    const feedback = await getFeedbackById(params.id);
 
     if (!feedback) {
       return NextResponse.json({ message: "Feedback not found" }, { status: 404 });
@@ -30,12 +49,10 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> } 
+  { params }: { params: { id: string } } 
 ) {
   try {
-    const { id } = await params;
-
-  
+    // Verify authentication for PUT requests
     const authResult = await verifyAuth(request);
     if (!authResult.isAuthenticated) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -51,29 +68,21 @@ export async function PUT(
       );
     }
 
-    const updateResult = await updateFeedbackStatus(id, status, responseMessage);
+    const updateResult = await updateFeedbackStatus(params.id, status, responseMessage);
 
     if (updateResult.matchedCount === 0) {
       return NextResponse.json({ message: "Feedback not found" }, { status: 404 });
     }
 
-    const updatedFeedback = await getFeedbackById(id);
-
+    const updatedFeedback = await getFeedbackById(params.id);
 
     if (
       status === "responded" &&
       responseMessage &&
       updatedFeedback &&
+      transporter && 
       process.env.FEEDBACK_NOTIFICATION_EMAIL
     ) {
-      const nodemailer = require("nodemailer");
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS,
-        },
-      });
       await transporter.sendMail({
         from: process.env.FEEDBACK_NOTIFICATION_EMAIL,
         to: updatedFeedback.email,
@@ -129,18 +138,16 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> } 
+  { params }: { params: { id: string } } 
 ) {
   try {
-    const { id } = await params;
-
-   
+    // Verify authentication for DELETE requests
     const authResult = await verifyAuth(request);
     if (!authResult.isAuthenticated) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const deleteResult = await deleteFeedback(id);
+    const deleteResult = await deleteFeedback(params.id);
 
     if (deleteResult.deletedCount === 0) {
       return NextResponse.json({ message: "Feedback not found" }, { status: 404 });

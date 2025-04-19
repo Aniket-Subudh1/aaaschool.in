@@ -25,7 +25,7 @@ if (
 
 export async function GET(request: NextRequest) {
   try {
-    // Verify authentication
+    // Verify authentication for GET requests
     const authResult = await verifyAuth(request);
     if (!authResult.isAuthenticated) {
       return NextResponse.json(
@@ -50,6 +50,9 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    // Allow public access for POST requests
+    await verifyAuth(request, { allowPublic: true });
+
     const body = await request.json();
     const { name, email, message, type } = body;
 

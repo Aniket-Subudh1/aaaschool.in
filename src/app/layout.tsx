@@ -3,6 +3,8 @@ import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import clsx from "clsx";
+import { ClientWrapper } from "@/components/ui/client-wrapper";
+
 const dmSans = DM_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -51,7 +53,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "./seo.png",
+        url: "/seo.png",
         width: 1200,
         height: 630,
         alt: "Aryavart Ancient Academy in Khordha, Odisha",
@@ -64,7 +66,7 @@ export const metadata: Metadata = {
     title: "Aryavart Ancient Academy – Premier School in Khordha, Odisha",
     description:
       "Discover a world-class educational experience that fuses modern curriculum with India's ancient heritage at Aryavart Ancient Academy in Khordha, Odisha.",
-    images: "./seo.png",
+    images: "/seo.png",
   },
   robots: "index, follow",
 };
@@ -76,14 +78,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="relative" suppressHydrationWarning>
-      <body className={clsx(dmSans.className, "antialiased bg-white pt-24 ")}>
+      <body className={clsx(dmSans.className, "antialiased bg-white pt-24")}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <ClientWrapper>{children}</ClientWrapper>
         </ThemeProvider>
       </body>
     </html>

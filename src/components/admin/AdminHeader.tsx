@@ -1,35 +1,33 @@
 "use client";
-
-import { useState } from 'react';
-import Image from 'next/image';
-import { Bell, User, LogOut, Menu, X } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import Cookies from 'js-cookie';
+import { useState } from "react";
+import Image from "next/image";
+import { Bell, User, LogOut, Menu, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 export default function AdminHeader() {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const router = useRouter();
-  
+
   const handleLogout = () => {
-    Cookies.remove('admin-token');
-    router.push('/admin/login');
+    Cookies.remove("admin-token");
+    router.push("/admin/login");
   };
-  
+
   return (
-    <header className="bg-white border-b -mt-20 border-gray-200 shadow-sm">
+    <header className="fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200 shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo and mobile menu button */}
           <div className="flex items-center">
-            <button 
-              type="button" 
+            <button
+              type="button"
               className="md:hidden mr-4 text-[#5a3e36] hover:text-[#8b1a1a]"
               onClick={() => setShowMobileMenu(!showMobileMenu)}
             >
               {showMobileMenu ? <X size={24} /> : <Menu size={24} />}
             </button>
-            
             <div className="flex items-center">
               <div className="relative mr-2">
                 <Image
@@ -44,19 +42,17 @@ export default function AdminHeader() {
               </div>
             </div>
           </div>
-          
           {/* Right side navigation */}
           <div className="flex items-center">
-            <button 
-              type="button" 
+            <button
+              type="button"
               className="p-2 mr-3 text-[#5a3e36] hover:text-[#8b1a1a] rounded-full hover:bg-gray-100"
             >
               <Bell size={20} />
             </button>
-            
             <div className="relative">
-              <button 
-                type="button" 
+              <button
+                type="button"
                 className="flex items-center text-[#5a3e36] hover:text-[#8b1a1a] focus:outline-none"
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
               >
@@ -65,7 +61,6 @@ export default function AdminHeader() {
                 </div>
                 <span className="ml-2 hidden md:block">Admin</span>
               </button>
-              
               {showProfileMenu && (
                 <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md z-50 overflow-hidden">
                   <button

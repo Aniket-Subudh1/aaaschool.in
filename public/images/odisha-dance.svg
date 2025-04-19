@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Stylized Odissi dancer silhouette -->
+  <path d="M50,10 C55,10 58,15 58,20 C58,25 55,30 50,30 C45,30 42,25 42,20 C42,15 45,10 50,10 Z" fill="#8b1a1a" opacity="0.3"/>
+  <path d="M50,30 C55,30 60,35 60,40 C60,50 55,70 50,80 C45,70 40,50 40,40 C40,35 45,30 50,30 Z" fill="#8b1a1a" opacity="0.3"/>
+  <path d="M60,40 C65,42 70,50 65,60 C60,70 55,75 50,80" fill="none" stroke="#8b1a1a" stroke-width="1" opacity="0.3"/>
+  <path d="M40,40 C35,42 30,50 35,60 C40,70 45,75 50,80" fill="none" stroke="#8b1a1a" stroke-width="1" opacity="0.3"/>
+  <path d="M50,50 C55,48 65,55 70,65" fill="none" stroke="#8b1a1a" stroke-width="1" opacity="0.3"/>
+  <path d="M50,50 C45,48 35,55 30,65" fill="none" stroke="#8b1a1a" stroke-width="1" opacity="0.3"/>
+</svg>

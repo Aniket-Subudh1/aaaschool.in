@@ -1,5 +1,3 @@
-// src/lib/auth.ts
-
 import { NextRequest } from 'next/server';
 import * as jose from 'jose';
 
@@ -15,33 +13,55 @@ interface AuthResult {
   error?: string;
 }
 
-export async function verifyAuth(request: NextRequest): Promise<AuthResult> {
+const ignoredPathPrefixes = [
+  '/_next/', 
+  '/favicon.ico', 
+  '/api/feedback', 
+  '/manifest.json', 
+  '/robots.txt',
+  '/api/notifications',
+  '/api/holidays',
+  '/principal.jpg'
+];
+
+export async function verifyAuth(request: NextRequest, options: { allowPublic?: boolean } = {}): Promise<AuthResult> {
   try {
-    // Get the authorization header from the request
+    const { allowPublic = false } = options;
+
+    const pathname = new URL(request.url).pathname;
+    const shouldIgnoreAuth = ignoredPathPrefixes.some(prefix => 
+      pathname.startsWith(prefix)
+    );
+
+    if (shouldIgnoreAuth) {
+      return { isAuthenticated: true };
+    }
+
+    console.log('Authenticating request for path:', pathname);
+    console.log('Request method:', request.method);
+
     const authHeader = request.headers.get('authorization');
     
-    // Debug: Log auth header presence (remove in production)
     console.log('Auth header exists:', !!authHeader);
     
     if (!authHeader) {
-      // Also check for cookie as a fallback (since we're using cookies for authentication)
       const cookies = request.cookies;
       const tokenCookie = cookies.get('admin-token');
       
-      // Debug: Log cookie presence (remove in production)
       console.log('Token cookie exists:', !!tokenCookie);
       
-      // If there's a token in cookies, use that
+      if (allowPublic) {
+        return { isAuthenticated: true };
+      }
+      
       if (tokenCookie && tokenCookie.value) {
         try {
-          // Use jose for JWT verification (compatible with Edge Runtime)
           const secret = new TextEncoder().encode(process.env.JWT_SECRET);
           const { payload } = await jose.jwtVerify(
             tokenCookie.value,
             secret
           );
           
-          // Debug: Log successful cookie auth (remove in production)
           console.log('Authenticated via cookie:', payload.username);
           
           return {
@@ -52,8 +72,17 @@ export async function verifyAuth(request: NextRequest): Promise<AuthResult> {
           };
         } catch (jwtError) {
           console.error('Cookie token verification failed:', jwtError);
+          
+          if (allowPublic) {
+            return { isAuthenticated: true };
+          }
+          
           return { isAuthenticated: false, error: 'Invalid token' };
         }
+      }
+      
+      if (allowPublic) {
+        return { isAuthenticated: true };
       }
       
       return { isAuthenticated: false, error: 'No token provided' };
@@ -61,27 +90,31 @@ export async function verifyAuth(request: NextRequest): Promise<AuthResult> {
     
     if (!authHeader.startsWith('Bearer ')) {
       console.log('Auth header format incorrect:', authHeader.substring(0, 15) + '...');
+      
+      if (allowPublic) {
+        return { isAuthenticated: true };
+      }
+      
       return { isAuthenticated: false, error: 'Invalid token format' };
     }
     
-    // Extract the token
     const token = authHeader.split(' ')[1];
     
     if (!token) {
+      if (allowPublic) {
+        return { isAuthenticated: true };
+      }
+      
       return { isAuthenticated: false, error: 'Invalid token format' };
     }
     
-    // Debug: Log token presence (remove in production)
     console.log('Token extracted from header:', token.substring(0, 10) + '...');
     
-    // Use jose for JWT verification (compatible with Edge Runtime)
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
     const { payload } = await jose.jwtVerify(token, secret);
     
-    // Debug: Log successful auth (remove in production)
     console.log('Authentication successful for:', payload.username);
     
-    // If verification is successful, return the decoded user information
     return {
       isAuthenticated: true,
       userId: payload.id as string,
@@ -89,6 +122,11 @@ export async function verifyAuth(request: NextRequest): Promise<AuthResult> {
       role: payload.role as 'admin' | 'editor',
     };
   } catch (error) {
+   
+    if (options.allowPublic) {
+      return { isAuthenticated: true };
+    }
+    
     console.error('Authentication error:', error);
     return { isAuthenticated: false, error: 'Authentication failed' };
   }

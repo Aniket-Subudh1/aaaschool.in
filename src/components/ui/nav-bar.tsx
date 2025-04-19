@@ -28,7 +28,7 @@ const navItems = [
       { name: "Apply Online", href: "#" },
     ],
   },
-  { name: "ABOUT US", href: "#", icon: null },
+  { name: "ABOUT US", href: "/about", icon: null },
   {
     name: "ACADEMICS",
     href: "#",

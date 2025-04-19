@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40">
+  <!-- Stylized Jagannath eyes -->
+  <circle cx="30" cy="20" r="15" fill="none" stroke="#8b1a1a" stroke-width="2" opacity="0.5"/>
+  <circle cx="70" cy="20" r="15" fill="none" stroke="#8b1a1a" stroke-width="2" opacity="0.5"/>
+  <circle cx="30" cy="20" r="8" fill="#8b1a1a" opacity="0.5"/>
+  <circle cx="70" cy="20" r="8" fill="#8b1a1a" opacity="0.5"/>
+  <line x1="10" y1="20" x2="90" y2="20" stroke="#8b1a1a" stroke-width="2" opacity="0.3"/>
+</svg>
