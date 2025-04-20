@@ -79,7 +79,7 @@ export default function EnquiryDetailPage({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    if (isSubmitting) return;
     try {
       setIsSubmitting(true);
       setError(null);
@@ -151,19 +151,22 @@ export default function EnquiryDetailPage({
 
   const downloadEnquiryAsPDF = async () => {
     try {
+      setIsLoading(true);
+
       const res = await authFetch("/api/generate-pdf", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          type: "admission",
+          type: "enquiry",
           id,
         }),
       });
 
       if (!res.ok) {
-        throw new Error("Failed to generate PDF");
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Failed to generate PDF");
       }
 
       const data = await res.json();
@@ -172,22 +175,25 @@ export default function EnquiryDetailPage({
         throw new Error("No PDF data received");
       }
 
-      // Create a link element to download the PDF
       const link = document.createElement("a");
-      link.href = data.pdfData; // data URI string
+      link.href = data.pdfData;
       link.download = data.filename;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+
+      alert("PDF downloaded successfully");
     } catch (err) {
       console.error("Error generating PDF:", err);
       alert(
-        "Failed to generate PDF: " +
-          (err instanceof Error ? err.message : String(err))
+        `Failed to generate PDF: ${
+          err instanceof Error ? err.message : String(err)
+        }`
       );
+    } finally {
+      setIsLoading(false);
     }
   };
-  // Format date for display
   const formatDate = (dateString: string) => {
     if (!dateString) return "N/A";
     const date = new Date(dateString);
@@ -243,9 +249,33 @@ export default function EnquiryDetailPage({
         <div className="flex space-x-2">
           <button
             onClick={downloadEnquiryAsPDF}
-            className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+            disabled={isLoading}
+            className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Download size={16} className="mr-2" />
+            {isLoading ? (
+              <svg
+                className="animate-spin h-5 w-5 mr-2"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+            ) : (
+              <Download size={16} className="mr-2" />
+            )}
             Download PDF
           </button>
           <button

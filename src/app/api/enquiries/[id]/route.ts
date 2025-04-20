@@ -36,16 +36,24 @@ export async function GET(
       );
     }
 
-    const enquiry = await getEnquiryById(params.id);
-    
-    if (!enquiry) {
+    try {
+      const enquiry = await getEnquiryById(params.id);
+      
+      if (!enquiry) {
+        return NextResponse.json(
+          { message: 'Enquiry not found' },
+          { status: 404 }
+        );
+      }
+      
+      return NextResponse.json(enquiry);
+    } catch (dbError) {
+      console.error('Database connection error:', dbError);
       return NextResponse.json(
-        { message: 'Enquiry not found' },
-        { status: 404 }
+        { message: 'Database connection failed. Please try again later.' },
+        { status: 503 }
       );
     }
-    
-    return NextResponse.json(enquiry);
   } catch (error) {
     console.error('Error fetching enquiry:', error);
     return NextResponse.json(

@@ -1,20 +1,6 @@
-let userConfig = undefined
-try {
-  // try to import ESM first
-  userConfig = await import('./v0-user-next.config.mjs')
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-} catch (e) {
-  try {
-    // fallback to CJS import
-    userConfig = await import("./v0-user-next.config");
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error) {
-    // ignore error
-  }
-}
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  serverExternalPackages: ["pdfkit"],
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -24,30 +10,61 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  turbopack: {
+    resolveExtensions: ['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs'],
+  },
   experimental: {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
-}
 
-if (userConfig) {
-  // ESM imports will have a "default" property
-  const config = userConfig.default || userConfig
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.(ttf|afm)$/,
+      type: 'asset/resource',
+      generator: {
+        filename: 'static/fonts/[name][ext]',
+      },
+    });
+    return config;
+  },
+};
 
-  for (const key in config) {
-    if (
-      typeof nextConfig[key] === 'object' &&
-      !Array.isArray(nextConfig[key])
-    ) {
-      nextConfig[key] = {
-        ...nextConfig[key],
-        ...config[key],
-      }
-    } else {
-      nextConfig[key] = config[key]
-    }
+// Dynamically import user configuration
+let userConfig;
+try {
+  // Try to import ESM user config
+  userConfig = await import('./user-next.config.mjs').then(
+    (mod) => mod.default || mod
+  );
+} catch {
+  try {
+    // Fallback to CJS user config
+    userConfig = await import('./user-next.config').then(
+      (mod) => mod.default || mod
+    );
+  } catch (error) {
+    console.warn(
+      'No user configuration found for user-next.config.mjs or user-next.config. Using default configuration.',
+      error.message
+    );
   }
 }
 
-export default nextConfig
+// Merge user config with default config
+if (userConfig) {
+  Object.keys(userConfig).forEach((key) => {
+    if (
+      typeof nextConfig[key] === 'object' &&
+      !Array.isArray(nextConfig[key]) &&
+      nextConfig[key] !== null
+    ) {
+      nextConfig[key] = { ...nextConfig[key], ...userConfig[key] };
+    } else {
+      nextConfig[key] = userConfig[key];
+    }
+  });
+}
+
+export default nextConfig;

@@ -58,6 +58,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json(
         { message: 'Invalid email address' },
