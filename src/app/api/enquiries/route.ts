@@ -48,21 +48,19 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    await verifyAuth(request, { allowPublic: true });
-
     const body = await request.json();
-    const { parentName, studentName, classApplied, mobileNumber, location } = body;
+    const { parentName, studentName, classApplied, mobileNumber, location, email } = body;
 
-    if (!parentName || !studentName || !classApplied || !mobileNumber || !location) {
+    if (!parentName || !studentName || !classApplied || !mobileNumber || !location || !email) {
       return NextResponse.json(
         { message: 'All fields are required' },
         { status: 400 }
       );
     }
 
-    if (!/^\d{10}$/.test(mobileNumber)) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json(
-        { message: 'Mobile number must be 10 digits' },
+        { message: 'Invalid email address' },
         { status: 400 }
       );
     }
@@ -72,42 +70,23 @@ export async function POST(request: NextRequest) {
       studentName,
       classApplied,
       mobileNumber,
-      location
+      location,
+      email 
     });
 
-    if (
-      transporter && 
-      process.env.ADMIN_EMAIL
-    ) {
+    if (transporter && email) {
       await transporter.sendMail({
         from: process.env.EMAIL_USER,
-        to: process.env.ADMIN_EMAIL,
-        subject: 'New Admission Enquiry Received',
-        text: `
-          New admission enquiry has been received.
-          
-          Parent: ${parentName}
-          Student: ${studentName}
-          Class: ${classApplied}
-          Mobile: ${mobileNumber}
-          Location: ${location}
-          
-          Please review this enquiry in the admin dashboard.
-        `,
+        to: email,
+        subject: 'Enquiry Received - Aryavart Ancient Academy',
         html: `
-          <h2>New Admission Enquiry Received</h2>
-          <p>A new admission enquiry has been submitted with the following details:</p>
-          
-          <ul>
-            <li><strong>Parent Name:</strong> ${parentName}</li>
-            <li><strong>Student Name:</strong> ${studentName}</li>
-            <li><strong>Class Applied For:</strong> ${classApplied}</li>
-            <li><strong>Mobile Number:</strong> ${mobileNumber}</li>
-            <li><strong>Location:</strong> ${location}</li>
-          </ul>
-          
-          <p>Please review this enquiry in the admin dashboard.</p>
-        `,
+          <div>
+            <h2>Enquiry Confirmation</h2>
+            <p>Dear ${parentName},</p>
+            <p>Your enquiry for ${studentName} has been received.</p>
+            <p>We will process your application and get back to you soon.</p>
+          </div>
+        `
       });
     }
 

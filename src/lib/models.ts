@@ -60,6 +60,7 @@ export interface Enquiry {
   studentName: string;
   classApplied: string;
   mobileNumber: string;
+  email?: string;
   location: string;
   enquiryNumber?: string;
   status: 'pending' | 'approved' | 'rejected';

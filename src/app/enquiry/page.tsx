@@ -19,6 +19,7 @@ export default function EnquiryForm() {
     classApplied: "",
     mobileNumber: "",
     location: "",
+    email: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -65,6 +66,11 @@ export default function EnquiryForm() {
       return false;
     }
 
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      setErrorMessage("Please enter a valid email address");
+      return false;
+    }
+
     if (enteredCaptcha !== captchaValue) {
       setErrorMessage("Captcha is incorrect");
       return false;
@@ -107,6 +113,7 @@ export default function EnquiryForm() {
         classApplied: "",
         mobileNumber: "",
         location: "",
+        email: "",
       });
       setEnteredCaptcha("");
       regenerateCaptcha();
@@ -227,6 +234,24 @@ export default function EnquiryForm() {
                       />
                     </div>
                   </div>
+                </div>
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Email Address <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
+                    placeholder="Enter email address"
+                    required
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
