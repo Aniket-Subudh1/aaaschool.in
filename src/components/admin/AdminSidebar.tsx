@@ -8,6 +8,8 @@ import {
   Calendar,
   MessageSquare,
   Settings,
+  ClipboardCheck,
+  FileText,
 } from "lucide-react";
 
 interface SidebarLink {
@@ -24,6 +26,16 @@ export default function AdminSidebar() {
       name: "Dashboard",
       href: "/admin",
       icon: <Home size={20} />,
+    },
+    {
+      name: "Enquiries",
+      href: "/admin/enquiries",
+      icon: <FileText size={20} />,
+    },
+    {
+      name: "Admissions",
+      href: "/admin/admissions",
+      icon: <ClipboardCheck size={20} />,
     },
     {
       name: "Announcements",

@@ -53,3 +53,92 @@ export interface AdminUser {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface Enquiry {
+  _id?: string;
+  parentName: string;
+  studentName: string;
+  classApplied: string;
+  mobileNumber: string;
+  location: string;
+  enquiryNumber?: string;
+  status: 'pending' | 'approved' | 'rejected';
+  createdAt: Date;
+  updatedAt: Date;
+  notes?: string;
+}
+
+// Updated Admission interface in src/lib/models.ts
+
+export interface Admission {
+  _id?: string;
+  enquiryNumber: string;
+  enquiryId: string;
+  slNo?: string;
+  admissionNo?: string;
+  class: string;
+  session: string;
+  studentName: string;
+  gender: string;
+  dateOfBirth: string;
+  dateOfBirthInWords: string;
+  bloodGroup?: string;
+  photoUrl?: string;
+  photoPublicId?: string; 
+  birthCertificateUrl?: string;
+  birthCertificatePublicId?: string;
+  
+  // Parent details
+  motherName: string;
+  motherEducation?: string;
+  motherOccupation?: string;
+  motherMobile?: string;
+  motherEmail?: string;
+  
+  fatherName: string;
+  fatherEducation?: string;
+  fatherOccupation?: string;
+  fatherMobile?: string;
+  fatherEmail?: string;
+  
+  // Address details
+  residentialAddress: string;
+  permanentAddress?: string;
+  
+  // Previous school details
+  lastSchoolName?: string;
+  lastClassAttended?: string;
+  lastSchoolBoard?: string;
+  transferCertificateDetails?: string;
+  transferCertificateNo?: string;
+  transferCertificateDate?: string;
+  
+  // Additional information
+  isSingleGirlChild: boolean;
+  isSpeciallyAbled: boolean;
+  isEWS: boolean;
+  category: 'SC' | 'ST' | 'General' | 'Handicapped';
+  aadharNo?: string;
+  
+  // Sibling details
+  siblings?: {
+    name: string;
+    age: string;
+    school: string;
+  }[];
+  
+  // Academic records
+  academics?: {
+    subject: string;
+    maxMarks: number;
+    marksObtained: number;
+    percentage: number;
+    remarks?: string;
+  }[];
+  
+  // Status information
+  status: 'pending' | 'reviewing' | 'approved' | 'rejected';
+  createdAt: Date;
+  updatedAt: Date;
+  notes?: string;
+}

@@ -20,7 +20,7 @@ const navItems = [
   { name: "HOME", href: "/", icon: null },
   {
     name: "ADMISSION",
-    href: "#",
+    href: "/admission",
     icon: Users,
     submenu: [
       { name: "Admission Process", href: "#" },
@@ -29,6 +29,7 @@ const navItems = [
     ],
   },
   { name: "ABOUT US", href: "/about", icon: null },
+  { name: "DISCLOSURE", href: "/about", icon: null },
   {
     name: "ACADEMICS",
     href: "#",

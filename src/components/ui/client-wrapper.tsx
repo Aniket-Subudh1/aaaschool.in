@@ -18,7 +18,12 @@ export const ClientWrapper = ({ children }: { children: React.ReactNode }) => {
       {isLoading ? (
         <Loader />
       ) : (
-        <ThemeProvider attribute="class" defaultTheme="light">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
           {children}
         </ThemeProvider>
       )}

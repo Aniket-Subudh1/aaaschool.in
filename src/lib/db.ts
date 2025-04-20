@@ -1,5 +1,5 @@
 import getClientPromise from "./mongodb";
-import { Announcement, Notification, Holiday, Feedback, AdminUser } from "./models";
+import { Announcement, Notification, Holiday, Feedback, AdminUser, Admission, Enquiry } from "./models";
 import { ObjectId } from "mongodb";
 
 export async function getCollection(name: string) {
@@ -166,7 +166,7 @@ export async function createFeedback(
 export async function updateFeedbackStatus(id: string, status: "read" | "responded", responseMessage?: string) {
   const collection = await getCollection("feedback");
   const now = new Date();
-  const updateData: any = {
+  const updateData: Record<string, unknown> = {
     status,
     updatedAt: now,
   };
@@ -202,4 +202,153 @@ export async function createAdminUser(user: Omit<AdminUser, "_id" | "createdAt" 
   };
   const result = await collection.insertOne(newUser);
   return { ...newUser, _id: result.insertedId };
+}
+export async function getEnquiries(status?: 'pending' | 'approved' | 'rejected') {
+  const collection = await getCollection("enquiries");
+  const query = status ? { status } : {};
+  return collection.find(query).sort({ createdAt: -1 }).toArray();
+}
+
+export async function getEnquiryById(id: string) {
+  const collection = await getCollection("enquiries");
+  return collection.findOne({ _id: new ObjectId(id) });
+}
+
+export async function getEnquiryByNumber(enquiryNumber: string) {
+  const collection = await getCollection("enquiries");
+  return collection.findOne({ enquiryNumber });
+}
+
+export async function createEnquiry(
+  enquiry: Omit<Enquiry, "_id" | "createdAt" | "updatedAt" | "status" | "enquiryNumber">
+) {
+  const collection = await getCollection("enquiries");
+  const now = new Date();
+  const newEnquiry = {
+    ...enquiry,
+    status: "pending",
+    createdAt: now,
+    updatedAt: now,
+  };
+  const result = await collection.insertOne(newEnquiry);
+  return { ...newEnquiry, _id: result.insertedId };
+}
+
+export async function updateEnquiry(id: string, data: Partial<Enquiry>) {
+  const collection = await getCollection("enquiries");
+  const now = new Date();
+  const updateData = {
+    ...data,
+    updatedAt: now
+  };
+  const result = await collection.updateOne({ _id: new ObjectId(id) }, { $set: updateData });
+  return result;
+}
+
+export async function deleteEnquiry(id: string) {
+  const collection = await getCollection("enquiries");
+  const result = await collection.deleteOne({ _id: new ObjectId(id) });
+  return result;
+}
+
+// Generate a unique enquiry number
+export async function generateEnquiryNumber() {
+  const collection = await getCollection("enquiries");
+  const date = new Date();
+  const year = date.getFullYear().toString().slice(-2);
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const prefix = `ENQ${year}${month}`;
+  
+  // Find the latest enquiry number with the current prefix
+  const latestEnquiry = await collection
+    .find({ enquiryNumber: { $regex: `^${prefix}` } })
+    .sort({ enquiryNumber: -1 })
+    .limit(1)
+    .toArray();
+  
+  let nextNumber = 1;
+  
+  if (latestEnquiry.length > 0 && latestEnquiry[0].enquiryNumber) {
+    const lastNumber = parseInt(latestEnquiry[0].enquiryNumber.slice(-4), 10);
+    nextNumber = lastNumber + 1;
+  }
+  
+  // Format with leading zeros (4 digits)
+  const numberStr = nextNumber.toString().padStart(4, '0');
+  return `${prefix}${numberStr}`;
+}
+
+// Admission methods
+export async function getAdmissions(status?: 'pending' | 'reviewing' | 'approved' | 'rejected') {
+  const collection = await getCollection("admissions");
+  const query = status ? { status } : {};
+  return collection.find(query).sort({ createdAt: -1 }).toArray();
+}
+
+export async function getAdmissionById(id: string) {
+  const collection = await getCollection("admissions");
+  return collection.findOne({ _id: new ObjectId(id) });
+}
+
+export async function getAdmissionByEnquiryNumber(enquiryNumber: string) {
+  const collection = await getCollection("admissions");
+  return collection.findOne({ enquiryNumber });
+}
+
+export async function createAdmission(
+  admission: Omit<Admission, "_id" | "createdAt" | "updatedAt" | "status">
+) {
+  const collection = await getCollection("admissions");
+  const now = new Date();
+  const newAdmission = {
+    ...admission,
+    status: "pending",
+    createdAt: now,
+    updatedAt: now,
+  };
+  const result = await collection.insertOne(newAdmission);
+  return { ...newAdmission, _id: result.insertedId };
+}
+
+export async function updateAdmission(id: string, data: Partial<Admission>) {
+  const collection = await getCollection("admissions");
+  const now = new Date();
+  const updateData = {
+    ...data,
+    updatedAt: now
+  };
+  const result = await collection.updateOne({ _id: new ObjectId(id) }, { $set: updateData });
+  return result;
+}
+
+export async function deleteAdmission(id: string) {
+  const collection = await getCollection("admissions");
+  const result = await collection.deleteOne({ _id: new ObjectId(id) });
+  return result;
+}
+
+// Generate admission number
+export async function generateAdmissionNumber() {
+  const collection = await getCollection("admissions");
+  const date = new Date();
+  const year = date.getFullYear().toString().slice(-2);
+  const prefix = `ADM${year}`;
+  
+  // Find the latest admission number with the current prefix
+  const latestAdmission = await collection
+    .find({ admissionNo: { $regex: `^${prefix}` } })
+    .sort({ admissionNo: -1 })
+    .limit(1)
+    .toArray();
+  
+  let nextNumber = 1;
+  
+  if (latestAdmission.length > 0 && latestAdmission[0].admissionNo) {
+    const lastNumber = parseInt(latestAdmission[0].admissionNo.slice(-4), 10);
+    nextNumber = lastNumber + 1;
+  }
+  
+  // Format with leading zeros (4 digits)
+  const numberStr = nextNumber.toString().padStart(4, '0');
+  return `${prefix}${numberStr}`;
 }
