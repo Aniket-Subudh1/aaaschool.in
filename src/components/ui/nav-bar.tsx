@@ -20,12 +20,11 @@ const navItems = [
   { name: "HOME", href: "/", icon: null },
   {
     name: "ADMISSION",
-    href: "/admission",
+    href: "#",
     icon: Users,
     submenu: [
-      { name: "Admission Process", href: "#" },
-      { name: "Fee Structure", href: "#" },
-      { name: "Apply Online", href: "#" },
+      { name: "Admission Process", href: "/admission" },
+      { name: "ATAT", href: "#" },
     ],
   },
   { name: "ABOUT US", href: "/about", icon: null },
@@ -68,63 +67,72 @@ export default function NavBar() {
 
   return (
     <div className="w-full fixed top-0 left-0 right-0 z-50">
+      {/* Top Info Bar */}
       <div className="bg-gradient-to-r from-[#8b1a1a] to-[#a52a2a] text-[#f8f3e9] py-2 px-4 flex justify-between items-center">
-        <div className="flex items-center space-x-6">
-          <div className="flex items-center space-x-2">
-            <Phone size={16} />
-            <span className="text-sm">9124654094</span>
+        <div className="flex items-center space-x-4 md:space-x-6">
+          <div className="flex items-center space-x-1 md:space-x-2">
+            <Phone size={14} className="flex-shrink-0" />
+            <span className="text-xs md:text-sm whitespace-nowrap">
+              9124654094
+            </span>
           </div>
-          <div className="hidden sm:flex items-center space-x-2">
-            <Mail size={16} />
-            <span className="text-sm">aryavartaa.krd@gmail.com</span>
+          <div className="hidden sm:flex items-center space-x-1 md:space-x-2">
+            <Mail size={14} className="flex-shrink-0" />
+            <span className="text-xs md:text-sm whitespace-nowrap">
+              aryavartaa.krd@gmail.com
+            </span>
           </div>
         </div>
-        <div className="flex space-x-4 text-sm">
+        <div className="flex space-x-2 md:space-x-4 text-xs md:text-sm">
           <a
             href="#"
-            className="hover:underline hidden sm:inline transition-colors hover:text-[#f0e6d2]"
+            className="hover:underline hidden sm:inline transition-colors hover:text-[#f0e6d2] whitespace-nowrap"
           >
             Online Payment
           </a>
           <a
             href="#"
-            className="hover:underline hidden md:inline transition-colors hover:text-[#f0e6d2]"
+            className="hover:underline hidden md:inline transition-colors hover:text-[#f0e6d2] whitespace-nowrap"
           >
             Online Classroom
           </a>
           <a
             href="/admin-login"
-            className="hover:underline transition-colors hover:text-[#f0e6d2]"
+            className="hover:underline transition-colors hover:text-[#f0e6d2] whitespace-nowrap"
           >
             Admin Login
           </a>
         </div>
       </div>
+
+      {/* Main Navigation */}
       <nav
         className={`bg-gradient-to-r from-[#f8f3e9] to-[#f0e6d2] border-b border-[#d4b483]/30 
         ${scrolled ? "shadow-xl backdrop-blur-sm bg-opacity-90" : "shadow-md"} 
         transition-all duration-300`}
       >
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-4 md:px-6">
           {/* Header */}
           <div className="flex justify-between items-center py-2">
             <div className="flex items-center space-x-2">
               {/* Logo */}
               <div className="relative flex flex-col items-center justify-center text-[#8b1a1a]">
                 <div className="absolute items-center justify-center inset-0 bg-[#8b1a1a]/10 rounded-full blur-sm"></div>
-                <Image
-                  src="./aaalogo.png"
-                  alt="Aryavart Ancient Academy Logo"
-                  width={100}
-                  height={100}
-                  className="relative z-10 h-16 w-16 transition-transform duration-300 hover:scale-105"
-                />
+                <div className="relative h-14 w-14 md:h-16 md:w-16 flex-shrink-0">
+                  <Image
+                    src="./aaalogo.png"
+                    alt="Aryavart Ancient Academy Logo"
+                    fill
+                    style={{ objectFit: "contain" }}
+                    className="transition-transform duration-300 hover:scale-105"
+                  />
+                </div>
               </div>
-              <div>
-                <h2 className="text-lg md:text-sm font-bold text-[#8b1a1a] font-serif">
+              <div className="flex-shrink">
+                <h2 className="text-sm md:text-lg font-bold text-[#8b1a1a] font-serif leading-tight">
                   Aryavart Ancient Academy
                 </h2>
-                <p className="text-xs text-[#8b1a1a]/80">
+                <p className="text-2xs md:text-xs text-[#8b1a1a]/80">
                   Affiliated to CBSE (1530380)
                 </p>
               </div>
@@ -132,7 +140,7 @@ export default function NavBar() {
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center">
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-1 xl:space-x-2">
                 {navItems.map((item) => (
                   <div
                     key={item.name}
@@ -144,12 +152,14 @@ export default function NavBar() {
                   >
                     <a
                       href={item.href}
-                      className="flex items-center px-2 py-1 text-sm font-medium text-[#5a3e36] hover:text-[#8b1a1a] transition-colors rounded-md hover:bg-[#d4b483]/10 group"
+                      className="flex items-center px-1 xl:px-2 py-1 text-2xs xl:text-xs font-medium text-[#5a3e36] hover:text-[#8b1a1a] transition-colors rounded-md hover:bg-[#d4b483]/10 group whitespace-nowrap"
                     >
-                      {item.icon && <item.icon className="mr-1 h-4 w-4" />}
+                      {item.icon && (
+                        <item.icon className="mr-1 h-3 w-3 xl:h-4 xl:w-4 flex-shrink-0" />
+                      )}
                       {item.name}
                       {item.submenu && (
-                        <ChevronDown className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:rotate-180" />
+                        <ChevronDown className="ml-1 h-3 w-3 xl:h-4 xl:w-4 transition-transform duration-200 group-hover:rotate-180 flex-shrink-0" />
                       )}
                       <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#8b1a1a] scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
                     </a>
@@ -169,7 +179,7 @@ export default function NavBar() {
                                 <a
                                   key={subitem.name}
                                   href={subitem.href}
-                                  className="block px-3 py-1 text-xs text-[#5a3e36] hover:bg-[#d4b483]/10 hover:text-[#8b1a1a]"
+                                  className="block px-3 py-1 text-2xs xl:text-xs text-[#5a3e36] hover:bg-[#d4b483]/10 hover:text-[#8b1a1a] whitespace-nowrap"
                                 >
                                   {subitem.name}
                                 </a>
@@ -212,7 +222,7 @@ export default function NavBar() {
                   >
                     <a
                       href={item.href}
-                      className="flex items-center justify-between py-2 text-sm font-medium text-[#5a3e36] hover:text-[#8b1a1a] transition-colors"
+                      className="flex items-center justify-between py-2 text-xs font-medium text-[#5a3e36] hover:text-[#8b1a1a] transition-colors"
                       onClick={
                         item.submenu
                           ? (e) => {
@@ -225,12 +235,12 @@ export default function NavBar() {
                       }
                     >
                       <div className="flex items-center">
-                        <span className="w-2 h-2 bg-[#8b1a1a] rounded-full mr-2"></span>
-                        <span>{item.name}</span>
+                        <span className="w-2 h-2 bg-[#8b1a1a] rounded-full mr-2 flex-shrink-0"></span>
+                        <span className="whitespace-nowrap">{item.name}</span>
                       </div>
                       {item.submenu && (
                         <ChevronDown
-                          className={`h-4 w-4 transition-transform duration-200 ${
+                          className={`h-4 w-4 transition-transform duration-200 flex-shrink-0 ${
                             activeSubmenu === item.name ? "rotate-180" : ""
                           }`}
                         />
@@ -251,7 +261,7 @@ export default function NavBar() {
                               <a
                                 key={subitem.name}
                                 href={subitem.href}
-                                className="block py-1 text-xs text-[#5a3e36] hover:text-[#8b1a1a]"
+                                className="block py-1 text-2xs text-[#5a3e36] hover:text-[#8b1a1a] whitespace-nowrap"
                               >
                                 {subitem.name}
                               </a>
