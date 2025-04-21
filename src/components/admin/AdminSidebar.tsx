@@ -10,6 +10,7 @@ import {
   Settings,
   ClipboardCheck,
   FileText,
+  Award,
 } from "lucide-react";
 
 interface SidebarLink {
@@ -56,6 +57,11 @@ export default function AdminSidebar() {
       name: "Feedback",
       href: "/admin/feedback",
       icon: <MessageSquare size={20} />,
+    },
+    {
+      name: "ATAT Registrations",
+      href: "/admin/atat-registrations",
+      icon: <Award size={20} />,
     },
     {
       name: "Settings",

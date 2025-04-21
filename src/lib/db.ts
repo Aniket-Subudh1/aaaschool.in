@@ -351,4 +351,81 @@ export async function generateAdmissionNumber() {
   // Format with leading zeros (4 digits)
   const numberStr = nextNumber.toString().padStart(4, '0');
   return `${prefix}${numberStr}`;
+
+  
+}
+
+export async function getATATRegistrations(status?: 'pending' | 'approved' | 'rejected') {
+  const collection = await getCollection("atatRegistrations");
+  const query = status ? { status } : {};
+  return collection.find(query).sort({ createdAt: -1 }).toArray();
+}
+
+
+
+export async function getATATRegistrationByNumber(registrationNumber: string) {
+  const collection = await getCollection("atatRegistrations");
+  return collection.findOne({ registrationNumber });
+}
+
+
+interface ATATRegistration {
+  _id: ObjectId;
+  registrationNumber: string;
+  status: 'pending' | 'approved' | 'rejected';
+  createdAt: Date;
+  updatedAt: Date;
+
+}
+
+export async function updateATATRegistration(id: string, data: Partial<Omit<ATATRegistration, '_id' | 'createdAt' | 'updatedAt'>>) {
+  const collection = await getCollection("atatRegistrations");
+  const now = new Date();
+  const updateData = {
+    ...data,
+    updatedAt: now
+  };
+  const result = await collection.updateOne({ _id: new ObjectId(id) }, { $set: updateData });
+  return result;
+}
+
+export async function deleteATATRegistration(id: string) {
+  const collection = await getCollection("atatRegistrations");
+  const result = await collection.deleteOne({ _id: new ObjectId(id) });
+  return result;
+}
+
+// Generate a unique registration number for ATAT
+export async function generateRegistrationNumber() {
+  const collection = await getCollection("atatRegistrations");
+  const date = new Date();
+  const year = date.getFullYear().toString().slice(-2);
+  const prefix = `ATAT${year}`;
+  
+  // Find the latest registration number with the current prefix
+  const latestRegistration = await collection
+    .find({ registrationNumber: { $regex: `^${prefix}` } })
+    .sort({ registrationNumber: -1 })
+    .limit(1)
+    .toArray();
+  
+  let nextNumber = 1;
+  
+  if (latestRegistration.length > 0 && latestRegistration[0].registrationNumber) {
+    const lastNumber = parseInt(latestRegistration[0].registrationNumber.slice(-4), 10);
+    nextNumber = lastNumber + 1;
+  }
+  
+  // Format with leading zeros (4 digits)
+  const numberStr = nextNumber.toString().padStart(4, '0');
+  return `${prefix}${numberStr}`;
+}
+export async function getATATRegistrationById(id: string) {
+  try {
+    const collection = await getCollection("atatRegistrations");
+    return collection.findOne({ _id: new ObjectId(id) });
+  } catch (error) {
+    console.error('Error fetching ATAT registration by ID:', error);
+    throw error;
+  }
 }

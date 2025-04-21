@@ -143,3 +143,34 @@ export interface Admission {
   updatedAt: Date;
   notes?: string;
 }
+export interface ATATRegistration {
+  _id?: string;
+  registrationNumber: string;
+  studentName: string;
+  dateOfBirth: string;
+  gender: string;
+  photoUrl: string;
+  photoPublicId: string;
+  parentName: string;
+  parentEmail: string;
+  parentPhone: string;
+  address: string;
+  city: string;
+  state: string;
+  pincode: string;
+  currentSchool: string;
+  currentClass: string;
+  applyingForClass: string;
+  howDidYouHear: string;
+  status: 'pending' | 'approved' | 'rejected';
+  testDate: string;
+  testVenue?: string;
+  testTime?: string;
+  admitCardUrl?: string;
+  admitCardPublicId?: string;
+  rank?: number;
+  scholarshipPercentage?: number;
+  notes?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}

@@ -24,7 +24,7 @@ const navItems = [
     icon: Users,
     submenu: [
       { name: "Admission Process", href: "/admission" },
-      { name: "ATAT", href: "#" },
+      { name: "ATAT", href: "/admission/atat" },
     ],
   },
   { name: "ABOUT US", href: "/about", icon: null },
@@ -120,7 +120,7 @@ export default function NavBar() {
                 <div className="absolute items-center justify-center inset-0 bg-[#8b1a1a]/10 rounded-full blur-sm"></div>
                 <div className="relative h-14 w-14 md:h-16 md:w-16 flex-shrink-0">
                   <Image
-                    src="./aaalogo.png"
+                    src="/aaalogo.png"
                     alt="Aryavart Ancient Academy Logo"
                     fill
                     style={{ objectFit: "contain" }}

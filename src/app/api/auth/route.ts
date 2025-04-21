@@ -1,5 +1,3 @@
-// src/app/api/auth/route.ts
-
 import { NextRequest, NextResponse } from 'next/server';
 import { getAdminUserByUsername } from '@/lib/db';
 import bcrypt from 'bcrypt';
