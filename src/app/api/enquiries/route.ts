@@ -48,8 +48,18 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    await verifyAuth(request, { allowPublic: true });
+
     const body = await request.json();
-    const { parentName, studentName, classApplied, mobileNumber, location, email } = body;
+    const { 
+      parentName, 
+      studentName, 
+      classApplied, 
+      mobileNumber, 
+      location, 
+      email 
+    } = body;
+
 
     if (!parentName || !studentName || !classApplied || !mobileNumber || !location || !email) {
       return NextResponse.json(
@@ -57,7 +67,6 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json(
@@ -72,27 +81,36 @@ export async function POST(request: NextRequest) {
       classApplied,
       mobileNumber,
       location,
-      email 
+      email
     });
 
+
     if (transporter && email) {
-      await transporter.sendMail({
-        from: process.env.EMAIL_USER,
-        to: email,
-        subject: 'Enquiry Received - Aryavart Ancient Academy',
-        html: `
-          <div>
-            <h2>Enquiry Confirmation</h2>
-            <p>Dear ${parentName},</p>
-            <p>Your enquiry for ${studentName} has been received.</p>
-            <p>We will process your application and get back to you soon.</p>
-          </div>
-        `
-      });
+      try {
+        await transporter.sendMail({
+          from: process.env.EMAIL_USER || 'noreply@school.edu',
+          to: email,
+          subject: 'Enquiry Received - Aryavart Ancient Academy',
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+              <h2 style="color: #8b1a1a;">Enquiry Confirmation</h2>
+              <p>Dear ${parentName},</p>
+              <p>Your enquiry for ${studentName} has been received successfully.</p>
+              <p>We will process your application and get back to you soon.</p>
+              <p>Thank you for choosing Aryavart Ancient Academy.</p>
+            </div>
+          `,
+        });
+      } catch (emailError) {
+        console.error('Email sending failed:', emailError);
+      }
     }
 
     return NextResponse.json(
-      { message: 'Enquiry submitted successfully', enquiry: newEnquiry },
+      { 
+        message: 'Enquiry submitted successfully', 
+        enquiry: newEnquiry 
+      },
       { status: 201 }
     );
   } catch (error) {

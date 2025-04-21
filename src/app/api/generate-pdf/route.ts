@@ -1,10 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getEnquiryById, getAdmissionById } from '@/lib/db';
-import { verifyAuth } from '@/lib/auth';
-import PDFDocument from 'pdfkit';
-import { PassThrough } from 'stream';
+import { NextRequest, NextResponse } from "next/server";
+import { getEnquiryById, getAdmissionById } from "@/lib/db";
+import { verifyAuth } from "@/lib/auth";
 
-// Define interfaces for Enquiry and Admission
+import PDFDocument from "pdfkit";
+import { PassThrough } from "stream";
+import https from "https";
+
+
 interface Enquiry {
   enquiryNumber?: string;
   studentName: string;
@@ -17,7 +19,6 @@ interface Enquiry {
   createdAt: string | Date;
   updatedAt?: string | Date;
 }
-
 interface Admission {
   enquiryNumber: string;
   admissionNo?: string;
@@ -41,335 +42,241 @@ interface Admission {
   residentialAddress: string;
   permanentAddress?: string;
   status: string;
+  photoUrl?: string;
 }
+
+
+function downloadImage(url: string): Promise<Buffer> {
+  return new Promise((resolve, reject) => {
+    https
+      .get(url, (res) => {
+        const chunks: Buffer[] = [];
+        res.on("data", (c) => chunks.push(c));
+        res.on("end", () => resolve(Buffer.concat(chunks)));
+      })
+      .on("error", reject);
+  });
+}
+function hr(doc: PDFKit.PDFDocument) {
+  doc
+    .strokeColor("#cccccc")
+    .lineWidth(1)
+    .moveTo(50, doc.y)
+    .lineTo(doc.page.width - 50, doc.y)
+    .stroke()
+    .moveDown(1.5);
+}
+
 
 export async function POST(request: NextRequest) {
   try {
-    // Verify authentication
-    const authResult = await verifyAuth(request);
-    if (!authResult.isAuthenticated) {
-      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-    }
 
-    const body = await request.json();
-    const { type, id } = body;
+    const auth = await verifyAuth(request);
+    if (!auth.isAuthenticated)
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
-    // Validate input
-    if (!type || !id) {
+    /* 2. Input check */
+    const { type, id } = await request.json();
+    if (!["enquiry", "admission"].includes(type) || !id)
       return NextResponse.json(
-        { message: 'Type and ID are required' },
-        { status: 400 }
+        { message: "Type (enquiry|admission) and id are required" },
+        { status: 400 },
       );
-    }
 
-    if (type !== 'enquiry' && type !== 'admission') {
-      return NextResponse.json(
-        { message: 'Invalid type. Must be either "enquiry" or "admission"' },
-        { status: 400 }
-      );
-    }
+ 
+    const data =
+      type === "enquiry"
+        ? (await getEnquiryById(id)) as Enquiry | null
+        : (await getAdmissionById(id)) as Admission | null;
+    if (!data)
+      return NextResponse.json({ message: `${type} not found` }, { status: 404 });
 
-    // Fetch data based on type
-    let data: Enquiry | Admission | null;
-    if (type === 'enquiry') {
-      data = await getEnquiryById(id) as Enquiry | null;
-    } else {
-      data = await getAdmissionById(id) as Admission | null;
-    }
-
-    // Check if data exists
-    if (!data) {
-      return NextResponse.json(
-        { message: `${type.charAt(0).toUpperCase() + type.slice(1)} not found` },
-        { status: 404 }
-      );
-    }
-
-    // Create PDF document
-    const doc = new PDFDocument({
-      margin: 50,
-      bufferPages: true,
-    });
-
-    // Create a PassThrough stream
+    /* 4. PDF + stream */
+    const doc = new PDFDocument({ margin: 50, bufferPages: true });
     const stream = new PassThrough();
-
-    // Pipe the PDF document to the stream
     doc.pipe(stream);
 
-    // Add header
-    doc
-      .fontSize(20)
-      .font('Helvetica-Bold')
-      .text('Aryavart Ancient Academy', { align: 'center' });
+    const PAGE_W = doc.page.width;
+    const HEADER_Y = 40;
 
-    doc.moveDown();
+    const logoUrl = "https://aaaschool-in.vercel.app/aaa.png";
+    try {
+      const logoBuf = await downloadImage(logoUrl);
+      const logoW = 80;
+      doc.image(logoBuf, (PAGE_W - logoW) / 2, HEADER_Y, { width: logoW });
+    } catch (e) {
+      console.error("Logo download failed:", e);
+    }
 
-    // Add document type
     doc
-      .fontSize(16)
-      .text(
-        type === 'enquiry'
-          ? 'Admission Enquiry Form'
-          : 'Admission Application Form',
-        { align: 'center' }
-      );
+      .font("Helvetica-Bold")
+      .fontSize(22)
+      .text("Aryavart Ancient Academy", 50, HEADER_Y + 90, {
+        align: "center",
+      })
+      .font("Helvetica")
+      .fontSize(14)
+      .text("Khordha, Odisha", { align: "center" });
+
+    if (type === "admission" && (data as Admission).photoUrl) {
+      try {
+        const buf = await downloadImage((data as Admission).photoUrl!);
+        doc.image(buf, PAGE_W - 150, HEADER_Y, { width: 100, height: 100 });
+      } catch (e) {
+        console.error("Student photo download failed:", e);
+      }
+    }
 
     doc.moveDown(2);
+    hr(doc);
 
-    // Generate PDF content based on type
-    if (type === 'enquiry') {
-      generateEnquiryPDF(doc, data as Enquiry);
-    } else {
-      generateAdmissionPDF(doc, data as Admission);
-    }
+    doc
+      .font("Helvetica-Bold")
+      .fontSize(16)
+      .text(
+        type === "enquiry" ? "Admission Enquiry Form" : "Admission Application Form",
+        { align: "center" },
+      )
+      .moveDown(1.5);
 
-    // Add page numbers
-    const pageCount = doc.bufferedPageRange().count;
-    for (let i = 0; i < pageCount; i++) {
-      doc.switchToPage(i);
-      doc
-        .fontSize(10)
-        .text(`Page ${i + 1} of ${pageCount}`, 
-          doc.page.width - 100, 
-          doc.page.height - 30, 
-          { align: 'right' }
-        );
-    }
 
-    // Finalize PDF
+    if (type === "enquiry") generateEnquiryPDF(doc, data as Enquiry);
+    else generateAdmissionPDF(doc, data as Admission);
+
+ 
+const pages = doc.bufferedPageRange().count;
+
+for (let i = 0; i < pages; i++) {
+  doc.switchToPage(i);
+
+  const pageBottom = doc.page.height - doc.page.margins.bottom;
+  const footerY   = pageBottom - 12;                            
+
+  doc
+    .font("Helvetica")
+    .fontSize(10)
+    .text(
+      `Page ${i + 1} of ${pages}`,
+      50,                   
+      footerY,              
+      { width: doc.page.width - 100, align: "right" },
+    );
+}
+
+
     doc.end();
 
-    // Wait for stream to finish and collect buffer
-    const pdfBuffer = await new Promise<Buffer>((resolve, reject) => {
+    const pdfBuf: Buffer = await new Promise((res, rej) => {
       const chunks: Buffer[] = [];
-      stream.on('data', (chunk) => chunks.push(chunk));
-      stream.on('end', () => resolve(Buffer.concat(chunks)));
-      stream.on('error', reject);
+      stream.on("data", (c) => chunks.push(c));
+      stream.on("end", () => res(Buffer.concat(chunks)));
+      stream.on("error", rej);
     });
-
-    // Convert buffer to base64
-    const base64PDF = pdfBuffer.toString('base64');
 
     return NextResponse.json({
-      message: 'PDF generated successfully',
-      pdfData: `data:application/pdf;base64,${base64PDF}`,
-      filename: `${type === 'enquiry' ? 'Enquiry' : 'Admission'}_${
-        data.studentName || 'Form'
-      }_${Date.now()}.pdf`,
+      message: "PDF generated successfully",
+      pdfData: `data:application/pdf;base64,${pdfBuf.toString("base64")}`,
+      filename: `${type}_${data.studentName ?? "Form"}_${Date.now()}.pdf`,
     });
-  } catch (error) {
-    console.error('Detailed PDF Generation Error:', {
-      message: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : 'No stack trace',
-      errorCode: error instanceof Error && 'code' in error
-        ? (error as NodeJS.ErrnoException).code
-        : 'N/A',
-      errorPath: error instanceof Error && 'path' in error
-        ? (error as NodeJS.ErrnoException).path
-        : 'N/A',
-    });
-
+  } catch (err: unknown) {
+    console.error("PDF generation failed:", err);
+    const errorMessage = err instanceof Error ? err.message : String(err);
     return NextResponse.json(
-      {
-        message: 'Failed to generate PDF',
-        error: error instanceof Error ? error.message : String(error),
-      },
-      { status: 500 }
+      { message: "Failed to generate PDF", error: errorMessage },
+      { status: 500 },
     );
   }
 }
 
-// Function to generate enquiry PDF
-function generateEnquiryPDF(doc: PDFKit.PDFDocument, data: Enquiry): void {
-  // Enquiry Number and Status
-  if (data.enquiryNumber) {
-    doc
-      .fontSize(12)
-      .font('Helvetica-Bold')
-      .text('Enquiry Number: ', { continued: true })
-      .font('Helvetica')
-      .text(data.enquiryNumber);
-  }
-
+function field(
+  doc: PDFKit.PDFDocument,
+  label: string,
+  value: string | undefined,
+) {
   doc
-    .font('Helvetica-Bold')
-    .text('Status: ', { continued: true })
-    .font('Helvetica')
-    .text(data.status.charAt(0).toUpperCase() + data.status.slice(1));
-
-  doc.moveDown();
-
-  // Basic Information Section
-  doc.fontSize(14).font('Helvetica-Bold').text('Basic Information');
-
-  const basicFields = [
-    { label: 'Student Name', value: data.studentName },
-    { label: 'Parent Name', value: data.parentName },
-    { label: 'Class Applied For', value: data.classApplied },
-    { label: 'Mobile Number', value: data.mobileNumber },
-    { label: 'Location', value: data.location },
-  ];
-
-  basicFields.forEach((field) => {
-    doc
-      .fontSize(12)
-      .font('Helvetica-Bold')
-      .text(`${field.label}: `, { continued: true })
-      .font('Helvetica')
-      .text(field.value);
-  });
-
-  // Notes Section
-  if (data.notes) {
-    doc.moveDown();
-    doc.fontSize(14).font('Helvetica-Bold').text('Notes');
-
-    doc.fontSize(12).font('Helvetica').text(data.notes, { width: 500, align: 'justify' });
-  }
-
-  // Submission Details
-  doc.moveDown();
-  doc
+    .font("Helvetica-Bold")
     .fontSize(12)
-    .font('Helvetica-Bold')
-    .text('Submission Date: ', { continued: true })
-    .font('Helvetica')
-    .text(new Date(data.createdAt).toLocaleDateString());
-
-  if (data.updatedAt) {
-    doc
-      .font('Helvetica-Bold')
-      .text('Last Updated: ', { continued: true })
-      .font('Helvetica')
-      .text(new Date(data.updatedAt).toLocaleDateString());
-  }
+    .text(`${label}: `, { continued: true })
+    .font("Helvetica")
+    .text(value ?? "N/A");
+}
+function section(doc: PDFKit.PDFDocument, title: string) {
+  doc.moveDown().font("Helvetica-Bold").fontSize(14).text(title).moveDown(0.5);
 }
 
-// Function to generate admission PDF
-function generateAdmissionPDF(doc: PDFKit.PDFDocument, data: Admission): void {
-  // Enquiry and Admission Numbers
-  doc
-    .fontSize(12)
-    .font('Helvetica-Bold')
-    .text('Enquiry Number: ', { continued: true })
-    .font('Helvetica')
-    .text(data.enquiryNumber);
+/* Enquiry */
+function generateEnquiryPDF(doc: PDFKit.PDFDocument, d: Enquiry) {
+  section(doc, "Enquiry Details");
+  field(doc, "Enquiry #", d.enquiryNumber);
+  field(doc, "Status", d.status);
 
-  if (data.admissionNo) {
-    doc
-      .font('Helvetica-Bold')
-      .text('Admission Number: ', { continued: true })
-      .font('Helvetica')
-      .text(data.admissionNo);
+  section(doc, "Basic Information");
+  field(doc, "Student Name", d.studentName);
+  field(doc, "Parent Name", d.parentName);
+  field(doc, "Class Applied For", d.classApplied);
+  field(doc, "Mobile Number", d.mobileNumber);
+  field(doc, "Location", d.location);
+
+  if (d.notes) {
+    section(doc, "Notes");
+    doc.font("Helvetica").fontSize(12).text(d.notes, {
+      width: 500,
+      align: "justify",
+    });
   }
 
+  section(doc, "Timestamps");
+  field(doc, "Created", new Date(d.createdAt).toLocaleDateString());
+  if (d.updatedAt)
+    field(doc, "Updated", new Date(d.updatedAt).toLocaleDateString());
+}
+
+/* Admission */
+function generateAdmissionPDF(doc: PDFKit.PDFDocument, d: Admission) {
+  section(doc, "Identifiers & Status");
+  field(doc, "Enquiry #", d.enquiryNumber);
+  if (d.admissionNo) field(doc, "Admission #", d.admissionNo);
+  field(doc, "Status", d.status);
+
+  section(doc, "Student Information");
+  field(doc, "Student Name", d.studentName);
+  field(doc, "Class", d.class);
+  field(doc, "Session", d.session);
+  field(doc, "Gender", d.gender);
+  field(doc, "DOB", new Date(d.dateOfBirth).toLocaleDateString());
+  field(doc, "DOB (Words)", d.dateOfBirthInWords);
+  field(doc, "Blood Group", d.bloodGroup);
+
+  section(doc, "Father's Information");
+  field(doc, "Name", d.fatherName);
+  field(doc, "Occupation", d.fatherOccupation);
+  field(doc, "Education", d.fatherEducation);
+  field(doc, "Mobile", d.fatherMobile);
+  field(doc, "Email", d.fatherEmail);
+
+  section(doc, "Mother's Information");
+  field(doc, "Name", d.motherName);
+  field(doc, "Occupation", d.motherOccupation);
+  field(doc, "Education", d.motherEducation);
+  field(doc, "Mobile", d.motherMobile);
+  field(doc, "Email", d.motherEmail);
+
+  section(doc, "Address Information");
+  field(doc, "Residential", d.residentialAddress);
+  if (d.permanentAddress) field(doc, "Permanent", d.permanentAddress);
+
+  hr(doc);
   doc
-    .font('Helvetica-Bold')
-    .text('Status: ', { continued: true })
-    .font('Helvetica')
-    .text(data.status.charAt(0).toUpperCase() + data.status.slice(1));
-
-  doc.moveDown();
-
-  // Student Information Section
-  doc.fontSize(14).font('Helvetica-Bold').text('Student Information');
-
-  const studentFields = [
-    { label: 'Student Name', value: data.studentName },
-    { label: 'Class', value: data.class },
-    { label: 'Session', value: data.session },
-    { label: 'Gender', value: data.gender },
-    {
-      label: 'Date of Birth',
-      value: new Date(data.dateOfBirth).toLocaleDateString(),
-    },
-    { label: 'Date of Birth in Words', value: data.dateOfBirthInWords },
-    { label: 'Blood Group', value: data.bloodGroup || 'Not provided' },
-  ];
-
-  studentFields.forEach((field) => {
-    doc
-      .fontSize(12)
-      .font('Helvetica-Bold')
-      .text(`${field.label}: `, { continued: true })
-      .font('Helvetica')
-      .text(field.value);
-  });
-
-  // Parent Information
-  doc.moveDown();
-  doc.fontSize(14).font('Helvetica-Bold').text("Father's Information");
-
-  const fatherFields = [
-    { label: 'Name', value: data.fatherName },
-    { label: 'Occupation', value: data.fatherOccupation || 'Not provided' },
-    { label: 'Education', value: data.fatherEducation || 'Not provided' },
-    { label: 'Mobile', value: data.fatherMobile || 'Not provided' },
-    { label: 'Email', value: data.fatherEmail || 'Not provided' },
-  ];
-
-  fatherFields.forEach((field) => {
-    doc
-      .fontSize(12)
-      .font('Helvetica-Bold')
-      .text(`${field.label}: `, { continued: true })
-      .font('Helvetica')
-      .text(field.value);
-  });
-
-  doc.moveDown();
-  doc.fontSize(14).font('Helvetica-Bold').text("Mother's Information");
-
-  const motherFields = [
-    { label: 'Name', value: data.motherName },
-    { label: 'Occupation', value: data.motherOccupation || 'Not provided' },
-    { label: 'Education', value: data.motherEducation || 'Not provided' },
-    { label: 'Mobile', value: data.motherMobile || 'Not provided' },
-    { label: 'Email', value: data.motherEmail || 'Not provided' },
-  ];
-
-  motherFields.forEach((field) => {
-    doc
-      .fontSize(12)
-      .font('Helvetica-Bold')
-      .text(`${field.label}: `, { continued: true })
-      .font('Helvetica')
-      .text(field.value);
-  });
-
-  // Address Information
-  doc.moveDown();
-  doc.fontSize(14).font('Helvetica-Bold').text('Address Information');
-
-  doc
+    .font("Helvetica-Bold")
+    .fontSize(14)
+    .text("Declaration", { align: "center" })
+    .moveDown(0.5)
+    .font("Helvetica")
     .fontSize(12)
-    .font('Helvetica-Bold')
-    .text('Residential Address: ', { continued: true })
-    .font('Helvetica')
-    .text(data.residentialAddress, { width: 500, align: 'justify' });
-
-  if (data.permanentAddress) {
-    doc
-      .font('Helvetica-Bold')
-      .text('Permanent Address: ', { continued: true })
-      .font('Helvetica')
-      .text(data.permanentAddress, { width: 500, align: 'justify' });
-  }
-
-  // Declaration
-  doc.moveDown(2);
-  doc.fontSize(14).font('Helvetica-Bold').text('Declaration', { align: 'center' });
-
-  doc
-    .fontSize(12)
-    .font('Helvetica')
     .text(
-      'I hereby declare that the above information is correct to the best of my knowledge and belief. ' +
-      'I shall abide by the rules and regulations of the school.',
-      { align: 'center', width: 500 }
+      "I hereby declare that the above information is true to the best of my knowledge and belief. I shall abide by the rules and regulations of the school.",
+      { align: "center", width: 500 },
     );
 }
 
-// Ensure Node.js runtime for PDF generation
-export const runtime = 'nodejs';
+export const runtime = "nodejs";

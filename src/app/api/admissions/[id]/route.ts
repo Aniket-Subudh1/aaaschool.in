@@ -2,9 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getAdmissionById, updateAdmission, deleteAdmission, generateAdmissionNumber } from '@/lib/db';
 import { verifyAuth } from '@/lib/auth';
 import nodemailer from 'nodemailer';
-import { deleteFromCloudinary } from '@/lib/cloudinary'; // Import the missing function
+import { deleteFromCloudinary } from '@/lib/cloudinary';
 
-// Email setup
 let transporter: nodemailer.Transporter | null = null;
 
 if (
@@ -26,10 +25,12 @@ if (
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    // Verify authentication for GET requests
+    const params = await context.params;
+    const id = params.id;
+    
     const authResult = await verifyAuth(request);
     if (!authResult.isAuthenticated) {
       return NextResponse.json(
@@ -38,7 +39,7 @@ export async function GET(
       );
     }
 
-    const admission = await getAdmissionById(params.id);
+    const admission = await getAdmissionById(id);
     
     if (!admission) {
       return NextResponse.json(
@@ -59,10 +60,12 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    // Verify authentication for PUT requests
+    const params = await context.params;
+    const id = params.id;
+    
     const authResult = await verifyAuth(request);
     if (!authResult.isAuthenticated) {
       return NextResponse.json(
@@ -74,8 +77,7 @@ export async function PUT(
     const body = await request.json();
     const { status, notes, slNo, admissionNo } = body;
     
-    // Get the current admission
-    const currentAdmission = await getAdmissionById(params.id);
+    const currentAdmission = await getAdmissionById(id);
     if (!currentAdmission) {
       return NextResponse.json(
         { message: 'Admission not found' },
@@ -92,85 +94,93 @@ export async function PUT(
     }
     const updateData: UpdateAdmissionData = { status, notes };
     
-    // If provided, update slNo and admissionNo
     if (slNo !== undefined && slNo !== null) {
       updateData.slNo = String(slNo);
     }
     
-    // If approving the admission and no admission number exists, generate one
     if (status === 'approved' && currentAdmission.status !== 'approved') {
       const newAdmissionNumber = admissionNo || await generateAdmissionNumber();
       updateData.admissionNo = newAdmissionNumber;
       
-      // Send email notification (if we have contact info)
       if (
         transporter && 
         (currentAdmission.fatherEmail || currentAdmission.motherEmail)
       ) {
-        const parentEmail = currentAdmission.fatherEmail || currentAdmission.motherEmail;
-        await transporter.sendMail({
-          from: process.env.EMAIL_USER || 'noreply@school.edu',
-          to: parentEmail,
-          subject: 'Admission Approved - Aryavart Ancient Academy',
-          text: `
-            Dear Parent,
-            
-            We are pleased to inform you that the admission application for ${currentAdmission.studentName} has been approved.
-            
-            Admission Number: ${newAdmissionNumber}
-            Class: ${currentAdmission.class}
-            
-            Please visit the school with the following documents to complete the admission process:
-            1. Original Birth Certificate
-            2. Previous School Transfer Certificate (if applicable)
-            3. Passport-sized photographs
-            4. Aadhar Card
-            
-            Thank you for choosing Aryavart Ancient Academy. We look forward to welcoming your child to our school.
-            
-            Regards,
-            Admission Team
-            Aryavart Ancient Academy
-          `,
-          html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #d4b483; border-radius: 8px;">
-              <div style="text-align: center; margin-bottom: 20px;">
-                <img src="https://www.aaaschool.in/aaa.png" alt="Aryavart Ancient Academy Logo" style="width: 80px;">
-                <h2 style="color: #8b1a1a; margin-top: 10px;">Aryavart Ancient Academy</h2>
+        // Prepare email recipients
+        const emailRecipients: string[] = [];
+        if (currentAdmission.fatherEmail) {
+          emailRecipients.push(currentAdmission.fatherEmail);
+        }
+        if (currentAdmission.motherEmail) {
+          emailRecipients.push(currentAdmission.motherEmail);
+        }
+      
+        // Send email to both parents if emails are available
+        await Promise.all(emailRecipients.map(async (parentEmail) => {
+          await transporter!.sendMail({
+            from: process.env.EMAIL_USER || 'noreply@school.edu',
+            to: parentEmail,
+            subject: 'Admission Approved - Aryavart Ancient Academy',
+            text: `
+              Dear Parent,
+              
+              We are pleased to inform you that the admission application for ${currentAdmission.studentName} has been approved.
+              
+              Admission Number: ${newAdmissionNumber}
+              Class: ${currentAdmission.class}
+              
+              Please visit the school with the following documents to complete the admission process:
+              1. Original Birth Certificate
+              2. Previous School Transfer Certificate (if applicable)
+              3. Passport-sized photographs
+              4. Aadhar Card
+              
+              Thank you for choosing Aryavart Ancient Academy. We look forward to welcoming your child to our school.
+              
+              Regards,
+              Admission Team
+              Aryavart Ancient Academy
+            `,
+            html: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #d4b483; border-radius: 8px;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                  <img src="https://www.aaaschool.in/aaa.png" alt="Aryavart Ancient Academy Logo" style="width: 80px;">
+                  <h2 style="color: #8b1a1a; margin-top: 10px;">Aryavart Ancient Academy</h2>
+                </div>
+                
+                <p style="margin-bottom: 16px;">Dear Parent,</p>
+                
+                <p style="margin-bottom: 16px;">We are pleased to inform you that the admission application for <strong>${currentAdmission.studentName}</strong> has been approved.</p>
+                
+                <div style="background-color: #f8f3e9; padding: 16px; border-left: 4px solid #8b1a1a; margin-bottom: 16px;">
+                  <p><strong>Admission Number:</strong> ${newAdmissionNumber}</p>
+                  <p><strong>Class:</strong> ${currentAdmission.class}</p>
+                </div>
+                
+                <p style="margin-bottom: 16px;">Please visit the school with the following documents to complete the admission process:</p>
+                <ol style="margin-bottom: 16px;">
+                  <li>Original Birth Certificate</li>
+                  <li>Previous School Transfer Certificate (if applicable)</li>
+                  <li>Passport-sized photographs</li>
+                  <li>Aadhar Card</li>
+                </ol>
+                
+                <p style="margin-bottom: 16px;">Thank you for choosing Aryavart Ancient Academy. We look forward to welcoming your child to our school.</p>
+                
+                <p style="margin-bottom: 8px;">Regards,</p>
+                <p style="margin-bottom: 16px;"><strong>Admission Team</strong><br>Aryavart Ancient Academy</p>
+                
+                <div style="text-align: center; padding-top: 20px; border-top: 1px solid #d4b483; color: #5a3e36; font-size: 12px;">
+                  <p>Contact us: admission@aaaschool.in | +91-123-456-7890</p>
+                </div>
               </div>
-              
-              <p style="margin-bottom: 16px;">Dear Parent,</p>
-              
-              <p style="margin-bottom: 16px;">We are pleased to inform you that the admission application for <strong>${currentAdmission.studentName}</strong> has been approved.</p>
-              
-              <div style="background-color: #f8f3e9; padding: 16px; border-left: 4px solid #8b1a1a; margin-bottom: 16px;">
-                <p><strong>Admission Number:</strong> ${newAdmissionNumber}</p>
-                <p><strong>Class:</strong> ${currentAdmission.class}</p>
-              </div>
-              
-              <p style="margin-bottom: 16px;">Please visit the school with the following documents to complete the admission process:</p>
-              <ol style="margin-bottom: 16px;">
-                <li>Original Birth Certificate</li>
-                <li>Previous School Transfer Certificate (if applicable)</li>
-                <li>Passport-sized photographs</li>
-                <li>Aadhar Card</li>
-              </ol>
-              
-              <p style="margin-bottom: 16px;">Thank you for choosing Aryavart Ancient Academy. We look forward to welcoming your child to our school.</p>
-              
-              <p style="margin-bottom: 8px;">Regards,</p>
-              <p style="margin-bottom: 16px;"><strong>Admission Team</strong><br>Aryavart Ancient Academy</p>
-              
-              <div style="text-align: center; padding-top: 20px; border-top: 1px solid #d4b483; color: #5a3e36; font-size: 12px;">
-                <p>If you have any questions, please contact our admission office.</p>
-              </div>
-            </div>
-          `,
-        });
+            `,
+          });
+        }));
       }
     }
     
-    const updateResult = await updateAdmission(params.id, updateData);
+    const updateResult = await updateAdmission(id, updateData);
     
     if (updateResult.matchedCount === 0) {
       return NextResponse.json(
@@ -179,7 +189,7 @@ export async function PUT(
       );
     }
     
-    const updatedAdmission = await getAdmissionById(params.id);
+    const updatedAdmission = await getAdmissionById(id);
     return NextResponse.json(updatedAdmission);
   } catch (error) {
     console.error('Error updating admission:', error);
@@ -189,12 +199,15 @@ export async function PUT(
     );
   }
 }
+
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    // Verify authentication for DELETE requests
+    const params = await context.params;
+    const id = params.id;
+    
     const authResult = await verifyAuth(request);
     if (!authResult.isAuthenticated) {
       return NextResponse.json(
@@ -203,39 +216,29 @@ export async function DELETE(
       );
     }
 
-    // Get admission before deleting it to access Cloudinary IDs
-    const admission = await getAdmissionById(params.id);
-    
+    const admission = await getAdmissionById(id);
     if (!admission) {
       return NextResponse.json(
         { message: 'Admission not found' },
         { status: 404 }
       );
     }
-    // Cleanup Cloudinary resources if they exist
+
     const cloudinaryCleanupPromises: Promise<unknown>[] = [];
-    
-    if (admission.photoPublicId) {
-      cloudinaryCleanupPromises.push(deleteFromCloudinary(admission.photoPublicId));
-    }
-    
     if (admission.birthCertificatePublicId) {
       cloudinaryCleanupPromises.push(deleteFromCloudinary(admission.birthCertificatePublicId));
     }
-    
-    // Wait for Cloudinary cleanup to complete
+
     if (cloudinaryCleanupPromises.length > 0) {
       try {
         await Promise.all(cloudinaryCleanupPromises);
-        console.log('Deleted Cloudinary resources for admission:', params.id);
+        console.log('Deleted Cloudinary resources for admission:', id);
       } catch (cloudinaryError) {
         console.error('Error deleting Cloudinary resources:', cloudinaryError);
-        // Continue with deletion even if Cloudinary cleanup fails
       }
     }
 
-    // Delete the admission from the database
-    const deleteResult = await deleteAdmission(params.id);
+    const deleteResult = await deleteAdmission(id);
     
     if (deleteResult.deletedCount === 0) {
       return NextResponse.json(
