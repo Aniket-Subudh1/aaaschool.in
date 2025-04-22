@@ -25,6 +25,7 @@ export default function StudyMaterialsPage() {
   const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // Form State
   const [title, setTitle] = useState("");
@@ -99,14 +100,31 @@ export default function StudyMaterialsPage() {
   const fetchStudyMaterials = async () => {
     try {
       setIsLoading(true);
-      const response = await authFetch("/api/study-materials");
+      console.log("Fetching study materials...");
+
+      // Important: Add active=true to match what the download page is doing
+      // This is likely why the download page shows documents but admin doesn't
+      const response = await authFetch("/api/study-materials?active=true");
 
       if (!response.ok) {
         throw new Error("Failed to fetch study materials");
       }
 
       const data = await response.json();
-      setStudyMaterials(data);
+      console.log("Fetched study materials:", data);
+
+      // Handle both array and object with materials property
+      let materials = data;
+      if (
+        !Array.isArray(data) &&
+        data.materials &&
+        Array.isArray(data.materials)
+      ) {
+        materials = data.materials;
+        console.log("Extracted materials from response object:", materials);
+      }
+
+      setStudyMaterials(Array.isArray(materials) ? materials : []);
     } catch (err) {
       console.error("Error fetching study materials:", err);
       setError("Failed to load study materials");
@@ -147,9 +165,10 @@ export default function StudyMaterialsPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Reset errors
+    // Reset errors and messages
     setError(null);
     setFileError(null);
+    setSuccessMessage(null);
 
     // Validate form fields
     if (!title || !category || !classFilter || !file) {
@@ -169,6 +188,7 @@ export default function StudyMaterialsPage() {
       formData.append("active", active.toString());
       formData.append("file", file);
 
+      console.log("Submitting form data...");
       const response = await authFetch("/api/study-materials", {
         method: "POST",
         body: formData,
@@ -178,6 +198,14 @@ export default function StudyMaterialsPage() {
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to upload study material");
       }
+
+      const responseData = await response.json();
+      console.log("Upload response:", responseData);
+
+      // Show success message
+      setSuccessMessage(
+        responseData.message || "Study material uploaded successfully"
+      );
 
       // Reset form
       setTitle("");
@@ -232,6 +260,9 @@ export default function StudyMaterialsPage() {
         prev.filter((item) => item._id !== deleteModal.materialId)
       );
 
+      // Show success message
+      setSuccessMessage("Study material deleted successfully");
+
       // Close delete modal
       setDeleteModal({
         isOpen: false,
@@ -264,6 +295,7 @@ export default function StudyMaterialsPage() {
     setActive(true);
     setError(null);
     setFileError(null);
+    setSuccessMessage(null);
   };
 
   // Helper function to format file size
@@ -300,9 +332,16 @@ export default function StudyMaterialsPage() {
         </p>
       </div>
 
+      {/* Error and Success Messages */}
       {(error || fileError) && (
         <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md mb-6">
           {error || fileError}
+        </div>
+      )}
+
+      {successMessage && (
+        <div className="bg-green-50 border border-green-200 text-green-700 p-4 rounded-md mb-6">
+          {successMessage}
         </div>
       )}
 
