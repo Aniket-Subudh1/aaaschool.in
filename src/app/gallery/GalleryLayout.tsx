@@ -104,7 +104,7 @@ export default function GalleryLayout({
     <div className="min-h-screen flex flex-col">
       <NavBar />
 
-      <main className="flex-grow -mt-20">
+      <main className="flex-grow ">
         {/* Header Section */}
         <div
           className={`bg-gradient-to-r ${backgroundClass} text-white py-16 px-4 relative overflow-hidden`}

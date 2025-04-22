@@ -76,7 +76,7 @@ export default function NavBar() {
   }, []);
 
   return (
-    <div className="w-full fixed top-0 left-0 right-0 z-50">
+    <div className="w-full h-[20px] fixed top-0 left-0 right-0 z-50">
       {/* Top Info Bar */}
       <div className="bg-gradient-to-r from-[#8b1a1a] to-[#a52a2a] text-[#f8f3e9] py-2 px-4 flex justify-between items-center">
         <div className="flex items-center space-x-4 md:space-x-6">
@@ -95,18 +95,6 @@ export default function NavBar() {
         </div>
         <div className="flex space-x-2 md:space-x-4 text-xs md:text-sm">
           <a
-            href="#"
-            className="hover:underline hidden sm:inline transition-colors hover:text-[#f0e6d2] whitespace-nowrap"
-          >
-            Online Payment
-          </a>
-          <a
-            href="#"
-            className="hover:underline hidden md:inline transition-colors hover:text-[#f0e6d2] whitespace-nowrap"
-          >
-            Online Classroom
-          </a>
-          <a
             href="/admin-login"
             className="hover:underline transition-colors hover:text-[#f0e6d2] whitespace-nowrap"
           >
@@ -123,7 +111,7 @@ export default function NavBar() {
       >
         <div className="container mx-auto px-4 md:px-6">
           {/* Header */}
-          <div className="flex justify-between items-center py-2">
+          <div className="justify-between  flex items-center py-2">
             <div className="flex items-center space-x-2">
               {/* Logo */}
               <div className="relative flex flex-col items-center justify-center text-[#8b1a1a]">
@@ -139,10 +127,10 @@ export default function NavBar() {
                 </div>
               </div>
               <div className="flex-shrink">
-                <h2 className="text-sm md:text-lg font-bold text-[#8b1a1a] font-serif leading-tight">
+                <h2 className="text-md font-bold text-[#8b1a1a] font-serif leading-tight">
                   Aryavart Ancient Academy
                 </h2>
-                <p className="text-2xs md:text-xs text-[#8b1a1a]/80">
+                <p className="text-xs md:text-xs text-[#8b1a1a]/80">
                   Affiliated to CBSE (1530380)
                 </p>
               </div>

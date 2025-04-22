@@ -85,7 +85,7 @@ export default function AdmissionLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`${inter.className} min-h-screen flex flex-col`}>
+    <div className={`${inter.className} min-h-screen flex flex-col `}>
       <Script
         id="school-structured-data"
         type="application/ld+json"

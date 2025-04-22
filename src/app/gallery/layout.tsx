@@ -83,7 +83,7 @@ export default function GalleryLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`${inter.className} min-h-screen flex flex-col`}>
+    <div className={`${inter.className} min-h-screen pt-5 flex flex-col`}>
       <Script
         id="gallery-structured-data"
         type="application/ld+json"
@@ -142,7 +142,7 @@ export default function GalleryLayout({
         }}
       />
 
-      <main className="flex-grow">{children}</main>
+      <main className="flex-grow ">{children}</main>
     </div>
   );
 }
