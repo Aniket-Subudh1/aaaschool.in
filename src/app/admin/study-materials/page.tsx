@@ -12,6 +12,7 @@ interface StudyMaterial {
   title: string;
   description?: string;
   category: string;
+  class?: string;
   type?: string;
   active: boolean;
   fileUrl: string;
@@ -20,21 +21,23 @@ interface StudyMaterial {
 }
 
 export default function StudyMaterialsPage() {
+  // Study Materials State
   const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Form state
+  // Form State
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
+  const [classFilter, setClassFilter] = useState("");
   const [type, setType] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [active, setActive] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fileError, setFileError] = useState<string | null>(null);
 
-  // Delete modal state
+  // Delete Modal State
   const [deleteModal, setDeleteModal] = useState<{
     isOpen: boolean;
     isDeleting: boolean;
@@ -44,6 +47,36 @@ export default function StudyMaterialsPage() {
     isDeleting: false,
     materialId: null,
   });
+
+  // Predefined Categories and Classes
+  const categories = [
+    "School Brochure",
+    "Academic Calendar",
+    "Prescribed Booklist",
+    "Annual Report",
+    "Magazine",
+    "Admission Form",
+    "Transfer Certificate",
+    "Syllabus",
+    "Other",
+  ];
+
+  const classes = [
+    "Nursery",
+    "KG",
+    "1st",
+    "2nd",
+    "3rd",
+    "4th",
+    "5th",
+    "6th",
+    "7th",
+    "8th",
+    "9th",
+    "10th",
+    "11th",
+    "12th",
+  ];
 
   // Allowed file types
   const allowedFileTypes = [
@@ -57,10 +90,12 @@ export default function StudyMaterialsPage() {
   // Maximum file size (10MB)
   const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
+  // Fetch Study Materials
   useEffect(() => {
     fetchStudyMaterials();
   }, []);
 
+  // Fetch Study Materials Function
   const fetchStudyMaterials = async () => {
     try {
       setIsLoading(true);
@@ -80,6 +115,7 @@ export default function StudyMaterialsPage() {
     }
   };
 
+  // File Change Handler
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
@@ -107,6 +143,7 @@ export default function StudyMaterialsPage() {
     }
   };
 
+  // Submit Handler
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -114,7 +151,8 @@ export default function StudyMaterialsPage() {
     setError(null);
     setFileError(null);
 
-    if (!title || !category || !file) {
+    // Validate form fields
+    if (!title || !category || !classFilter || !file) {
       setError("Please fill in all required fields");
       return;
     }
@@ -126,6 +164,7 @@ export default function StudyMaterialsPage() {
       formData.append("title", title);
       if (description) formData.append("description", description);
       formData.append("category", category);
+      formData.append("class", classFilter);
       if (type) formData.append("type", type);
       formData.append("active", active.toString());
       formData.append("file", file);
@@ -140,15 +179,17 @@ export default function StudyMaterialsPage() {
         throw new Error(errorData.message || "Failed to upload study material");
       }
 
-      // Reset form and refresh list
+      // Reset form
       setTitle("");
       setDescription("");
       setCategory("");
+      setClassFilter("");
       setType("");
       setFile(null);
       setActive(true);
       (document.getElementById("file-upload") as HTMLInputElement).value = "";
 
+      // Refresh materials list
       await fetchStudyMaterials();
     } catch (err) {
       console.error("Error uploading study material:", err);
@@ -160,6 +201,7 @@ export default function StudyMaterialsPage() {
     }
   };
 
+  // Delete Handler
   const handleDeleteClick = (materialId: string) => {
     setDeleteModal({
       isOpen: true,
@@ -210,11 +252,13 @@ export default function StudyMaterialsPage() {
     });
   };
 
+  // Cancel Handler
   const handleCancel = () => {
     // Reset form
     setTitle("");
     setDescription("");
     setCategory("");
+    setClassFilter("");
     setType("");
     setFile(null);
     setActive(true);
@@ -232,7 +276,7 @@ export default function StudyMaterialsPage() {
   };
 
   // Helper function to get file icon based on type
-  const getFileIcon = (fileType) => {
+  const getFileIcon = (fileType: string) => {
     switch (fileType) {
       case "application/pdf":
         return <File className="h-8 w-8 text-red-500" />;
@@ -270,9 +314,125 @@ export default function StudyMaterialsPage() {
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Previous form fields remain the same */}
+            {/* Title Input */}
+            <div>
+              <label
+                htmlFor="title"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Title <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                required
+              />
+            </div>
 
-            {/* File upload section with added validation */}
+            {/* Description Input */}
+            <div>
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Description
+              </label>
+              <textarea
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                rows={3}
+              />
+            </div>
+
+            {/* Category Select */}
+            <div>
+              <label
+                htmlFor="category"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Category <span className="text-red-500">*</span>
+              </label>
+              <select
+                id="category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                required
+              >
+                <option value="">Select Category</option>
+                {categories.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Class Select */}
+            <div>
+              <label
+                htmlFor="class"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Class <span className="text-red-500">*</span>
+              </label>
+              <select
+                id="class"
+                value={classFilter}
+                onChange={(e) => setClassFilter(e.target.value)}
+                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                required
+              >
+                <option value="">Select Class</option>
+                {classes.map((cls) => (
+                  <option key={cls} value={cls}>
+                    {cls}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Type Input */}
+            <div>
+              <label
+                htmlFor="type"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Type
+              </label>
+              <input
+                type="text"
+                id="type"
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                placeholder="Optional additional type information"
+              />
+            </div>
+
+            {/* Active Toggle */}
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id="active"
+                checked={active}
+                onChange={(e) => setActive(e.target.checked)}
+                className="h-4 w-4 text-[#8b1a1a] focus:ring-[#8b1a1a] border-gray-300 rounded"
+              />
+              <label
+                htmlFor="active"
+                className="ml-2 block text-sm text-gray-900"
+              >
+                Active
+              </label>
+            </div>
+
+            {/* File Upload */}
             <div>
               <label
                 htmlFor="file-upload"
@@ -401,7 +561,9 @@ export default function StudyMaterialsPage() {
                   </div>
 
                   <div className="text-xs text-gray-500 mb-4">
-                    <p>{material.category}</p>
+                    <p>
+                      {material.category} - {material.class}
+                    </p>
                   </div>
 
                   <div className="flex space-x-2">

@@ -8,6 +8,7 @@ import {
   Calendar,
   Paperclip,
   Filter,
+  AlertCircle,
 } from "lucide-react";
 
 // Mapping of categories to icons
@@ -39,6 +40,7 @@ interface StudyMaterial {
   title: string;
   description?: string;
   fileUrl: string;
+  fileType: string;
   category: string;
   type?: string;
   active: boolean;
@@ -48,6 +50,9 @@ export default function DownloadPage() {
   const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [downloadError, setDownloadError] = useState<{ [key: string]: string }>(
+    {}
+  );
   const [filter, setFilter] = useState<string | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -81,19 +86,71 @@ export default function DownloadPage() {
 
   const handleDownload = async (material: StudyMaterial) => {
     try {
-      const response = await fetch(material.fileUrl);
+      // Clear any previous download error for this material
+      setDownloadError((prev) => ({ ...prev, [material._id]: "" }));
+
+      // Determine file extension
+      const getFileExtension = (fileType: string) => {
+        const extensionMap: { [key: string]: string } = {
+          "application/pdf": ".pdf",
+          "application/msword": ".doc",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+            ".docx",
+          "image/jpeg": ".jpg",
+          "image/png": ".png",
+          "image/gif": ".gif",
+        };
+        return extensionMap[fileType] || "";
+      };
+
+      // Fetch the file with appropriate headers
+      const response = await fetch(material.fileUrl, {
+        method: "GET",
+        headers: {
+          "Content-Type": material.fileType,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Get the blob
       const blob = await response.blob();
+
+      // Create download link
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = material.title.replace(/[^a-z0-9]/gi, "_").toLowerCase();
+
+      // Generate filename
+      const sanitizedFilename = material.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "-")
+        .replace(/-+/g, "-")
+        .trim();
+
+      // Set download attributes
+      link.download = `${sanitizedFilename}${getFileExtension(
+        material.fileType
+      )}`;
+
+      // Append to body, click, and remove
       document.body.appendChild(link);
       link.click();
-      link.remove();
+      document.body.removeChild(link);
+
+      // Clean up
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Download failed:", error);
-      alert("Download failed. Please try again.");
+      setDownloadError((prev) => ({
+        ...prev,
+        [material._id]:
+          error instanceof Error
+            ? error.message
+            : "Download failed. Please try again.",
+      }));
     }
   };
 
@@ -154,6 +211,14 @@ export default function DownloadPage() {
               </div>
             </div>
 
+            {/* Error Handling */}
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md mb-6 flex items-center">
+                <AlertCircle className="mr-2 text-red-500" />
+                {error}
+              </div>
+            )}
+
             {/* Materials Grid */}
             {isLoading ? (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-pulse">
@@ -161,8 +226,6 @@ export default function DownloadPage() {
                   <div key={i} className="bg-gray-200 rounded-md h-36"></div>
                 ))}
               </div>
-            ) : error ? (
-              <div className="text-center py-8 text-red-600">{error}</div>
             ) : studyMaterials.length === 0 ? (
               <div className="text-center py-8 text-gray-500">
                 No documents available
@@ -189,13 +252,22 @@ export default function DownloadPage() {
                         {material.type}
                       </p>
                     )}
-                    <button
-                      onClick={() => handleDownload(material)}
-                      className="mt-auto flex items-center text-sm bg-[#8b1a1a] text-white px-3 py-2 rounded-md hover:bg-[#8b1a1a]/90"
-                    >
-                      <Download className="h-4 w-4 mr-2" />
-                      Download
-                    </button>
+
+                    {/* Download Button with Error Handling */}
+                    <div className="mt-auto flex flex-col items-center w-full">
+                      <button
+                        onClick={() => handleDownload(material)}
+                        className="flex items-center text-sm bg-[#8b1a1a] text-white px-3 py-2 rounded-md hover:bg-[#8b1a1a]/90 mb-2"
+                      >
+                        <Download className="h-4 w-4 mr-2" />
+                        Download
+                      </button>
+                      {downloadError[material._id] && (
+                        <p className="text-xs text-red-500 text-center">
+                          {downloadError[material._id]}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
