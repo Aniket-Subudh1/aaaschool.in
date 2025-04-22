@@ -272,3 +272,11 @@ body {
 .font-serif {
   font-family: "Lora", serif;
 }
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .bg-radial-gradient {
+    background-image: radial-gradient(circle at center, var(--tw-gradient-from) 0%, var(--tw-gradient-to) 70%);
+  }
+}
