@@ -16,6 +16,8 @@ export async function GET(request: NextRequest) {
     const type = searchParams.get('type') || undefined;
     const active = searchParams.get('active') === 'true';
 
+    await verifyAuth(request, { allowPublic: true });
+
     const studyMaterials = await getStudyMaterials({
       category,
       class: classFilter,
@@ -23,7 +25,7 @@ export async function GET(request: NextRequest) {
       active
     });
 
-    // Sanitize the response to remove sensitive information
+   
     return NextResponse.json(
       studyMaterials.map(material => ({
         _id: material._id,

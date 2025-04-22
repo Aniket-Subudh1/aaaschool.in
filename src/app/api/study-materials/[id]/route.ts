@@ -12,6 +12,9 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
+    // Allow public access
+    await verifyAuth(request, { allowPublic: true });
+
     const studyMaterial = await getStudyMaterialById(params.id);
     
     if (!studyMaterial) {
@@ -21,7 +24,10 @@ export async function GET(
       );
     }
     
-    return NextResponse.json(studyMaterial);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { filePublicId, uploadedBy, ...sanitizedMaterial } = studyMaterial;
+    
+    return NextResponse.json(sanitizedMaterial);
   } catch (error) {
     console.error('Error fetching study material:', error);
     return NextResponse.json(
@@ -30,7 +36,6 @@ export async function GET(
     );
   }
 }
-
 export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }

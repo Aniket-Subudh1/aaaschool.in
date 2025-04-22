@@ -21,7 +21,10 @@ const ignoredPathPrefixes = [
   '/robots.txt',
   '/api/notifications',
   '/api/holidays',
-  '/principal.jpg'
+  '/principal.jpg',
+  '/api/study-material',
+  '/api/enquiries',
+  '/api/admissions'
 ];
 
 export async function verifyAuth(request: NextRequest, options: { allowPublic?: boolean } = {}): Promise<AuthResult> {
