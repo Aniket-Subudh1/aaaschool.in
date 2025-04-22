@@ -180,7 +180,7 @@ export default function DownloadPage() {
                 </button>
 
                 {isFilterOpen && (
-                  <div className="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg overflow-hidden z-10 border border-gray-200">
+                  <div className="absolute left-0 mt-2 w-56  bg-white rounded-md shadow-lg overflow-hidden z-10 border border-gray-200">
                     <button
                       className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       onClick={() => {

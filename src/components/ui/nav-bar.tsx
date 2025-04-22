@@ -44,7 +44,7 @@ const navItems = [
   { name: "INFRASTRUCTURE", href: "#", icon: Building },
   { name: "GALLERY", href: "#", icon: ImageIcon },
   { name: "CONTACT", href: "#", icon: Phone },
-  { name: "DOWNLOAD", href: "#", icon: Download },
+  { name: "DOWNLOAD", href: "/download", icon: Download },
 ];
 
 export default function NavBar() {
