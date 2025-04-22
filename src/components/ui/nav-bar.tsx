@@ -42,7 +42,17 @@ const navItems = [
   { name: "BEYOND ACADEMICS", href: "#", icon: null },
   { name: "ACHIEVEMENTS", href: "#", icon: Trophy },
   { name: "INFRASTRUCTURE", href: "#", icon: Building },
-  { name: "GALLERY", href: "#", icon: ImageIcon },
+  {
+    name: "GALLERY",
+    href: "#",
+    icon: ImageIcon,
+    submenu: [
+      { name: "Gallery", href: "/gallery" },
+      { name: "Photos", href: "/gallery/photo" },
+      { name: "Videos", href: "/gallery/video" },
+      { name: "News Bulletin", href: "/gallery/news-bulletin" },
+    ],
+  },
   { name: "CONTACT", href: "#", icon: Phone },
   { name: "DOWNLOAD", href: "/download", icon: Download },
 ];
