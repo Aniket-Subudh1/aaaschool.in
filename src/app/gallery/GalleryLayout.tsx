@@ -24,6 +24,8 @@ type GalleryLayoutProps = {
   title: string;
   description?: string;
   backgroundClass?: string;
+  metaTitle?: string;
+  metaDescription?: string;
 };
 
 export default function GalleryLayout({

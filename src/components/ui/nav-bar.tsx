@@ -244,7 +244,7 @@ export default function NavBar() {
                           : undefined
                       }
                     >
-                      <div className="flex items-center">
+                      <div className="flexitems-center">
                         <span className="w-2 h-2 bg-[#8b1a1a] rounded-full mr-2 flex-shrink-0"></span>
                         <span className="whitespace-nowrap">{item.name}</span>
                       </div>
@@ -271,7 +271,7 @@ export default function NavBar() {
                               <a
                                 key={subitem.name}
                                 href={subitem.href}
-                                className="block py-1 text-2xs text-[#5a3e36] hover:text-[#8b1a1a] whitespace-nowrap"
+                                className="block py-1 text-xs text-[#5a3e36] hover:text-[#8b1a1a] whitespace-nowrap"
                               >
                                 {subitem.name}
                               </a>

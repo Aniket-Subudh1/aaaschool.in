@@ -162,18 +162,19 @@ export default function AdmissionPage() {
               If you have any questions about the admission process or face any
               issues, please contact our admission office.
             </p>
-            <div className="inline-flex space-x-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
               <a
                 href="tel:1234567890"
-                className="px-6 py-3 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 transition-colors"
+                className="w-full sm:w-auto px-6 py-3 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 transition-colors text-center"
               >
-                Call: +91 1234567890
+                Call:&nbsp;+91&nbsp;1234567890
               </a>
+
               <a
                 href="mailto:admissions@aaaschool.in"
-                className="px-6 py-3 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 transition-colors"
+                className="w-full sm:w-auto px-6 py-3 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 transition-colors text-center"
               >
-                Email: admissions@aaaschool.in
+                Email:&nbsp;admissions@aaaschool.in
               </a>
             </div>
           </div>

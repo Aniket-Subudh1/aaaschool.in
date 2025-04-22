@@ -12,7 +12,6 @@ const dmSans = DM_Sans({
   weight: ["400", "500", "600", "700"],
 });
 
-// Viewport configuration
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -58,10 +57,7 @@ export const metadata: Metadata = {
   },
   verification: {
     google: "your-google-site-verification-code",
-    other: {
-      // Add other verification codes as needed
-      // 'yandex': 'your-yandex-verification-code',
-    },
+    other: {},
   },
   robots: {
     index: true,
