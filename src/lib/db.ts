@@ -1,5 +1,5 @@
 import getClientPromise from "./mongodb";
-import { Announcement, Notification, Holiday, Feedback, AdminUser, Admission, Enquiry } from "./models";
+import { Announcement, Notification, Holiday, Feedback, AdminUser, Admission, Enquiry, StudyMaterial } from "./models";
 import { ObjectId } from "mongodb";
 
 export async function getCollection(name: string) {
@@ -428,4 +428,77 @@ export async function getATATRegistrationById(id: string) {
     console.error('Error fetching ATAT registration by ID:', error);
     throw error;
   }
+}
+
+
+export async function getStudyMaterials(filters: { 
+  category?: string, 
+  class?: string, 
+  type?: string, 
+  active?: boolean 
+} = {}) {
+  const collection = await getCollection("studyMaterials");
+  const query: Record<string, unknown> = {};
+  
+  if (filters.category) query.category = filters.category;
+  if (filters.class) query.class = filters.class;
+  if (filters.type) query.type = filters.type;
+  if (filters.active !== undefined) query.active = filters.active;
+
+  return collection.find(query).sort({ createdAt: -1 }).toArray();
+}
+
+export async function createStudyMaterial(
+  material: Omit<StudyMaterial, "_id" | "createdAt" | "updatedAt">
+) {
+  const collection = await getCollection("studyMaterials");
+  const now = new Date();
+  const newMaterial = {
+    ...material,
+    createdAt: now,
+    updatedAt: now,
+  };
+  const result = await collection.insertOne(newMaterial);
+  return { ...newMaterial, _id: result.insertedId };
+}
+
+
+export function validateFileType(file: File): boolean {
+  const allowedTypes = [
+    'application/pdf',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/msword',
+    'image/jpeg',
+    'image/png'
+  ];
+  
+  return allowedTypes.includes(file.type);
+}
+
+
+export function validateFileSize(file: File): boolean {
+  const maxSize = 10 * 1024 * 1024; // 10MB
+  return file.size <= maxSize;
+}
+
+export async function updateStudyMaterial(id: string, material: Partial<StudyMaterial>) {
+  const collection = await getCollection("studyMaterials");
+  const now = new Date();
+  const updateData = {
+    ...material,
+    updatedAt: now,
+  };
+  const result = await collection.updateOne({ _id: new ObjectId(id) }, { $set: updateData });
+  return result;
+}
+
+export async function deleteStudyMaterial(id: string) {
+  const collection = await getCollection("studyMaterials");
+  const result = await collection.deleteOne({ _id: new ObjectId(id) });
+  return result;
+}
+
+export async function getStudyMaterialById(id: string) {
+  const collection = await getCollection("studyMaterials");
+  return collection.findOne({ _id: new ObjectId(id) });
 }

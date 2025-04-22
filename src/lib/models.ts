@@ -174,3 +174,20 @@ export interface ATATRegistration {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface StudyMaterial {
+  _id?: string;
+  title: string;
+  description?: string;
+  fileUrl: string;
+  filePublicId: string;
+  fileType: string;
+  fileSize: number; 
+  category: 'School Brochure' | 'Academic Calendar' | 'Prescribed Booklist' | 'Annual Report' | 'Magazine' | 'Admission Form' | 'Transfer Certificate' | 'Syllabus' | 'Other';
+  class?: string;
+  type?: string;
+  uploadedBy: string;
+  active: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}

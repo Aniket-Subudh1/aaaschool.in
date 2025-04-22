@@ -11,6 +11,7 @@ import {
   ClipboardCheck,
   FileText,
   Award,
+  BookOpen,
 } from "lucide-react";
 
 interface SidebarLink {
@@ -62,6 +63,11 @@ export default function AdminSidebar() {
       name: "ATAT Registrations",
       href: "/admin/atat-registrations",
       icon: <Award size={20} />,
+    },
+    {
+      name: "Study Materials",
+      href: "/admin/study-materials",
+      icon: <BookOpen size={20} />,
     },
     {
       name: "Settings",
