@@ -1,5 +1,5 @@
 import getClientPromise from "./mongodb";
-import { Announcement, Notification, Holiday, Feedback, AdminUser, Admission, Enquiry, StudyMaterial } from "./models";
+import { Announcement, Notification, Holiday, Feedback, AdminUser, Admission, Enquiry, StudyMaterial,Album,Photo, Video,NewsBulletin } from "./models";
 import { ObjectId } from "mongodb";
 
 export async function getCollection(name: string) {
@@ -501,4 +501,223 @@ export async function deleteStudyMaterial(id: string) {
 export async function getStudyMaterialById(id: string) {
   const collection = await getCollection("studyMaterials");
   return collection.findOne({ _id: new ObjectId(id) });
+}
+
+export async function getAlbums(onlyActive = false) {
+  const collection = await getCollection("albums");
+  const query = onlyActive ? { active: true } : {};
+  return collection.find(query).sort({ createdAt: -1 }).toArray();
+}
+
+export async function getAlbumById(id: string) {
+  const collection = await getCollection("albums");
+  return collection.findOne({ _id: new ObjectId(id) });
+}
+
+export async function createAlbum(
+  album: Omit<Album, "_id" | "createdAt" | "updatedAt" | "imageCount">
+) {
+  const collection = await getCollection("albums");
+  const now = new Date();
+  const newAlbum = {
+    ...album,
+    imageCount: 0,
+    createdAt: now,
+    updatedAt: now,
+  };
+  const result = await collection.insertOne(newAlbum);
+  return { ...newAlbum, _id: result.insertedId };
+}
+
+export async function updateAlbum(id: string, album: Partial<Album>) {
+  const collection = await getCollection("albums");
+  const now = new Date();
+  const updateData = {
+    ...album,
+    updatedAt: now,
+  };
+  const result = await collection.updateOne({ _id: new ObjectId(id) }, { $set: updateData });
+  return result;
+}
+
+export async function deleteAlbum(id: string) {
+  const collection = await getCollection("albums");
+  const result = await collection.deleteOne({ _id: new ObjectId(id) });
+  return result;
+}
+
+export async function incrementAlbumImageCount(id: string) {
+  const collection = await getCollection("albums");
+  const now = new Date();
+  const result = await collection.updateOne(
+    { _id: new ObjectId(id) },
+    { 
+      $inc: { imageCount: 1 },
+      $set: { updatedAt: now }
+    }
+  );
+  return result;
+}
+
+export async function decrementAlbumImageCount(id: string) {
+  const collection = await getCollection("albums");
+  const now = new Date();
+  const result = await collection.updateOne(
+    { _id: new ObjectId(id) },
+    { 
+      $inc: { imageCount: -1 },
+      $set: { updatedAt: now }
+    }
+  );
+  return result;
+}
+
+// Photo methods
+export async function getPhotosByAlbumId(albumId: string) {
+  const collection = await getCollection("photos");
+  return collection.find({ albumId }).sort({ order: 1 }).toArray();
+}
+
+export async function getPhotoById(id: string) {
+  const collection = await getCollection("photos");
+  return collection.findOne({ _id: new ObjectId(id) });
+}
+
+export async function createPhoto(
+  photo: Omit<Photo, "_id" | "createdAt" | "updatedAt">
+) {
+  const collection = await getCollection("photos");
+  const now = new Date();
+  const newPhoto = {
+    ...photo,
+    createdAt: now,
+    updatedAt: now,
+  };
+  const result = await collection.insertOne(newPhoto);
+  
+  // Update album image count
+  await incrementAlbumImageCount(photo.albumId);
+  
+  return { ...newPhoto, _id: result.insertedId };
+}
+
+export async function updatePhoto(id: string, photo: Partial<Photo>) {
+  const collection = await getCollection("photos");
+  const now = new Date();
+  const updateData = {
+    ...photo,
+    updatedAt: now,
+  };
+  const result = await collection.updateOne({ _id: new ObjectId(id) }, { $set: updateData });
+  return result;
+}
+
+export async function deletePhoto(id: string, albumId: string) {
+  const collection = await getCollection("photos");
+  const result = await collection.deleteOne({ _id: new ObjectId(id) });
+  
+  // Update album image count
+  if (result.deletedCount > 0) {
+    await decrementAlbumImageCount(albumId);
+  }
+  
+  return result;
+}
+
+export async function getPhotoCountByAlbumId(albumId: string): Promise<number> {
+  const collection = await getCollection("photos");
+  return collection.countDocuments({ albumId });
+}
+
+// Video methods
+export async function getVideos(onlyActive = false) {
+  const collection = await getCollection("videos");
+  const query = onlyActive ? { active: true } : {};
+  return collection.find(query).sort({ createdAt: -1 }).toArray();
+}
+
+export async function getVideoById(id: string) {
+  const collection = await getCollection("videos");
+  return collection.findOne({ _id: new ObjectId(id) });
+}
+
+export async function createVideo(
+  video: Omit<Video, "_id" | "createdAt" | "updatedAt">
+) {
+  const collection = await getCollection("videos");
+  const now = new Date();
+  const newVideo = {
+    ...video,
+    createdAt: now,
+    updatedAt: now,
+  };
+  const result = await collection.insertOne(newVideo);
+  return { ...newVideo, _id: result.insertedId };
+}
+
+export async function updateVideo(id: string, video: Partial<Video>) {
+  const collection = await getCollection("videos");
+  const now = new Date();
+  const updateData = {
+    ...video,
+    updatedAt: now,
+  };
+  const result = await collection.updateOne({ _id: new ObjectId(id) }, { $set: updateData });
+  return result;
+}
+
+export async function deleteVideo(id: string) {
+  const collection = await getCollection("videos");
+  const result = await collection.deleteOne({ _id: new ObjectId(id) });
+  return result;
+}
+
+// News Bulletin methods
+export async function getNewsBulletins(onlyActive = false) {
+  const collection = await getCollection("newsBulletins");
+  const query = onlyActive ? { active: true } : {};
+  return collection.find(query).sort({ publishDate: -1 }).toArray();
+}
+
+export async function getNewsBulletinById(id: string) {
+  const collection = await getCollection("newsBulletins");
+  return collection.findOne({ _id: new ObjectId(id) });
+}
+
+export async function createNewsBulletin(
+  bulletin: Omit<NewsBulletin, "_id" | "createdAt" | "updatedAt">
+) {
+  const collection = await getCollection("newsBulletins");
+  const now = new Date();
+  const newBulletin = {
+    ...bulletin,
+    createdAt: now,
+    updatedAt: now,
+  };
+  const result = await collection.insertOne(newBulletin);
+  return { ...newBulletin, _id: result.insertedId };
+}
+
+export async function updateNewsBulletin(id: string, bulletin: Partial<NewsBulletin>) {
+  const collection = await getCollection("newsBulletins");
+  const now = new Date();
+  const updateData = {
+    ...bulletin,
+    updatedAt: now,
+  };
+  const result = await collection.updateOne({ _id: new ObjectId(id) }, { $set: updateData });
+  return result;
+}
+
+export async function deleteNewsBulletin(id: string) {
+  const collection = await getCollection("newsBulletins");
+  const result = await collection.deleteOne({ _id: new ObjectId(id) });
+  return result;
+}
+
+// YouTube ID extraction utility
+export function extractYouTubeId(url: string): string | null {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
 }

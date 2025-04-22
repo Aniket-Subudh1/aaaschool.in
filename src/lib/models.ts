@@ -191,3 +191,49 @@ export interface StudyMaterial {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface Album {
+  _id?: string;
+  title: string;
+  description?: string;
+  coverImageUrl: string;
+  coverImagePublicId: string;
+  imageCount: number;
+  active: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Photo {
+  _id?: string;
+  albumId: string;
+  imageUrl: string;
+  imagePublicId: string;
+  caption?: string;
+  order: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Video {
+  _id?: string;
+  title: string;
+  description?: string;
+  youtubeUrl: string;
+  youtubeId: string;
+  thumbnailUrl: string;
+  active: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface NewsBulletin {
+  _id?: string;
+  title: string;
+  imageUrl: string;
+  imagePublicId: string;
+  publishDate: Date;
+  active: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}

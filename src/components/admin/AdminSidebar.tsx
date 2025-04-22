@@ -12,12 +12,18 @@ import {
   FileText,
   Award,
   BookOpen,
+  FolderOpen,
 } from "lucide-react";
 
 interface SidebarLink {
   name: string;
   href: string;
   icon: React.ReactNode;
+  children?: {
+    name: string;
+    href: string;
+  }[];
+  expanded?: boolean;
 }
 
 export default function AdminSidebar() {
@@ -70,6 +76,26 @@ export default function AdminSidebar() {
       icon: <BookOpen size={20} />,
     },
     {
+      name: "Gallery",
+      href: "/admin/gallery",
+      icon: <FolderOpen size={20} />,
+      expanded: pathname?.startsWith("/admin/gallery"),
+      children: [
+        {
+          name: "Photo Albums",
+          href: "/admin/gallery/albums",
+        },
+        {
+          name: "Videos",
+          href: "/admin/gallery/videos",
+        },
+        {
+          name: "News Bulletins",
+          href: "/admin/gallery/news-bulletins",
+        },
+      ],
+    },
+    {
       name: "Settings",
       href: "/admin/settings",
       icon: <Settings size={20} />,
@@ -86,24 +112,59 @@ export default function AdminSidebar() {
               (link.href !== "/admin" && pathname?.startsWith(link.href));
 
             return (
-              <Link
-                key={link.name}
-                href={link.href}
-                className={`flex items-center px-3 py-2 rounded-md text-sm font-medium ${
-                  isActive
-                    ? "bg-[#8b1a1a]/10 text-[#8b1a1a]"
-                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-                }`}
-              >
-                <span
-                  className={`mr-3 ${
-                    isActive ? "text-[#8b1a1a]" : "text-gray-500"
+              <div key={link.name}>
+                <Link
+                  href={link.href}
+                  className={`flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium ${
+                    isActive
+                      ? "bg-[#8b1a1a]/10 text-[#8b1a1a]"
+                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                   }`}
                 >
-                  {link.icon}
-                </span>
-                {link.name}
-              </Link>
+                  <span className="flex items-center">
+                    <span
+                      className={`mr-3 ${
+                        isActive ? "text-[#8b1a1a]" : "text-gray-500"
+                      }`}
+                    >
+                      {link.icon}
+                    </span>
+                    {link.name}
+                  </span>
+
+                  {link.children && (
+                    <span
+                      className={`${
+                        link.expanded ? "rotate-90" : ""
+                      } transition-transform`}
+                    >
+                      ›
+                    </span>
+                  )}
+                </Link>
+
+                {link.children && link.expanded && (
+                  <div className="mt-1 ml-8 space-y-1">
+                    {link.children.map((child) => {
+                      const isChildActive = pathname === child.href;
+
+                      return (
+                        <Link
+                          key={child.name}
+                          href={child.href}
+                          className={`block px-3 py-2 rounded-md text-sm ${
+                            isChildActive
+                              ? "bg-[#8b1a1a]/10 text-[#8b1a1a] font-medium"
+                              : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                          }`}
+                        >
+                          {child.name}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             );
           })}
         </nav>

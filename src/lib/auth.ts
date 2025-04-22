@@ -24,7 +24,10 @@ const ignoredPathPrefixes = [
   '/principal.jpg',
   '/api/study-material',
   '/api/enquiries',
-  '/api/admissions'
+  '/api/admissions',
+  '/api/albums',
+  '/api/videos',
+  '/api/news-bulletins'
 ];
 
 export async function verifyAuth(request: NextRequest, options: { allowPublic?: boolean } = {}): Promise<AuthResult> {
