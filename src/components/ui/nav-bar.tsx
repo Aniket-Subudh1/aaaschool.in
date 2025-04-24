@@ -28,7 +28,7 @@ const navItems = [
     ],
   },
   { name: "ABOUT US", href: "/about", icon: null },
-  { name: "DISCLOSURE", href: "/about", icon: null },
+  { name: "DISCLOSURE", href: "/disclosure", icon: null },
   {
     name: "ACADEMICS",
     href: "#",
