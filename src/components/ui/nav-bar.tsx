@@ -53,7 +53,7 @@ const navItems = [
       { name: "News Bulletin", href: "/gallery/news-bulletin" },
     ],
   },
-  { name: "CONTACT", href: "#", icon: Phone },
+  { name: "CONTACT", href: "/contact", icon: Phone },
   { name: "DOWNLOAD", href: "/download", icon: Download },
 ];
 

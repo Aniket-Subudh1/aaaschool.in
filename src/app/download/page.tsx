@@ -2,38 +2,20 @@
 
 import { useState, useEffect } from "react";
 import {
-  Download,
-  File,
-  Book,
-  Calendar,
-  Paperclip,
   Filter,
   AlertCircle,
+  Search,
+  Download,
+  FileText,
+  Calendar,
+  BookOpen,
+  FileCheck,
+  Newspaper,
+  FileSignature,
+  Award,
+  GraduationCap,
+  File,
 } from "lucide-react";
-
-// Mapping of categories to icons
-const categoryIcons = {
-  "School Brochure": <File className="h-8 w-8" />,
-  "Academic Calendar": <Calendar className="h-8 w-8" />,
-  "Prescribed Booklist": <Book className="h-8 w-8" />,
-  "Annual Report": <Paperclip className="h-8 w-8" />,
-  Magazine: <Paperclip className="h-8 w-8" />,
-  "Admission Form": <File className="h-8 w-8" />,
-  "Transfer Certificate": <File className="h-8 w-8" />,
-  Syllabus: <Book className="h-8 w-8" />,
-  Other: <File className="h-8 w-8" />,
-};
-
-const categories = [
-  "School Brochure",
-  "Academic Calendar",
-  "Prescribed Booklist",
-  "Annual Report",
-  "Magazine",
-  "Admission Form",
-  "Transfer Certificate",
-  "Syllabus",
-];
 
 interface StudyMaterial {
   _id: string;
@@ -46,7 +28,18 @@ interface StudyMaterial {
   active: boolean;
 }
 
-export default function DownloadPage() {
+const categories = [
+  "School Brochure",
+  "Academic Calendar",
+  "Prescribed Booklist",
+  "Annual Report",
+  "Magazine",
+  "Admission Form",
+  "Transfer Certificate",
+  "Syllabus",
+];
+
+export default function DownloadsPage() {
   const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -55,6 +48,7 @@ export default function DownloadPage() {
   );
   const [filter, setFilter] = useState<string | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchStudyMaterials = async () => {
@@ -66,10 +60,7 @@ export default function DownloadPage() {
         }).toString();
 
         const response = await fetch(`/api/study-materials?${queryParams}`);
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch study materials");
-        }
+        if (!response.ok) throw new Error("Failed to fetch study materials");
 
         const data = await response.json();
         setStudyMaterials(data);
@@ -86,12 +77,10 @@ export default function DownloadPage() {
 
   const handleDownload = async (material: StudyMaterial) => {
     try {
-      // Clear any previous download error for this material
       setDownloadError((prev) => ({ ...prev, [material._id]: "" }));
 
-      // Determine file extension
       const getFileExtension = (fileType: string) => {
-        const extensionMap: { [key: string]: string } = {
+        const map: { [key: string]: string } = {
           "application/pdf": ".pdf",
           "application/msword": ".doc",
           "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
@@ -100,47 +89,34 @@ export default function DownloadPage() {
           "image/png": ".png",
           "image/gif": ".gif",
         };
-        return extensionMap[fileType] || "";
+        return map[fileType] || "";
       };
 
-      // Fetch the file with appropriate headers
       const response = await fetch(material.fileUrl, {
         method: "GET",
-        headers: {
-          "Content-Type": material.fileType,
-        },
+        headers: { "Content-Type": material.fileType },
       });
 
-      if (!response.ok) {
+      if (!response.ok)
         throw new Error(`HTTP error! status: ${response.status}`);
-      }
 
-      // Get the blob
       const blob = await response.blob();
-
-      // Create download link
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
-      link.href = url;
 
-      // Generate filename
       const sanitizedFilename = material.title
         .toLowerCase()
         .replace(/[^a-z0-9]/g, "-")
         .replace(/-+/g, "-")
         .trim();
 
-      // Set download attributes
+      link.href = url;
       link.download = `${sanitizedFilename}${getFileExtension(
         material.fileType
       )}`;
-
-      // Append to body, click, and remove
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-
-      // Clean up
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Download failed:", error);
@@ -154,119 +130,201 @@ export default function DownloadPage() {
     }
   };
 
+  const getCategoryIcon = (category: string, size = 24, className = "") => {
+    switch (category) {
+      case "School Brochure":
+        return <FileText size={size} className={className} />;
+      case "Academic Calendar":
+        return <Calendar size={size} className={className} />;
+      case "Prescribed Booklist":
+        return <BookOpen size={size} className={className} />;
+      case "Annual Report":
+        return <FileCheck size={size} className={className} />;
+      case "Magazine":
+        return <Newspaper size={size} className={className} />;
+      case "Admission Form":
+        return <FileSignature size={size} className={className} />;
+      case "Transfer Certificate":
+        return <Award size={size} className={className} />;
+      case "Syllabus":
+        return <GraduationCap size={size} className={className} />;
+      default:
+        return <File size={size} className={className} />;
+    }
+  };
+
+  const filteredMaterials = studyMaterials.filter(
+    (material) =>
+      material.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (material.description &&
+        material.description.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
+
   return (
-    <div className="min-h-screen bg-[#f8f3e9] py-12 px-4">
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-xl shadow-md overflow-hidden">
+    <main className="min-h-screen bg-[#f8f3e9] py-12 px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-lg border border-[#e6d7c3] overflow-visible">
           {/* Header */}
-          <div className="bg-[#8b1a1a] text-white text-center p-6">
-            <h1 className="text-2xl md:text-3xl font-bold">Download Center</h1>
-            <p className="mt-2 text-sm md:text-base">
-              Access and download school documents and study materials
+          <div className="bg-gradient-to-r from-[#8b1a1a] to-[#a52a2a] text-white p-8">
+            <h1 className="text-3xl md:text-4xl font-bold mb-2">
+              Download Center
+            </h1>
+            <p className="text-white/80 max-w-2xl">
+              Access and download school documents, forms, and study materials
+              for Aryavart Academy
             </p>
           </div>
 
-          {/* Filter and Materials Section */}
-          <div className="p-6">
-            {/* Filter */}
-            <div className="mb-6 flex items-center justify-between">
-              <div className="relative">
+          {/* Filter and Search Section */}
+          <div className="p-6 border-b border-[#e6d7c3] bg-[#f8f3e9]/30">
+            <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between relative z-20">
+              {/* Category Filter */}
+              <div className="relative z-30">
                 <button
-                  className="flex items-center text-sm text-gray-600 hover:text-gray-900 px-3 py-2 border border-gray-300 rounded-md"
+                  className="flex items-center text-sm text-gray-700 hover:text-[#8b1a1a] px-4 py-2.5 bg-white border border-gray-200 rounded-lg shadow-sm transition-colors"
                   onClick={() => setIsFilterOpen(!isFilterOpen)}
                 >
                   <Filter size={16} className="mr-2" />
-                  {filter ? `Category: ${filter}` : "Filter by Category"}
+                  {filter ? `Category: ${filter}` : "All Categories"}
                 </button>
 
                 {isFilterOpen && (
-                  <div className="relative left-0 mt-2 w-56  bg-white rounded-md shadow-lg overflow-hidden z-10 border border-gray-200">
-                    <button
-                      className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => {
-                        setFilter(null);
-                        setIsFilterOpen(false);
-                      }}
-                    >
-                      Show All
-                    </button>
-                    {categories.map((category) => (
+                  <div className="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-lg overflow-hidden z-30 border border-gray-200">
+                    <div className="p-2">
                       <button
-                        key={category}
-                        className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 ${
-                          filter === category
-                            ? "bg-gray-100 font-medium"
-                            : "text-gray-700"
-                        }`}
+                        className="w-full text-left px-3 py-2 text-sm rounded-md hover:bg-[#f8f3e9] transition-colors"
                         onClick={() => {
-                          setFilter(category);
+                          setFilter(null);
                           setIsFilterOpen(false);
                         }}
                       >
-                        {category}
+                        Show All
                       </button>
-                    ))}
+                      {categories.map((category) => (
+                        <button
+                          key={category}
+                          className={`w-full text-left px-3 py-2 text-sm rounded-md hover:bg-[#f8f3e9] transition-colors flex items-center ${
+                            filter === category
+                              ? "bg-[#f8f3e9] text-[#8b1a1a] font-medium"
+                              : "text-gray-700"
+                          }`}
+                          onClick={() => {
+                            setFilter(category);
+                            setIsFilterOpen(false);
+                          }}
+                        >
+                          <span className="mr-2 text-[#8b1a1a]">
+                            {getCategoryIcon(category, 16)}
+                          </span>
+                          {category}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
-            </div>
 
-            {/* Error Handling */}
+              {/* Search */}
+              <div className="relative w-full md:w-auto md:min-w-[300px]">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Search className="h-4 w-4 text-gray-400" />
+                </div>
+                <input
+                  type="text"
+                  className="block w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#8b1a1a]/20 focus:border-[#8b1a1a] bg-white"
+                  placeholder="Search documents..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Materials Section */}
+          <div className="p-6">
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md mb-6 flex items-center">
-                <AlertCircle className="mr-2 text-red-500" />
-                {error}
+              <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-6 flex items-center">
+                <AlertCircle className="mr-2 text-red-500 flex-shrink-0" />
+                <span>{error}</span>
               </div>
             )}
 
-            {/* Materials Grid */}
             {isLoading ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-pulse">
-                {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <div key={i} className="bg-gray-200 rounded-md h-36"></div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="bg-gray-200 rounded-lg h-48"></div>
                 ))}
               </div>
-            ) : studyMaterials.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
-                No documents available
+            ) : filteredMaterials.length === 0 ? (
+              <div className="text-center py-12">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#f8f3e9] text-[#8b1a1a] mb-4">
+                  <AlertCircle className="h-8 w-8" />
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-1">
+                  No documents found
+                </h3>
+                <p className="text-gray-500">
+                  {searchQuery
+                    ? "Try adjusting your search query"
+                    : filter
+                    ? `No documents available in the "${filter}" category`
+                    : "No documents are currently available for download"}
+                </p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {studyMaterials.map((material) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredMaterials.map((material) => (
                   <div
                     key={material._id}
-                    className="bg-white border border-gray-200 rounded-lg shadow-md p-4 flex flex-col items-center text-center hover:shadow-lg transition-shadow"
+                    className="group relative bg-white border border-[#e6d7c3] rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col h-full"
                   >
-                    <div className="mb-4 text-[#8b1a1a]">
-                      {
-                        categoryIcons[
-                          material.category as keyof typeof categoryIcons
-                        ]
-                      }
-                    </div>
-                    <h3 className="text-sm font-medium mb-2 line-clamp-2">
-                      {material.title}
-                    </h3>
-                    {material.type && (
-                      <p className="text-xs text-gray-500 mb-2">
-                        {material.type}
-                      </p>
-                    )}
+                    <div className="h-1.5 w-full bg-gradient-to-r from-[#8b1a1a] to-[#a52a2a]"></div>
 
-                    {/* Download Button with Error Handling */}
-                    <div className="mt-auto flex flex-col items-center w-full">
-                      <button
-                        onClick={() => handleDownload(material)}
-                        className="flex items-center text-sm bg-[#8b1a1a] text-white px-3 py-2 rounded-md hover:bg-[#8b1a1a]/90 mb-2"
-                      >
-                        <Download className="h-4 w-4 mr-2" />
-                        Download
-                      </button>
-                      {downloadError[material._id] && (
-                        <p className="text-xs text-red-500 text-center">
-                          {downloadError[material._id]}
+                    <div className="p-5 flex flex-col h-full">
+                      <div className="flex items-start mb-3">
+                        <div className="w-12 h-12 rounded-full bg-[#8b1a1a]/10 flex items-center justify-center text-[#8b1a1a] mr-3 flex-shrink-0">
+                          {getCategoryIcon(material.category)}
+                        </div>
+                        <div>
+                          <span className="text-xs font-medium text-[#8b1a1a]/70 uppercase tracking-wider">
+                            {material.category}
+                          </span>
+                          <h3 className="text-base font-medium text-gray-800 line-clamp-2 group-hover:text-[#8b1a1a] transition-colors">
+                            {material.title}
+                          </h3>
+                        </div>
+                      </div>
+
+                      {material.description && (
+                        <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                          {material.description}
                         </p>
                       )}
+
+                      {material.type && (
+                        <div className="mt-auto mb-3">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#f8f3e9] text-[#8b1a1a]">
+                            {material.type}
+                          </span>
+                        </div>
+                      )}
+
+                      <div className="mt-auto">
+                        <button
+                          onClick={() => handleDownload(material)}
+                          className="w-full flex items-center justify-center text-sm bg-white border border-[#8b1a1a] text-[#8b1a1a] px-4 py-2.5 rounded-lg hover:bg-[#8b1a1a] hover:text-white transition-colors duration-300 font-medium"
+                        >
+                          <Download className="h-4 w-4 mr-2" />
+                          Download
+                        </button>
+
+                        {downloadError[material._id] && (
+                          <div className="mt-2 flex items-center text-xs text-red-600">
+                            <AlertCircle className="h-3 w-3 mr-1 flex-shrink-0" />
+                            <span>{downloadError[material._id]}</span>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -275,6 +333,6 @@ export default function DownloadPage() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

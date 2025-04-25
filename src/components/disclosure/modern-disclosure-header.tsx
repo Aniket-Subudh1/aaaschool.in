@@ -14,7 +14,6 @@ export default function ModernDisclosureHeader() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Set canvas dimensions
     const setCanvasDimensions = () => {
       if (!canvas) return;
       canvas.width = canvas.offsetWidth * window.devicePixelRatio;
@@ -25,10 +24,8 @@ export default function ModernDisclosureHeader() {
     setCanvasDimensions();
     window.addEventListener("resize", setCanvasDimensions);
 
-    // Create particles
     const particlesArray: Particle[] = [];
-    // Increased number of particles for more visibility
-    const numberOfParticles = 80;
+    const numberOfParticles = 60;
 
     class Particle {
       x: number;
@@ -47,7 +44,7 @@ export default function ModernDisclosureHeader() {
         this.speedX = Math.random() * 1.5 - 0.75;
         this.speedY = Math.random() * 1.5 - 0.75;
         // Increased opacity in the color for more visibility
-        this.color = `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.2})`;
+        this.color = `rgba(255, 255, 255, ${Math.random() * 0.3 + 0.1})`;
       }
 
       update() {
@@ -102,11 +99,8 @@ export default function ModernDisclosureHeader() {
           const dy = particlesArray[a].y - particlesArray[b].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
-          // Increased distance threshold for more connections
           if (distance < 150) {
-            // Increased line opacity for more visibility
-            ctx.strokeStyle = `rgba(255, 255, 255, ${0.3 - distance / 500})`;
-            // Increased line width for more visibility
+            ctx.strokeStyle = `rgba(255, 255, 255, ${0.2 - distance / 500})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(particlesArray[a].x, particlesArray[a].y);

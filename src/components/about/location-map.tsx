@@ -94,7 +94,7 @@ export default function LocationMap() {
 
                 {/* Map iframe - Replace with actual Google Maps embed */}
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3745.4944484761897!2d85.6152!3d20.1733!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjDCsDEwJzIzLjkiTiA4NcKwMzYnNTQuNyJF!5e0!3m2!1sen!2sin!4v1650956274963!5m2!1sen!2sin"
+                  src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14980.362792280448!2d85.5823066!3d20.1719488!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x22407c4dbf0b1549!2sAryavart%20Ancient%20Academy%20Haladipada!5e0!3m2!1sen!2sin!4v1671109703941!5m2!1sen!2sin"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -120,7 +120,7 @@ export default function LocationMap() {
                     }}
                     className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                   >
-                    <div className="relative">
+                    <div className="relative bottom-8 right-14">
                       <MapPin className="h-10 w-10 text-[#8b1a1a]" />
                       <motion.div
                         initial={{ scale: 0, opacity: 0.7 }}
