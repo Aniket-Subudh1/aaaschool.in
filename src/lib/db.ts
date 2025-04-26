@@ -1,5 +1,5 @@
 import getClientPromise from "./mongodb";
-import { Announcement, Notification, Holiday, Feedback, AdminUser, Admission, Enquiry, StudyMaterial,Album,Photo, Video,NewsBulletin } from "./models";
+import { Announcement, Notification, Holiday, Feedback, AdminUser, Admission, Enquiry, StudyMaterial, Album, Photo, Video, NewsBulletin, Award, SportsAchievement, AlumniProfile } from "./models";
 import { ObjectId } from "mongodb";
 
 export async function getCollection(name: string) {
@@ -720,4 +720,150 @@ export function extractYouTubeId(url: string): string | null {
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
   const match = url.match(regExp);
   return (match && match[2].length === 11) ? match[2] : null;
+}
+
+
+const AWARDS_COLLECTION = "awards";
+const SPORTS_ACHIEVEMENTS_COLLECTION = "sportsAchievements";
+const ALUMNI_PROFILES_COLLECTION = "alumniProfiles";
+
+
+
+// Get all awards with optional active filter
+export async function getAwards(onlyActive = false) {
+  const collection = await getCollection(AWARDS_COLLECTION);
+  const query = onlyActive ? { active: true } : {};
+  return collection.find(query).sort({ date: -1 }).toArray();
+}
+
+// Get a single award by ID
+export async function getAwardById(id: string) {
+  const collection = await getCollection(AWARDS_COLLECTION);
+  return collection.findOne({ _id: new ObjectId(id) });
+}
+
+// Create a new award
+export async function createAward(
+  award: Omit<Award, "_id" | "createdAt" | "updatedAt">
+) {
+  const collection = await getCollection(AWARDS_COLLECTION);
+  const now = new Date();
+  const newAward = {
+    ...award,
+    createdAt: now,
+    updatedAt: now,
+  };
+  const result = await collection.insertOne(newAward);
+  return { ...newAward, _id: result.insertedId };
+}
+
+// Update an existing award
+export async function updateAward(id: string, award: Partial<Award>) {
+  const collection = await getCollection(AWARDS_COLLECTION);
+  const now = new Date();
+  const updateData = {
+    ...award,
+    updatedAt: now
+  };
+  const result = await collection.updateOne({ _id: new ObjectId(id) }, { $set: updateData });
+  return result;
+}
+
+// Delete an award
+export async function deleteAward(id: string) {
+  const collection = await getCollection(AWARDS_COLLECTION);
+  const result = await collection.deleteOne({ _id: new ObjectId(id) });
+  return result;
+}
+
+
+export async function getSportsAchievements(onlyActive = false) {
+  const collection = await getCollection(SPORTS_ACHIEVEMENTS_COLLECTION);
+  const query = onlyActive ? { active: true } : {};
+  return collection.find(query).sort({ year: -1, name: 1 }).toArray();
+}
+
+// Get a single sports achievement by ID
+export async function getSportsAchievementById(id: string) {
+  const collection = await getCollection(SPORTS_ACHIEVEMENTS_COLLECTION);
+  return collection.findOne({ _id: new ObjectId(id) });
+}
+
+// Create a new sports achievement
+export async function createSportsAchievement(
+  achievement: Omit<SportsAchievement, "_id" | "createdAt" | "updatedAt">
+) {
+  const collection = await getCollection(SPORTS_ACHIEVEMENTS_COLLECTION);
+  const now = new Date();
+  const newAchievement = {
+    ...achievement,
+    createdAt: now,
+    updatedAt: now,
+  };
+  const result = await collection.insertOne(newAchievement);
+  return { ...newAchievement, _id: result.insertedId };
+}
+
+// Update an existing sports achievement
+export async function updateSportsAchievement(id: string, achievement: Partial<SportsAchievement>) {
+  const collection = await getCollection(SPORTS_ACHIEVEMENTS_COLLECTION);
+  const now = new Date();
+  const updateData = {
+    ...achievement,
+    updatedAt: now
+  };
+  const result = await collection.updateOne({ _id: new ObjectId(id) }, { $set: updateData });
+  return result;
+}
+
+// Delete a sports achievement
+export async function deleteSportsAchievement(id: string) {
+  const collection = await getCollection(SPORTS_ACHIEVEMENTS_COLLECTION);
+  const result = await collection.deleteOne({ _id: new ObjectId(id) });
+  return result;
+}
+
+
+// Get all alumni profiles with optional active filter
+export async function getAlumniProfiles(onlyActive = false) {
+  const collection = await getCollection(ALUMNI_PROFILES_COLLECTION);
+  const query = onlyActive ? { active: true } : {};
+  return collection.find(query).sort({ graduationYear: -1, name: 1 }).toArray();
+}
+
+// Get a single alumni profile by ID
+export async function getAlumniProfileById(id: string) {
+  const collection = await getCollection(ALUMNI_PROFILES_COLLECTION);
+  return collection.findOne({ _id: new ObjectId(id) });
+}
+
+export async function createAlumniProfile(
+  profile: Omit<AlumniProfile, "_id" | "createdAt" | "updatedAt">
+) {
+  const collection = await getCollection(ALUMNI_PROFILES_COLLECTION);
+  const now = new Date();
+  const newProfile = {
+    ...profile,
+    createdAt: now,
+    updatedAt: now,
+  };
+  const result = await collection.insertOne(newProfile);
+  return { ...newProfile, _id: result.insertedId };
+}
+
+export async function updateAlumniProfile(id: string, profile: Partial<AlumniProfile>) {
+  const collection = await getCollection(ALUMNI_PROFILES_COLLECTION);
+  const now = new Date();
+  const updateData = {
+    ...profile,
+    updatedAt: now
+  };
+  const result = await collection.updateOne({ _id: new ObjectId(id) }, { $set: updateData });
+  return result;
+}
+
+export async function deleteAlumniProfile(id: string) {
+  const collection = await getCollection(ALUMNI_PROFILES_COLLECTION);
+  const result = await collection.deleteOne({ _id: new ObjectId(id) });
+  return result;
 }

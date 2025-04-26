@@ -40,7 +40,17 @@ const navItems = [
     ],
   },
   { name: "BEYOND ACADEMICS", href: "#", icon: null },
-  { name: "ACHIEVEMENTS", href: "#", icon: Trophy },
+  {
+    name: "ACHIEVEMENTS",
+    href: "/achievements",
+    icon: Trophy,
+    submenu: [
+      { name: "Achievements ", href: "/achievements" },
+      { name: "Sports Achievements", href: "/achievements/sports" },
+      { name: "Awards & Recognition", href: "/achievements/awards" },
+      { name: "Alumni Network", href: "/achievements/alumni" },
+    ],
+  },
   { name: "INFRASTRUCTURE", href: "#", icon: Building },
   {
     name: "GALLERY",

@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongodb';
+
 export interface Announcement {
   _id?: string;
   title: string;
@@ -233,6 +235,47 @@ export interface NewsBulletin {
   imageUrl: string;
   imagePublicId: string;
   publishDate: Date;
+  active: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+export interface Award {
+  _id?: string | ObjectId;
+  title: string;
+  description: string;
+  date: string;
+  imageUrl: string;
+  imagePublicId: string;
+  category?: string;
+  recipient?: string;
+  active: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface SportsAchievement {
+  _id?: string | ObjectId;
+  name: string;
+  class: string;
+  event: string;
+  award: string;
+  year: string;
+  active: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface AlumniProfile {
+  _id?: string | ObjectId;
+  name: string;
+  graduationYear: string;
+  currentPosition: string;
+  company: string;
+  achievement: string;
+  instagramPostUrl?: string;
+  category?: string;
+  imageUrl?: string;
+  imagePublicId?: string;
   active: boolean;
   createdAt: Date;
   updatedAt: Date;

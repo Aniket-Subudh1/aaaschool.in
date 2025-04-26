@@ -96,6 +96,26 @@ export default function AdminSidebar() {
       ],
     },
     {
+      name: "Achievements",
+      href: "/admin/achievements",
+      icon: <Award size={20} />,
+      expanded: pathname?.startsWith("/admin/achievements"),
+      children: [
+        {
+          name: "Awards",
+          href: "/admin/achievements/awards",
+        },
+        {
+          name: "Sports",
+          href: "/admin/achievements/sports",
+        },
+        {
+          name: "Alumni",
+          href: "/admin/achievements/alumni",
+        },
+      ],
+    },
+    {
       name: "Settings",
       href: "/admin/settings",
       icon: <Settings size={20} />,
