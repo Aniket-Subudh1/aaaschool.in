@@ -10,6 +10,7 @@ import {
   Trash2,
   Calendar,
   CheckCircle,
+  Eye,
   XCircle,
   Edit,
 } from "lucide-react";
@@ -486,14 +487,23 @@ export default function AdminSportsPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <div className="flex items-center justify-end space-x-2">
                         <Link
+                          href={`/admin/achievements/sports/${achievement._id}`}
+                          className="text-blue-600 hover:text-blue-900"
+                          title="View"
+                        >
+                          <Eye size={16} className="hover:text-blue-700" />
+                        </Link>
+                        <Link
                           href={`/admin/achievements/sports/${achievement._id}/edit`}
                           className="text-blue-600 hover:text-blue-900"
+                          title="Edit"
                         >
                           <Edit size={16} className="hover:text-blue-700" />
                         </Link>
                         <button
                           onClick={() => handleDeleteClick(achievement._id)}
                           className="text-red-600 hover:text-red-900"
+                          title="Delete"
                         >
                           <Trash2 size={16} className="hover:text-red-700" />
                         </button>

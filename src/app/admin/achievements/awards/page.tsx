@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import {
   ArrowLeft,
   Search,
@@ -330,11 +331,11 @@ export default function AdminAwardsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredAwards.map((award) => (
-            <div
+            <motion.div
               key={award._id}
-              className={`bg-white rounded-lg shadow-md overflow-hidden border ${
-                award.active ? "border-gray-200" : "border-gray-300 bg-gray-50"
-              }`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200"
             >
               <div className="relative h-48">
                 <Image
@@ -408,7 +409,7 @@ export default function AdminAwardsPage() {
                   </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       )}
