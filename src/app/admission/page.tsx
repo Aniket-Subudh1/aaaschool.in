@@ -6,7 +6,7 @@ import { ClipboardCheck, PenLine, ArrowRight } from "lucide-react";
 export default function AdmissionPage() {
   return (
     <main>
-      <div className="min-h-screen bg-[#f8f3e9] py-28 px-4">
+      <div className="min-h-screen bg-[#f8f3e9] py-8 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <div className="flex justify-center mb-6">

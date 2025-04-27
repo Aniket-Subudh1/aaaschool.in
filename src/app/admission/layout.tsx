@@ -1,15 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+
 import Script from "next/script";
 import Footer from "@/components/ui/footer";
 import NavBar from "@/components/ui/nav-bar";
-
-// Initialize Inter font
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "500", "600", "700"],
-});
 
 // Dynamic Metadata for Admission Section
 export const metadata: Metadata = {
@@ -85,7 +78,7 @@ export default function AdmissionLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`${inter.className} min-h-screen flex flex-col `}>
+    <div className={`min-h-screen flex flex-col `}>
       <Script
         id="school-structured-data"
         type="application/ld+json"

@@ -1,12 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
 import Script from "next/script";
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "500", "600", "700"],
-});
 
 export const metadata: Metadata = {
   title: {
@@ -83,7 +76,7 @@ export default function GalleryLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`${inter.className} min-h-screen pt-5 flex flex-col`}>
+    <div className={`min-h-screen pt-5 flex flex-col`}>
       <Script
         id="gallery-structured-data"
         type="application/ld+json"

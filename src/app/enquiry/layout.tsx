@@ -1,14 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
 import Script from "next/script";
 import Footer from "@/components/ui/footer";
 import NavBar from "@/components/ui/nav-bar";
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "500", "600", "700"],
-});
 
 export const metadata: Metadata = {
   title: {
@@ -83,7 +76,7 @@ export default function EnquiryLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`${inter.className} min-h-screen flex flex-col`}>
+    <div className={`min-h-screen flex flex-col`}>
       {/* Structured Data for School Enquiry */}
       <Script
         id="school-enquiry-structured-data"
