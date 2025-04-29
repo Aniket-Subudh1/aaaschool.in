@@ -7,9 +7,9 @@ import KonarkWheel from "@/components/ui/konark-wheel";
 import CulturalPattern from "@/components/ui/cultural-pattern";
 import TempleDecoration from "@/components/ui/temple-decoration";
 import TempleSilhouette from "@/components/ui/temple-silhouette";
-import AcademicPrograms from "@/components/ui/academic-programs"
-import SchoolLevels from "@/components/ui/school-levels"
-import NotificationSection from "@/components/ui/notification-section"
+import AcademicPrograms from "@/components/ui/academic-programs";
+import SchoolLevels from "@/components/ui/school-levels";
+import NotificationSection from "@/components/ui/notification-section";
 import AnnouncementsTicker from "@/components/ui/announcements-ticker";
 import { motion } from "framer-motion";
 import ImageSlider from "@/components/ui/image-slider";
@@ -22,7 +22,6 @@ import PrincipalMessage from "@/components/ui/principal-message";
 import NavBar from "@/components/ui/nav-bar";
 import Footer from "@/components/ui/footer";
 import StudentTestimonials from "@/components/ui/student-testimonials";
-
 
 export const Hero = () => {
   return (
@@ -102,17 +101,17 @@ export const Hero = () => {
                 className="flex flex-col sm:flex-row gap-4 cta-buttons"
               >
                 <a
-                  href="#"
+                  href="/admission"
                   className="inline-flex items-center justify-center px-6 py-3 bg-[#8b1a1a] text-[#f8f3e9] rounded-lg font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-md cta-button"
                 >
                   Admission Inquiry
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </a>
                 <a
-                  href="#"
+                  href="/contact"
                   className="inline-flex items-center justify-center px-6 py-3 bg-[#f8f3e9] text-[#8b1a1a] border-2 border-[#8b1a1a] rounded-lg font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg hover:bg-[#8b1a1a]/10 shadow-md cta-button"
                 >
-                  Explore Programs
+                  Contact
                 </a>
               </motion.div>
 
@@ -168,11 +167,11 @@ export const Hero = () => {
                     ))}
                   </div>
 
-                  <div className="relative z-10 flex items-center justify-center pt-4">
+                  <div className="relative flex items-center justify-center pt-4">
                     <Image
-                      src="/placeholder.svg?height=400&width=500"
+                      src="/sch.jpeg"
                       alt="Students learning"
-                      width={500}
+                      width={1000}
                       height={400}
                       className="rounded-lg object-cover shadow-md"
                     />
@@ -208,26 +207,26 @@ export const Hero = () => {
           </div>
         </div>
       </section>
-     
-      <ImageSlider/>
-    
+
+      <ImageSlider />
+
       <SchoolLevels />
 
-{/* Academic Programs Section */}
-<div id="academic-programs">
-  <AcademicPrograms />
-</div>
+      {/* Academic Programs Section */}
+      <div id="academic-programs">
+        <AcademicPrograms />
+      </div>
 
-{/* Notification Section */}
-<NotificationSection />
-<SchoolCalendar />
-<SchoolActivities />
-<AryavartHouses />
-<BeyondAcademics/>
-<PrincipalMessage/>
-<StudentTestimonials/>
-<FeedbackSection/>
-<Footer/>
+      {/* Notification Section */}
+      <NotificationSection />
+      <SchoolCalendar />
+      <SchoolActivities />
+      <AryavartHouses />
+      <BeyondAcademics />
+      <PrincipalMessage />
+      <StudentTestimonials />
+      <FeedbackSection />
+      <Footer />
     </main>
   );
 };

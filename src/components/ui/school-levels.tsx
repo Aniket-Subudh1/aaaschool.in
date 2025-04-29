@@ -1,26 +1,33 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useRef, useEffect } from "react"
-import { motion } from "framer-motion"
-import Image from "next/image"
-import { BookOpen, Users, Brain, GraduationCap, ChevronRight, ChevronLeft } from "lucide-react"
+import { useState, useRef, useEffect } from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import {
+  BookOpen,
+  Users,
+  Brain,
+  GraduationCap,
+  ChevronRight,
+  ChevronLeft,
+} from "lucide-react";
 
 interface SchoolLevel {
-  id: string
-  title: string
-  subtitle: string
-  icon: React.ReactNode
-  color: string
-  description: string
-  image: string
+  id: string;
+  title: string;
+  subtitle: string;
+  icon: React.ReactNode;
+  color: string;
+  description: string;
+  image: string;
 }
 
 export default function SchoolLevels() {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const [containerWidth, setContainerWidth] = useState(0)
+  const [activeIndex, setActiveIndex] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
 
   const levels: SchoolLevel[] = [
     {
@@ -31,7 +38,7 @@ export default function SchoolLevels() {
       color: "#8b1a1a",
       description:
         "Covering Nursery to K.G. II, the elementary school adopts an informal approach towards learning. Children here are encouraged to explore their environment while also being taught basic concepts in language, mathematics, computers, art and craft, dance and music.",
-      image: "/placeholder.svg?height=300&width=400",
+      image: "/ps.jfif",
     },
     {
       id: "dwitiya",
@@ -41,7 +48,7 @@ export default function SchoolLevels() {
       color: "#a52a2a",
       description:
         "Spanning classes I - V, the junior school is the child's introduction to full day school. This stage of school aims to build on the child's growing spirit of discovery and exploration. Emphasis is placed on the acquisition of sound language skills, mathematical concepts and scientific fundamentals.",
-      image: "/placeholder.svg?height=300&width=400",
+      image: "/dw.jpeg",
     },
     {
       id: "tritya",
@@ -51,7 +58,7 @@ export default function SchoolLevels() {
       color: "#b33939",
       description:
         "Comprising classes VI to VIII, this stage sees the introduction of a third language, Sanskrit, as well the detailing of history, geography, physics, chemistry and biology as separate subjects and all the excitement of their first examination.",
-      image: "/placeholder.svg?height=300&width=400",
+      image: "/tr.jpg",
     },
     {
       id: "chaturtha",
@@ -61,36 +68,36 @@ export default function SchoolLevels() {
       color: "#c0392b",
       description:
         "Comprising classes IX to XII, the senior school is where early life's lessons are put to test. Rigorous practice and study techniques with special emphasis on analysis and conceptualization are woven into the curriculum, as students prepare to appear for their board examinations.",
-      image: "/placeholder.svg?height=300&width=400",
+      image: "/lb.jpg",
     },
-  ]
+  ];
 
   useEffect(() => {
     if (containerRef.current) {
-      setContainerWidth(containerRef.current.offsetWidth)
+      setContainerWidth(containerRef.current.offsetWidth);
     }
 
     const handleResize = () => {
       if (containerRef.current) {
-        setContainerWidth(containerRef.current.offsetWidth)
+        setContainerWidth(containerRef.current.offsetWidth);
       }
-    }
+    };
 
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const nextSlide = () => {
-    setActiveIndex((prev) => (prev === levels.length - 1 ? 0 : prev + 1))
-  }
+    setActiveIndex((prev) => (prev === levels.length - 1 ? 0 : prev + 1));
+  };
 
   const prevSlide = () => {
-    setActiveIndex((prev) => (prev === 0 ? levels.length - 1 : prev - 1))
-  }
+    setActiveIndex((prev) => (prev === 0 ? levels.length - 1 : prev - 1));
+  };
 
   const goToSlide = (index: number) => {
-    setActiveIndex(index)
-  }
+    setActiveIndex(index);
+  };
 
   return (
     <section className="py-16 relative overflow-hidden bg-[#f0e6d2]">
@@ -98,17 +105,23 @@ export default function SchoolLevels() {
       <div className="absolute top-0 left-0 w-full h-8 overflow-hidden">
         <div className="flex justify-center w-full">
           {Array.from({ length: 40 }).map((_, i) => (
-            <div key={`top-${i}`} className="w-6 h-8 bg-[#8b1a1a]/10 mx-0.5 rounded-b-lg" />
+            <div
+              key={`top-${i}`}
+              className="w-6 h-8 bg-[#8b1a1a]/10 mx-0.5 rounded-b-lg"
+            />
           ))}
         </div>
       </div>
 
       <div className="container mx-auto px-4 pt-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#8b1a1a] mb-4 font-serif">Our School Levels</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#8b1a1a] mb-4 font-serif">
+            Our School Levels
+          </h2>
           <p className="text-[#5a3e36] max-w-2xl mx-auto">
-            Our educational journey is divided into four progressive levels, each designed to nurture different aspects
-            of a child's development.
+            Our educational journey is divided into four progressive levels,
+            each designed to nurture different aspects of a child&apos;s
+            development.
           </p>
         </div>
 
@@ -135,8 +148,12 @@ export default function SchoolLevels() {
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               style={{ width: `${levels.length * 100}%` }}
             >
-              {levels.map((level, index) => (
-                <div key={level.id} className="relative" style={{ width: `${100 / levels.length}%` }}>
+              {levels.map((level) => (
+                <div
+                  key={level.id}
+                  className="relative"
+                  style={{ width: `${100 / levels.length}%` }}
+                >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center p-4">
                     <div className="order-2 md:order-1">
                       <div className="flex items-center mb-4">
@@ -147,7 +164,9 @@ export default function SchoolLevels() {
                           <div className="text-[#8b1a1a]">{level.icon}</div>
                         </div>
                         <div>
-                          <h3 className="text-2xl font-bold text-[#8b1a1a] font-serif">{level.title}</h3>
+                          <h3 className="text-2xl font-bold text-[#8b1a1a] font-serif">
+                            {level.title}
+                          </h3>
                           <p className="text-[#5a3e36]">{level.subtitle}</p>
                         </div>
                       </div>
@@ -161,14 +180,15 @@ export default function SchoolLevels() {
                     </div>
                     <div className="order-1 md:order-2 relative">
                       <div className="absolute inset-0 bg-[#8b1a1a]/5 rounded-2xl -translate-x-4 translate-y-4"></div>
-                      <div className="relative bg-white p-4 rounded-2xl shadow-lg border border-[#d4b483]/30">
-                        <Image
-                          src={level.image || "/placeholder.svg"}
-                          alt={level.title}
-                          width={400}
-                          height={300}
-                          className="rounded-lg"
-                        />
+                      <div className="relative bg-white p-4 rounded-2xl shadow-lg border border-[#d4b483]/30 h-96 w-full">
+                        <div className="relative w-full h-full">
+                          <Image
+                            src={level.image || "/placeholder.svg"}
+                            alt={level.title}
+                            fill
+                            className="rounded-lg object-cover"
+                          />
+                        </div>
                         <div className="absolute -bottom-4 -right-4 bg-white p-2 rounded-full shadow-lg border border-[#d4b483]/30">
                           <div
                             className="w-10 h-10 rounded-full flex items-center justify-center"
@@ -199,5 +219,5 @@ export default function SchoolLevels() {
         </div>
       </div>
     </section>
-  )
+  );
 }

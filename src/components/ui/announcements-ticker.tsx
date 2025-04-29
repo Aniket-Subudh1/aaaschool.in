@@ -30,18 +30,16 @@ export default function AnnouncementsTicker() {
     try {
       setIsLoading(true);
       setError(null);
-      
-      const res = await fetch('/api/announcements?active=true');
-      if (!res.ok) throw new Error('Failed to fetch announcements');
-      
+
+      const res = await fetch("/api/announcements?active=true");
+      if (!res.ok) throw new Error("Failed to fetch announcements");
+
       const data = await res.json();
-      
-   
+
       if (data && data.length > 0) {
         const announcementTitles = data.map((item: any) => item.title);
         setAnnouncements(announcementTitles);
       } else {
-        
         setAnnouncements([
           "Admission for the new academic year 2025-26 is now open",
           "Parent-Teacher Meeting scheduled for next Friday",
@@ -49,9 +47,9 @@ export default function AnnouncementsTicker() {
         ]);
       }
     } catch (err) {
-      console.error('Error fetching announcements:', err);
-      setError('Failed to load announcements');
-      
+      console.error("Error fetching announcements:", err);
+      setError("Failed to load announcements");
+
       // Fallback announcements if fetch fails
       setAnnouncements([
         "Admission for the new academic year 2025-26 is now open",
@@ -127,7 +125,7 @@ export default function AnnouncementsTicker() {
         </button>
       </div>
 
-      <div className="ml-3">
+      <div className="ml-3 z">
         <AnnouncementsModal />
       </div>
     </div>

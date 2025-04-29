@@ -21,14 +21,14 @@ export default function PrincipalMessage() {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg border border-[#d4b483]/30 overflow-hidden">
+        <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-lg border border-[#d4b483]/30 overflow-hidden">
           <div className="md:flex">
             {/* Image Section */}
             <div className="md:w-1/2">
               <Image
-                src="/principal.jpg" 
+                src="/pric.jpg"
                 alt="Principal"
-                width={800}
+                width={900}
                 height={600}
                 className="object-cover w-full h-full"
               />
@@ -40,13 +40,12 @@ export default function PrincipalMessage() {
                 PRINCIPAL&apos;S MESSAGE
               </h2>
               <p className="text-[#5a3e36] mb-4">
-                As I believe that we are the means by which our children are coming into 
-                this world, but we did not design them. They are designed by <strong>GOD</strong>.
+                As I believe that we are the means by which our children are
+                coming into this world, but we did not design them. They are
+                designed by <strong>GOD</strong>.
               </p>
-              
-              <div className="mt-auto">
-                
-              </div>
+
+              <div className="mt-auto"></div>
             </div>
           </div>
         </div>
@@ -54,10 +53,23 @@ export default function PrincipalMessage() {
 
       {/* Optional bottom silhouette */}
       <div className="absolute bottom-0 left-0 right-0 h-24 opacity-10 pointer-events-none">
-        <svg viewBox="0 0 1200 200" preserveAspectRatio="none" className="w-full h-full">
-          <path d="M600,0 Q750,60 750,60 L450,60 Q450,60 600,0 Z" fill="#8b1a1a" />
-          <path d="M400,40 Q450,60 450,60 L350,60 Q350,60 400,40 Z" fill="#8b1a1a" />
-          <path d="M800,40 Q850,60 850,60 L750,60 Q750,60 800,40 Z" fill="#8b1a1a" />
+        <svg
+          viewBox="0 0 1200 200"
+          preserveAspectRatio="none"
+          className="w-full h-full"
+        >
+          <path
+            d="M600,0 Q750,60 750,60 L450,60 Q450,60 600,0 Z"
+            fill="#8b1a1a"
+          />
+          <path
+            d="M400,40 Q450,60 450,60 L350,60 Q350,60 400,40 Z"
+            fill="#8b1a1a"
+          />
+          <path
+            d="M800,40 Q850,60 850,60 L750,60 Q750,60 800,40 Z"
+            fill="#8b1a1a"
+          />
           <rect x="300" y="60" width="600" height="80" fill="#8b1a1a" />
           <rect x="0" y="140" width="1200" height="60" fill="#8b1a1a" />
         </svg>

@@ -23,7 +23,7 @@ export default function AchievementsPage() {
       id: "awards",
       title: "Awards & Recognition",
       description: "Explore our achievements and accolades in various fields",
-      icon: <Award size={32} />,
+      icon: <Award size={32} className="text-white" />,
       color: "from-[#8b1a1a]/90 to-[#c63030]/90",
       stats: [
         { icon: <Star size={12} />, text: "100+ Awards" },
@@ -36,7 +36,7 @@ export default function AchievementsPage() {
       title: "Sports Achievements",
       description:
         "Celebrating our students' excellence in sports competitions",
-      icon: <Trophy size={32} />,
+      icon: <Trophy size={32} className="text-white" />,
       color: "from-amber-700/90 to-orange-600/90",
       stats: [
         { icon: <Trophy size={12} />, text: "50+ Championships" },
@@ -48,7 +48,7 @@ export default function AchievementsPage() {
       id: "alumni",
       title: "Alumni Network",
       description: "Connect with our successful graduates making a difference",
-      icon: <Users size={32} />,
+      icon: <Users size={32} className="text-white" />,
       color: "from-indigo-700/90 to-blue-600/90",
       stats: [
         { icon: <Users size={12} />, text: "Global Network" },

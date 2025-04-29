@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, X, Calendar } from 'lucide-react';
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Bell, X, Calendar } from "lucide-react";
 
 interface Announcement {
   _id?: string;
@@ -21,32 +21,32 @@ export default function AnnouncementsModal() {
     try {
       setIsLoading(true);
       setError(null);
-      
-      const res = await fetch('/api/announcements?active=true');
-      if (!res.ok) throw new Error('Failed to fetch announcements');
-      
+
+      const res = await fetch("/api/announcements?active=true");
+      if (!res.ok) throw new Error("Failed to fetch announcements");
+
       const data = await res.json();
       setAnnouncements(data);
     } catch (err) {
-      console.error('Error fetching announcements:', err);
-      setError('Failed to load announcements');
-      
+      console.error("Error fetching announcements:", err);
+      setError("Failed to load announcements");
+
       setAnnouncements([
         {
           title: "Admission for the new academic year 2025-26 is now open",
           date: "2025-06-01",
-          createdAt: new Date()
+          createdAt: new Date(),
         },
         {
           title: "Parent-Teacher Meeting scheduled for next Friday",
           date: "2025-06-15",
-          createdAt: new Date()
+          createdAt: new Date(),
         },
         {
           title: "Annual Sports Day Celebration",
           date: "2025-07-20",
-          createdAt: new Date()
-        }
+          createdAt: new Date(),
+        },
       ]);
     } finally {
       setIsLoading(false);
@@ -64,7 +64,7 @@ export default function AnnouncementsModal() {
 
   return (
     <>
-      <button 
+      <button
         onClick={openModal}
         className="flex items-center text-xs text-[#5a3e36] hover:text-[#8b1a1a] transition-colors"
       >
@@ -93,7 +93,7 @@ export default function AnnouncementsModal() {
                   <Bell className="h-6 w-6 mr-3" />
                   <h2 className="text-xl font-bold">AAA Announcements</h2>
                 </div>
-                <button 
+                <button
                   onClick={closeModal}
                   className="text-white hover:bg-white/20 p-2 rounded-full transition-colors"
                 >
@@ -102,7 +102,7 @@ export default function AnnouncementsModal() {
               </div>
 
               {/* Modal Content */}
-              <div className="p-6 overflow-y-auto max-h-[60vh]">
+              <div className="p-6 overflow-y-auto  max-h-[60vh]">
                 {isLoading ? (
                   <div className="text-center py-8">
                     <div className="animate-pulse">
@@ -111,9 +111,7 @@ export default function AnnouncementsModal() {
                     </div>
                   </div>
                 ) : error ? (
-                  <div className="text-center text-red-600 py-8">
-                    {error}
-                  </div>
+                  <div className="text-center text-red-600 py-8">{error}</div>
                 ) : announcements.length === 0 ? (
                   <div className="text-center text-gray-500 py-8">
                     No announcements at the moment
@@ -121,7 +119,7 @@ export default function AnnouncementsModal() {
                 ) : (
                   <div className="space-y-4">
                     {announcements.map((announcement, index) => (
-                      <div 
+                      <div
                         key={announcement._id || index}
                         className="bg-[#f8f3e9] p-4 rounded-lg border border-[#d4b483]/30 hover:shadow-md transition-shadow"
                       >
@@ -136,18 +134,24 @@ export default function AnnouncementsModal() {
                             {announcement.date && (
                               <div className="flex items-center text-sm text-[#5a3e36]">
                                 <Calendar className="h-4 w-4 mr-2" />
-                                {new Date(announcement.date).toLocaleDateString('en-US', {
-                                  year: 'numeric',
-                                  month: 'long',
-                                  day: 'numeric'
-                                })}
+                                {new Date(announcement.date).toLocaleDateString(
+                                  "en-US",
+                                  {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                  }
+                                )}
                               </div>
                             )}
                             <p className="text-sm text-[#5a3e36] mt-2 opacity-70">
-                              Posted on {new Date(announcement.createdAt).toLocaleDateString('en-US', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric'
+                              Posted on{" "}
+                              {new Date(
+                                announcement.createdAt
+                              ).toLocaleDateString("en-US", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
                               })}
                             </p>
                           </div>
