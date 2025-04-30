@@ -1,5 +1,5 @@
 import getClientPromise from "./mongodb";
-import { Announcement, Notification, Holiday, Feedback, AdminUser, Admission, Enquiry, StudyMaterial, Album, Photo, Video, NewsBulletin, Award, SportsAchievement, AlumniProfile } from "./models";
+import { Announcement, Notification, Holiday, Feedback, AdminUser, Admission, Enquiry, StudyMaterial, Album, Photo, Video, NewsBulletin, Award, SportsAchievement, AlumniProfile, Faculty } from "./models";
 import { ObjectId } from "mongodb";
 
 export async function getCollection(name: string) {
@@ -864,6 +864,55 @@ export async function updateAlumniProfile(id: string, profile: Partial<AlumniPro
 
 export async function deleteAlumniProfile(id: string) {
   const collection = await getCollection(ALUMNI_PROFILES_COLLECTION);
+  const result = await collection.deleteOne({ _id: new ObjectId(id) });
+  return result;
+}
+export async function getFaculty(onlyActive = false) {
+  const collection = await getCollection("faculty");
+  const query = onlyActive ? { active: true } : {};
+  return collection.find(query).sort({ name: 1 }).toArray();
+}
+
+export async function getFacultyById(id: string) {
+  const collection = await getCollection("faculty");
+  return collection.findOne({ _id: new ObjectId(id) });
+}
+
+export async function getFacultyByDepartment(department: string, onlyActive = false) {
+  const collection = await getCollection("faculty");
+  const query = onlyActive 
+    ? { department, active: true } 
+    : { department };
+  return collection.find(query).sort({ name: 1 }).toArray();
+}
+
+export async function createFaculty(
+  faculty: Omit<Faculty, "_id" | "createdAt" | "updatedAt">
+) {
+  const collection = await getCollection("faculty");
+  const now = new Date();
+  const newFaculty = {
+    ...faculty,
+    createdAt: now,
+    updatedAt: now,
+  };
+  const result = await collection.insertOne(newFaculty);
+  return { ...newFaculty, _id: result.insertedId };
+}
+
+export async function updateFaculty(id: string, faculty: Partial<Faculty>) {
+  const collection = await getCollection("faculty");
+  const now = new Date();
+  const updateData = {
+    ...faculty,
+    updatedAt: now,
+  };
+  const result = await collection.updateOne({ _id: new ObjectId(id) }, { $set: updateData });
+  return result;
+}
+
+export async function deleteFaculty(id: string) {
+  const collection = await getCollection("faculty");
   const result = await collection.deleteOne({ _id: new ObjectId(id) });
   return result;
 }

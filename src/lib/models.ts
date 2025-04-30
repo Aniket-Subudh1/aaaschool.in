@@ -280,3 +280,18 @@ export interface AlumniProfile {
   createdAt: Date;
   updatedAt: Date;
 }
+export interface Faculty {
+  _id?: string;
+  name: string;
+  position: string;
+  department: string;
+  email: string;
+  photoUrl: string;
+  photoPublicId: string;
+  bio?: string;
+  qualifications?: string[];
+  joinDate?: string;
+  active: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}

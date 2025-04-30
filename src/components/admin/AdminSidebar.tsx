@@ -10,6 +10,7 @@ import {
   Settings,
   ClipboardCheck,
   FileText,
+  GraduationCap,
   Award,
   BookOpen,
   FolderOpen,
@@ -74,6 +75,11 @@ export default function AdminSidebar() {
       name: "Study Materials",
       href: "/admin/study-materials",
       icon: <BookOpen size={20} />,
+    },
+    {
+      name: "Faculty",
+      href: "/admin/faculty",
+      icon: <GraduationCap size={20} />,
     },
     {
       name: "Gallery",
