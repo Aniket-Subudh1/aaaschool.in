@@ -20,13 +20,13 @@ export default function Footer() {
           {/* Apply & Contact Buttons */}
           <div className="flex px-4 md:px-16 flex-col md:flex-row justify-center items-center gap-3 py-3 md:py-4 w-full md:w-auto">
             <a
-              href="#"
+              href="/admission"
               className="w-full md:w-auto text-center bg-[#f5a623] hover:bg-[#e09417] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium text-sm md:text-base transition-colors"
             >
               APPLY FOR ADMISSION
             </a>
             <a
-              href="#"
+              href="/contact"
               className="w-full md:w-auto text-center bg-[#f5a623] hover:bg-[#e09417] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium text-sm md:text-base transition-colors"
             >
               CONTACT
@@ -203,7 +203,7 @@ export default function Footer() {
               <ul className="space-y-3">
                 <li>
                   <Link
-                    href="#"
+                    href="/ "
                     className="text-white/80 hover:text-white flex items-center"
                   >
                     <ArrowRight className="h-4 w-4 mr-2" />
@@ -212,7 +212,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="/about"
                     className="text-white/80 hover:text-white flex items-center"
                   >
                     <ArrowRight className="h-4 w-4 mr-2" />
@@ -221,7 +221,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="/admission"
                     className="text-white/80 hover:text-white flex items-center"
                   >
                     <ArrowRight className="h-4 w-4 mr-2" />
@@ -230,7 +230,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="/academics"
                     className="text-white/80 hover:text-white flex items-center"
                   >
                     <ArrowRight className="h-4 w-4 mr-2" />
@@ -239,7 +239,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="/beyond"
                     className="text-white/80 hover:text-white flex items-center"
                   >
                     <ArrowRight className="h-4 w-4 mr-2" />
@@ -248,7 +248,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="/contact"
                     className="text-white/80 hover:text-white flex items-center"
                   >
                     <ArrowRight className="h-4 w-4 mr-2" />
@@ -302,7 +302,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="/admission"
                     className="text-white/80 hover:text-white flex items-center"
                   >
                     <ArrowRight className="h-4 w-4 mr-2" />

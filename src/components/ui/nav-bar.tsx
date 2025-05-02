@@ -27,7 +27,17 @@ const navItems = [
       { name: "ATAT", href: "/admission/atat" },
     ],
   },
-  { name: "ABOUT US", href: "/about", icon: null },
+  {
+    name: "ABOUT US",
+    href: "/about",
+    icon: null,
+    submenu: [
+      { name: "About", href: "/about" },
+      { name: "Our Committiees", href: "/about/committee" },
+      { name: "Our Staff", href: "/academics/faculty" },
+      { name: "Our Location", href: "/about/location" },
+    ],
+  },
   { name: "DISCLOSURE", href: "/disclosure", icon: null },
   {
     name: "ACADEMICS",

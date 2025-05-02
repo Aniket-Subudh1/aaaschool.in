@@ -167,14 +167,14 @@ export default function AdmissionPage() {
                 href="tel:1234567890"
                 className="w-full sm:w-auto px-6 py-3 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 transition-colors text-center"
               >
-                Call:&nbsp;+91&nbsp;1234567890
+                Call:&nbsp;+91&nbsp;9124654094
               </a>
 
               <a
                 href="mailto:admissions@aaaschool.in"
                 className="w-full sm:w-auto px-6 py-3 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 transition-colors text-center"
               >
-                Email:&nbsp;admissions@aaaschool.in
+                Email:&nbsp;aryavartaa.krd@gmail.com
               </a>
             </div>
           </div>
