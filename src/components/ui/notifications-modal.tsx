@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, X, Calendar, Info, ChevronLeft } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Bell, X, Calendar, Info, ChevronLeft } from "lucide-react";
 
 interface Notification {
   _id?: string;
@@ -16,7 +16,8 @@ interface Notification {
 export default function NotificationsModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [selectedNotification, setSelectedNotification] = useState<Notification | null>(null);
+  const [selectedNotification, setSelectedNotification] =
+    useState<Notification | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -25,34 +26,32 @@ export default function NotificationsModal() {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     // Check initial width
     checkMobile();
-    
+
     // Add resize listener
-    window.addEventListener('resize', checkMobile);
-    
+    window.addEventListener("resize", checkMobile);
+
     // Cleanup listener
-    return () => window.removeEventListener('resize', checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   const renderIcon = (iconName: string) => {
-    const iconSize = 20;
-    const iconClasses = "text-[#8b1a1a]";
-    
+    // Fixed icon sizing - using proper Tailwind classes
     switch (iconName) {
-      case 'BookOpen':
-        return <Bell className={`h-${iconSize} w-${iconSize} ${iconClasses}`} />;
-      case 'Flag':
-        return <Bell className={`h-${iconSize} w-${iconSize} ${iconClasses}`} />;
-      case 'AlertCircle':
-        return <Bell className={`h-${iconSize} w-${iconSize} ${iconClasses}`} />;
-      case 'Dumbbell':
-        return <Bell className={`h-${iconSize} w-${iconSize} ${iconClasses}`} />;
-      case 'Award':
-        return <Bell className={`h-${iconSize} w-${iconSize} ${iconClasses}`} />;
+      case "BookOpen":
+        return <Bell className="h-5 w-5 text-[#8b1a1a]" />;
+      case "Flag":
+        return <Bell className="h-5 w-5 text-[#8b1a1a]" />;
+      case "AlertCircle":
+        return <Bell className="h-5 w-5 text-[#8b1a1a]" />;
+      case "Dumbbell":
+        return <Bell className="h-5 w-5 text-[#8b1a1a]" />;
+      case "Award":
+        return <Bell className="h-5 w-5 text-[#8b1a1a]" />;
       default:
-        return <Bell className={`h-${iconSize} w-${iconSize} ${iconClasses}`} />;
+        return <Bell className="h-5 w-5 text-[#8b1a1a]" />;
     }
   };
 
@@ -60,12 +59,12 @@ export default function NotificationsModal() {
     try {
       setIsLoading(true);
       setError(null);
-      
-      const res = await fetch('/api/notifications?active=true');
-      if (!res.ok) throw new Error('Failed to fetch notifications');
-      
+
+      const res = await fetch("/api/notifications?active=true");
+      if (!res.ok) throw new Error("Failed to fetch notifications");
+
       const data = await res.json();
-      
+
       if (data && data.length > 0) {
         setNotifications(data);
       } else {
@@ -76,31 +75,34 @@ export default function NotificationsModal() {
             title: "Integrated Classes for UPSC NDA Exam Sep 2024",
             icon: "BookOpen",
             date: "2024-06-15",
-            description: "Exciting opportunity for students preparing for competitive exams. Join our integrated coaching program.",
-            createdAt: new Date()
+            description:
+              "Exciting opportunity for students preparing for competitive exams. Join our integrated coaching program.",
+            createdAt: new Date(),
           },
           {
             _id: "2",
             title: "Celebration of Independence Day 2024",
             icon: "Flag",
             date: "2024-08-15",
-            description: "Join us in celebrating the spirit of independence with cultural performances and patriotic fervor.",
-            createdAt: new Date()
+            description:
+              "Join us in celebrating the spirit of independence with cultural performances and patriotic fervor.",
+            createdAt: new Date(),
           },
           {
             _id: "3",
             title: "National De-worming Day",
             icon: "AlertCircle",
             date: "2024-08-10",
-            description: "Health awareness program to ensure student wellness and preventive healthcare.",
-            createdAt: new Date()
-          }
+            description:
+              "Health awareness program to ensure student wellness and preventive healthcare.",
+            createdAt: new Date(),
+          },
         ]);
       }
     } catch (err) {
-      console.error('Error fetching notifications:', err);
-      setError('Failed to load notifications');
-      
+      console.error("Error fetching notifications:", err);
+      setError("Failed to load notifications");
+
       // Fallback notifications if fetch fails
       setNotifications([
         {
@@ -108,25 +110,28 @@ export default function NotificationsModal() {
           title: "Integrated Classes for UPSC NDA Exam Sep 2024",
           icon: "BookOpen",
           date: "2024-06-15",
-          description: "Exciting opportunity for students preparing for competitive exams. Join our integrated coaching program.",
-          createdAt: new Date()
+          description:
+            "Exciting opportunity for students preparing for competitive exams. Join our integrated coaching program.",
+          createdAt: new Date(),
         },
         {
           _id: "2",
           title: "Celebration of Independence Day 2024",
           icon: "Flag",
           date: "2024-08-15",
-          description: "Join us in celebrating the spirit of independence with cultural performances and patriotic fervor.",
-          createdAt: new Date()
+          description:
+            "Join us in celebrating the spirit of independence with cultural performances and patriotic fervor.",
+          createdAt: new Date(),
         },
         {
           _id: "3",
           title: "National De-worming Day",
           icon: "AlertCircle",
           date: "2024-08-10",
-          description: "Health awareness program to ensure student wellness and preventive healthcare.",
-          createdAt: new Date()
-        }
+          description:
+            "Health awareness program to ensure student wellness and preventive healthcare.",
+          createdAt: new Date(),
+        },
       ]);
     } finally {
       setIsLoading(false);
@@ -154,7 +159,7 @@ export default function NotificationsModal() {
   return (
     <>
       {/* Trigger Button */}
-      <button 
+      <button
         onClick={openModal}
         className="text-sm font-medium text-[#8b1a1a] hover:underline flex items-center"
       >
@@ -175,10 +180,7 @@ export default function NotificationsModal() {
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               className={`bg-white rounded-xl shadow-xl w-full max-h-[80vh] overflow-hidden 
-                ${isMobile 
-                  ? 'max-w-full h-[90vh]' 
-                  : 'max-w-4xl flex'
-                }`}
+                ${isMobile ? "max-w-full h-[90vh]" : "max-w-4xl flex"}`}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Mobile View */}
@@ -187,13 +189,12 @@ export default function NotificationsModal() {
                   {/* Header */}
                   <div className="bg-[#8b1a1a] text-white p-4 flex items-center justify-between">
                     <h2 className="font-bold text-lg">
-                      {selectedNotification 
-                        ? selectedNotification.title 
-                        : 'Notifications'
-                      }
+                      {selectedNotification
+                        ? selectedNotification.title
+                        : "Notifications"}
                     </h2>
                     <button onClick={closeModal}>
-                      <X className="h-6 w-6" />
+                      <X className="h-5 w-5" />
                     </button>
                   </div>
 
@@ -201,17 +202,20 @@ export default function NotificationsModal() {
                   {selectedNotification ? (
                     <div className="flex-1 overflow-y-auto p-4 space-y-6">
                       <div className="flex items-start">
-                        <div className="bg-[#8b1a1a]/10 p-3 rounded-full mr-4">
+                        <div className="bg-[#8b1a1a]/10 p-2 rounded-full mr-4">
                           {renderIcon(selectedNotification.icon)}
                         </div>
                         <div>
                           <div className="flex items-center text-[#5a3e36] mb-2">
                             <Calendar className="h-4 w-4 mr-2" />
                             <span className="text-sm">
-                              {new Date(selectedNotification.date || selectedNotification.createdAt).toLocaleDateString('en-US', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric'
+                              {new Date(
+                                selectedNotification.date ||
+                                  selectedNotification.createdAt
+                              ).toLocaleDateString("en-US", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
                               })}
                             </span>
                           </div>
@@ -221,8 +225,10 @@ export default function NotificationsModal() {
                       {selectedNotification.description && (
                         <div className="bg-[#f8f3e9] p-4 rounded-lg border border-[#d4b483]/20">
                           <div className="flex items-center mb-2">
-                            <Info className="h-5 w-5 text-[#8b1a1a] mr-2" />
-                            <h3 className="font-medium text-[#8b1a1a]">Details</h3>
+                            <Info className="h-4 w-4 text-[#8b1a1a] mr-2" />
+                            <h3 className="font-medium text-[#8b1a1a]">
+                              Details
+                            </h3>
                           </div>
                           <p className="text-[#5a3e36] whitespace-pre-line">
                             {selectedNotification.description}
@@ -235,7 +241,7 @@ export default function NotificationsModal() {
                           onClick={goBackToList}
                           className="flex items-center text-[#8b1a1a] hover:underline"
                         >
-                          <ChevronLeft className="h-5 w-5 mr-1" />
+                          <ChevronLeft className="h-4 w-4 mr-1" />
                           Back to List
                         </button>
                         <button
@@ -250,8 +256,11 @@ export default function NotificationsModal() {
                     <div className="flex-1 overflow-y-auto">
                       {isLoading ? (
                         <div className="p-4 space-y-4">
-                          {[1,2,3].map((_, index) => (
-                            <div key={index} className="animate-pulse bg-gray-200 h-16 rounded-lg"></div>
+                          {[1, 2, 3].map((_, index) => (
+                            <div
+                              key={index}
+                              className="animate-pulse bg-gray-200 h-16 rounded-lg"
+                            ></div>
                           ))}
                         </div>
                       ) : (
@@ -271,7 +280,10 @@ export default function NotificationsModal() {
                                     {notification.title}
                                   </h3>
                                   <p className="text-xs text-[#5a3e36] opacity-70">
-                                    {new Date(notification.date || notification.createdAt).toLocaleDateString()}
+                                    {new Date(
+                                      notification.date ||
+                                        notification.createdAt
+                                    ).toLocaleDateString()}
                                   </p>
                                 </div>
                               </div>
@@ -292,8 +304,11 @@ export default function NotificationsModal() {
                     </div>
                     {isLoading ? (
                       <div className="p-4 space-y-4">
-                        {[1,2,3].map((_, index) => (
-                          <div key={index} className="animate-pulse bg-gray-200 h-16 rounded-lg"></div>
+                        {[1, 2, 3].map((_, index) => (
+                          <div
+                            key={index}
+                            className="animate-pulse bg-gray-200 h-16 rounded-lg"
+                          ></div>
                         ))}
                       </div>
                     ) : (
@@ -303,9 +318,9 @@ export default function NotificationsModal() {
                             key={notification._id}
                             onClick={() => selectNotification(notification)}
                             className={`w-full text-left p-4 hover:bg-white transition-colors ${
-                              selectedNotification?._id === notification._id 
-                                ? 'bg-white border-l-4 border-[#8b1a1a]' 
-                                : ''
+                              selectedNotification?._id === notification._id
+                                ? "bg-white border-l-4 border-[#8b1a1a]"
+                                : ""
                             }`}
                           >
                             <div className="flex items-center">
@@ -317,7 +332,9 @@ export default function NotificationsModal() {
                                   {notification.title}
                                 </h3>
                                 <p className="text-xs text-[#5a3e36] opacity-70">
-                                  {new Date(notification.date || notification.createdAt).toLocaleDateString()}
+                                  {new Date(
+                                    notification.date || notification.createdAt
+                                  ).toLocaleDateString()}
                                 </p>
                               </div>
                             </div>
@@ -336,7 +353,7 @@ export default function NotificationsModal() {
                         className="space-y-6"
                       >
                         <div className="flex items-start">
-                          <div className="bg-[#8b1a1a]/10 p-3 rounded-full mr-4">
+                          <div className="bg-[#8b1a1a]/10 p-2 rounded-full mr-4">
                             {renderIcon(selectedNotification.icon)}
                           </div>
                           <div>
@@ -346,10 +363,13 @@ export default function NotificationsModal() {
                             <div className="flex items-center text-[#5a3e36] mt-2">
                               <Calendar className="h-4 w-4 mr-2" />
                               <span className="text-sm">
-                                {new Date(selectedNotification.date || selectedNotification.createdAt).toLocaleDateString('en-US', {
-                                  year: 'numeric',
-                                  month: 'long',
-                                  day: 'numeric'
+                                {new Date(
+                                  selectedNotification.date ||
+                                    selectedNotification.createdAt
+                                ).toLocaleDateString("en-US", {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
                                 })}
                               </span>
                             </div>
@@ -359,8 +379,10 @@ export default function NotificationsModal() {
                         {selectedNotification.description && (
                           <div className="bg-[#f8f3e9] p-4 rounded-lg border border-[#d4b483]/20">
                             <div className="flex items-center mb-2">
-                              <Info className="h-5 w-5 text-[#8b1a1a] mr-2" />
-                              <h3 className="font-medium text-[#8b1a1a]">Details</h3>
+                              <Info className="h-4 w-4 text-[#8b1a1a] mr-2" />
+                              <h3 className="font-medium text-[#8b1a1a]">
+                                Details
+                              </h3>
                             </div>
                             <p className="text-[#5a3e36] whitespace-pre-line">
                               {selectedNotification.description}
@@ -385,11 +407,11 @@ export default function NotificationsModal() {
                   </div>
 
                   {/* Close Button */}
-                  <button 
+                  <button
                     onClick={closeModal}
                     className="absolute top-4 right-4 text-[#5a3e36] hover:text-[#8b1a1a]"
                   >
-                    <X className="h-6 w-6" />
+                    <X className="h-5 w-5" />
                   </button>
                 </>
               )}

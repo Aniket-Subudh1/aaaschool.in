@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, memo } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface SliderImage {
@@ -12,10 +11,113 @@ interface SliderImage {
   description: string;
 }
 
+// Optimized slide component to prevent unnecessary re-renders
+const Slide = memo(
+  ({
+    image,
+    index,
+    isActive,
+    position,
+  }: {
+    image: SliderImage;
+    index: number;
+    isActive: boolean;
+    position: "center" | "left" | "right";
+  }) => {
+    // Calculate styling based on position
+    const getPositionStyles = () => {
+      if (position === "center") {
+        return "z-20 scale-100 opacity-100";
+      } else if (position === "left" || position === "right") {
+        return "z-10 scale-90 opacity-70 hover:opacity-80";
+      }
+      return "";
+    };
+
+    return (
+      <div
+        className={`transition-all duration-300 ease-in-out ${getPositionStyles()}`}
+      >
+        <div className="bg-white rounded-xl overflow-hidden shadow-lg border border-[#d4b483]/20 h-full transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+          <div className="relative h-48 md:h-56 lg:h-64">
+            <Image
+              src={image.src}
+              alt={image.alt}
+              fill
+              className="object-cover"
+              priority={isActive}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#8b1a1a]/70 to-transparent opacity-60"></div>
+          </div>
+          <div className="p-4">
+            <h3 className="text-lg font-bold text-[#8b1a1a] mb-2">
+              {image.title}
+            </h3>
+            <p className="text-sm text-[#5a3e36]">{image.description}</p>
+          </div>
+          <div className="absolute top-3 right-3 bg-white/80 backdrop-blur-sm text-[#8b1a1a] w-8 h-8 rounded-full flex items-center justify-center font-bold">
+            {index + 1}
+          </div>
+        </div>
+      </div>
+    );
+  }
+);
+
+Slide.displayName = "Slide";
+const NavButton = memo(
+  ({
+    direction,
+    onClick,
+  }: {
+    direction: "left" | "right";
+    onClick: () => void;
+  }) => {
+    const Icon = direction === "left" ? ChevronLeft : ChevronRight;
+
+    return (
+      <button
+        onClick={onClick}
+        className="bg-white/80 backdrop-blur-sm text-[#8b1a1a] p-2 rounded-full shadow-md hover:bg-[#8b1a1a] hover:text-white transition-colors transform active:scale-95"
+        aria-label={`${direction === "left" ? "Previous" : "Next"} slide`}
+      >
+        <Icon className="h-6 w-6" />
+      </button>
+    );
+  }
+);
+
+NavButton.displayName = "NavButton";
+
+// Indicator dot component
+const IndicatorDot = memo(
+  ({
+    index,
+    currentIndex,
+    onClick,
+  }: {
+    index: number;
+    currentIndex: number;
+    onClick: () => void;
+  }) => (
+    <button
+      onClick={onClick}
+      className={`h-3 rounded-full transition-all duration-300 ${
+        index === currentIndex ? "bg-[#8b1a1a] w-6" : "bg-[#8b1a1a]/30 w-3"
+      }`}
+      aria-label={`Go to slide ${index + 1}`}
+    />
+  )
+);
+
+IndicatorDot.displayName = "IndicatorDot";
+
 export default function ImageSlider() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const [autoplay, setAutoplay] = useState(true);
-  const sliderRef = useRef<HTMLDivElement>(null);
+  const autoplayTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Sample images - replace with actual school images
   const images: SliderImage[] = [
@@ -56,64 +158,88 @@ export default function ImageSlider() {
     },
   ];
 
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    setAutoplay(false);
-    setTimeout(() => setAutoplay(true), 5000);
-  };
+  // Reset autoplay timer
+  const resetAutoplayTimer = useCallback(() => {
+    if (autoplayTimerRef.current) {
+      clearTimeout(autoplayTimerRef.current);
+    }
 
-  const prevSlide = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + images.length) % images.length
-    );
-    setAutoplay(false);
-    setTimeout(() => setAutoplay(true), 5000);
-  };
+    if (autoplay) {
+      autoplayTimerRef.current = setTimeout(() => {
+        if (!isTransitioning) {
+          setIsTransitioning(true);
+          setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+          setTimeout(() => setIsTransitioning(false), 300);
+        }
+      }, 5000);
+    }
+  }, [autoplay, images.length, isTransitioning]);
 
+  // Handle slide navigation
+  const goToSlide = useCallback(
+    (index: number) => {
+      if (!isTransitioning) {
+        setIsTransitioning(true);
+        setCurrentIndex(index);
+        setAutoplay(false);
+
+        // Re-enable autoplay after user interaction
+        setTimeout(() => {
+          setIsTransitioning(false);
+          setAutoplay(true);
+        }, 300);
+      }
+    },
+    [isTransitioning]
+  );
+
+  const nextSlide = useCallback(() => {
+    goToSlide((currentIndex + 1) % images.length);
+  }, [currentIndex, goToSlide, images.length]);
+
+  const prevSlide = useCallback(() => {
+    goToSlide((currentIndex - 1 + images.length) % images.length);
+  }, [currentIndex, goToSlide, images.length]);
+
+  // Setup autoplay
   useEffect(() => {
-    if (!autoplay) return;
+    resetAutoplayTimer();
+    return () => {
+      if (autoplayTimerRef.current) {
+        clearTimeout(autoplayTimerRef.current);
+      }
+    };
+  }, [currentIndex, autoplay, resetAutoplayTimer]);
 
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, [autoplay, images.length]);
-
-  // Calculate visible indices for desktop
-  const getVisibleIndices = () => {
-    const totalImages = images.length;
-    const indices: number[] = [];
-
-    // Center slide
-    indices.push(currentIndex);
-
-    // Slides before and after
-    indices.push((currentIndex - 1 + totalImages) % totalImages);
-    indices.push((currentIndex + 1) % totalImages);
-
-    return indices;
-  };
-
-  const visibleIndices = getVisibleIndices();
+  // Calculate visible indices for the three-card view
+  const getPositionForIndex = useCallback(
+    (index: number): "left" | "center" | "right" | null => {
+      if (index === currentIndex) return "center";
+      if (index === (currentIndex - 1 + images.length) % images.length)
+        return "left";
+      if (index === (currentIndex + 1) % images.length) return "right";
+      return null;
+    },
+    [currentIndex, images.length]
+  );
 
   return (
-    <section className="py-12 bg-[#f8f3e9] relative overflow-hidden">
+    <section className="py-8 md:py-12 bg-[#f8f3e9] relative overflow-hidden">
       {/* Temple-inspired decorative top border */}
-      <div className="absolute top-0 left-0 w-full h-8 overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-6 overflow-hidden">
         <div className="flex justify-center w-full">
-          {Array.from({ length: 40 }).map((_, i) => (
+          {Array.from({ length: 20 }).map((_, i) => (
             <div
               key={`top-${i}`}
-              className="w-6 h-8 bg-[#8b1a1a]/10 mx-0.5 rounded-b-lg"
+              className="w-6 h-6 bg-[#8b1a1a]/10 mx-0.5 rounded-b-lg"
             />
           ))}
         </div>
       </div>
 
-      <div className="container mx-auto px-4 pt-8">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#8b1a1a] mb-4 font-serif">
+      <div className="container mx-auto px-4 pt-6 md:pt-8">
+        <div className="text-center mb-6 md:mb-8">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#8b1a1a] mb-3 font-serif">
             Campus Highlights
           </h2>
           <p className="text-[#5a3e36] max-w-2xl mx-auto">
@@ -122,143 +248,57 @@ export default function ImageSlider() {
           </p>
         </div>
 
-        <div className="relative" ref={sliderRef}>
+        <div className="relative">
           {/* Navigation buttons */}
           <div className="absolute top-1/2 left-4 z-20 transform -translate-y-1/2">
-            <button
-              onClick={prevSlide}
-              className="bg-white/80 backdrop-blur-sm text-[#8b1a1a] p-2 rounded-full shadow-md hover:bg-[#8b1a1a] hover:text-white transition-colors"
-              aria-label="Previous slide"
-            >
-              <ChevronLeft className="h-6 w-6" />
-            </button>
+            <NavButton direction="left" onClick={prevSlide} />
           </div>
 
           <div className="absolute top-1/2 right-4 z-20 transform -translate-y-1/2">
-            <button
-              onClick={nextSlide}
-              className="bg-white/80 backdrop-blur-sm text-[#8b1a1a] p-2 rounded-full shadow-md hover:bg-[#8b1a1a] hover:text-white transition-colors"
-              aria-label="Next slide"
-            >
-              <ChevronRight className="h-6 w-6" />
-            </button>
+            <NavButton direction="right" onClick={nextSlide} />
           </div>
 
-          {/* Card slider */}
-          <div className="overflow-hidden py-8">
-            <div className="flex justify-center">
-              <AnimatePresence mode="popLayout">
-                <div
-                  key="desktop-slider"
-                  className="hidden md:grid md:grid-cols-3 gap-4 md:gap-6 w-full"
-                >
-                  {visibleIndices.map((index, i) => (
-                    <motion.div
-                      key={`desktop-${index}-${i}`}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{
-                        opacity: i === 1 ? 1 : 0.6,
-                        scale: i === 1 ? 1 : 0.9,
-                        x: 0,
-                      }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      transition={{ duration: 0.5 }}
-                      className={`
-                        ${i === 1 ? "col-span-1 z-20" : "col-span-1 z-10"}
-                        ${
-                          i === 1
-                            ? "transform scale-100 opacity-100"
-                            : "transform scale-90 opacity-60"
-                        }
-                      `}
-                    >
-                      <div className="bg-white rounded-xl overflow-hidden shadow-lg border border-[#d4b483]/20 h-full transition-transform duration-300 hover:scale-105 hover:shadow-xl">
-                        <div className="relative h-48 md:h-56 lg:h-64">
-                          <Image
-                            src={images[index].src || "/placeholder.svg"}
-                            alt={images[index].alt}
-                            fill
-                            className="object-cover"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-[#8b1a1a]/70 to-transparent opacity-60"></div>
-                        </div>
-                        <div className="p-4">
-                          <h3 className="text-lg font-bold text-[#8b1a1a] mb-2">
-                            {images[index].title}
-                          </h3>
-                          <p className="text-sm text-[#5a3e36]">
-                            {images[index].description}
-                          </p>
-                        </div>
-                        <div className="absolute top-3 right-3 bg-white/80 backdrop-blur-sm text-[#8b1a1a] w-8 h-8 rounded-full flex items-center justify-center font-bold">
-                          {index + 1}
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
+          {/* Desktop view (3 cards) */}
+          <div className="hidden md:block overflow-hidden py-4 md:py-6">
+            <div className="grid grid-cols-3 gap-4 md:gap-6 w-full">
+              {/* Showing just 3 cards at a time */}
+              {images.map((image, index) => {
+                const position = getPositionForIndex(index);
+                if (!position) return null;
 
-                {/* Mobile view */}
-                <div
-                  key="mobile-slider"
-                  className="md:hidden w-full flex justify-center"
-                >
-                  <motion.div
-                    key={`mobile-${currentIndex}`}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{
-                      opacity: 1,
-                      scale: 1,
-                      x: 0,
-                    }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.5 }}
-                    className="w-full max-w-md"
-                  >
-                    <div className="bg-white rounded-xl overflow-hidden shadow-lg border border-[#d4b483]/20 w-full transform transition-transform duration-300 hover:scale-105 hover:shadow-xl">
-                      <div className="relative h-48 md:h-56 lg:h-64">
-                        <Image
-                          src={images[currentIndex].src || "/placeholder.svg"}
-                          alt={images[currentIndex].alt}
-                          fill
-                          className="object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#8b1a1a]/70 to-transparent opacity-60"></div>
-                      </div>
-                      <div className="p-4">
-                        <h3 className="text-lg font-bold text-[#8b1a1a] mb-2">
-                          {images[currentIndex].title}
-                        </h3>
-                        <p className="text-sm text-[#5a3e36]">
-                          {images[currentIndex].description}
-                        </p>
-                      </div>
-                      <div className="absolute top-3 right-3 bg-white/80 backdrop-blur-sm text-[#8b1a1a] w-8 h-8 rounded-full flex items-center justify-center font-bold">
-                        {currentIndex + 1}
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-              </AnimatePresence>
+                return (
+                  <Slide
+                    key={`desktop-${index}`}
+                    image={image}
+                    index={index}
+                    isActive={position === "center"}
+                    position={position}
+                  />
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Mobile view (single card) */}
+          <div className="md:hidden w-full flex justify-center py-4">
+            <div className="w-full max-w-sm">
+              <Slide
+                image={images[currentIndex]}
+                index={currentIndex}
+                isActive={true}
+                position="center"
+              />
             </div>
           </div>
 
           {/* Indicators */}
           <div className="flex justify-center mt-4 space-x-2">
             {images.map((_, index) => (
-              <button
+              <IndicatorDot
                 key={index}
-                onClick={() => {
-                  setCurrentIndex(index);
-                  setAutoplay(false);
-                  setTimeout(() => setAutoplay(true), 5000);
-                }}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  index === currentIndex
-                    ? "bg-[#8b1a1a] w-6"
-                    : "bg-[#8b1a1a]/30"
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
+                index={index}
+                currentIndex={currentIndex}
+                onClick={() => goToSlide(index)}
               />
             ))}
           </div>

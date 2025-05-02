@@ -35,29 +35,28 @@ const navItems = [
     icon: BookOpen,
     submenu: [
       { name: "Curriculum", href: "#" },
-      { name: "Faculty", href: "#" },
+      { name: "Our Staff", href: "/academics/faculty" },
       { name: "Examination", href: "#" },
     ],
   },
-  { name: "BEYOND ACADEMICS", href: "#", icon: null },
+  { name: "BEYOND ACADEMICS", href: "/beyond", icon: null },
   {
     name: "ACHIEVEMENTS",
     href: "/achievements",
     icon: Trophy,
     submenu: [
-      { name: "Achievements ", href: "/achievements" },
+      { name: "Achievements", href: "/achievements" },
       { name: "Sports Achievements", href: "/achievements/sports" },
       { name: "Awards & Recognition", href: "/achievements/awards" },
       { name: "Alumni Network", href: "/achievements/alumni" },
     ],
   },
-  { name: "INFRASTRUCTURE", href: "#", icon: Building },
+  { name: "INFRASTRUCTURE", href: "/infrastructure", icon: Building },
   {
     name: "GALLERY",
-    href: "#",
+    href: "/gallery",
     icon: ImageIcon,
     submenu: [
-      { name: "Gallery", href: "/gallery" },
       { name: "Photos", href: "/gallery/photo" },
       { name: "Videos", href: "/gallery/video" },
       { name: "News Bulletin", href: "/gallery/news-bulletin" },
@@ -86,7 +85,7 @@ export default function NavBar() {
   }, []);
 
   return (
-    <div className="w-full h-[20px] fixed top-0 left-0 right-0 z-50">
+    <div className="w-full h-auto fixed top-0 left-0 right-0 z-50">
       {/* Top Info Bar */}
       <div className="bg-gradient-to-r from-[#8b1a1a] to-[#a52a2a] text-[#f8f3e9] py-2 px-4 flex justify-between items-center">
         <div className="flex items-center space-x-4 md:space-x-6">
@@ -119,14 +118,14 @@ export default function NavBar() {
         ${scrolled ? "shadow-xl backdrop-blur-sm bg-opacity-90" : "shadow-md"} 
         transition-all duration-300`}
       >
-        <div className="container mx-auto px-4 md:px-6">
+        <div className="container mx-auto px-1 md:px-2 lg:px-1 xl:px-2 2xl:px-4 max-w-full">
           {/* Header */}
-          <div className="justify-between  flex items-center py-2">
-            <div className="flex items-center space-x-2">
+          <div className="flex justify-between items-center py-2">
+            <div className="flex items-center space-x-2 lg:w-1/4">
               {/* Logo */}
               <div className="relative flex flex-col items-center justify-center text-[#8b1a1a]">
                 <div className="absolute items-center justify-center inset-0 bg-[#8b1a1a]/10 rounded-full blur-sm"></div>
-                <div className="relative h-14 w-14 md:h-16 md:w-16 flex-shrink-0">
+                <div className="relative h-10 w-10 md:h-12 md:w-12 lg:h-14 lg:w-14 flex-shrink-0">
                   <Image
                     src="/aaalogo.png"
                     alt="Aryavart Ancient Academy Logo"
@@ -136,19 +135,19 @@ export default function NavBar() {
                   />
                 </div>
               </div>
-              <div className="flex-shrink">
-                <h2 className="text-md font-bold text-[#8b1a1a] font-serif leading-tight">
+              <div className="flex-shrink-0">
+                <h2 className="text-xs md:text-sm font-bold text-[#8b1a1a] font-serif leading-tight">
                   Aryavart Ancient Academy
                 </h2>
-                <p className="text-xs md:text-xs text-[#8b1a1a]/80">
+                <p className="text-3xs md:text-2xs text-[#8b1a1a]/80">
                   Affiliated to CBSE (1530380)
                 </p>
               </div>
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center">
-              <div className="flex items-center space-x-1 xl:space-x-2">
+            <div className="hidden lg:flex items-center lg:w-3/4 justify-end">
+              <div className="flex items-center justify-end gap-x-1 lg:gap-x-2 xl:gap-x-3 2xl:gap-x-4">
                 {navItems.map((item) => (
                   <div
                     key={item.name}
@@ -160,14 +159,14 @@ export default function NavBar() {
                   >
                     <a
                       href={item.href}
-                      className="flex items-center px-1 xl:px-2 py-1 text-2xs xl:text-xs font-medium text-[#5a3e36] hover:text-[#8b1a1a] transition-colors rounded-md hover:bg-[#d4b483]/10 group whitespace-nowrap"
+                      className="flex items-center px-0.5 lg:px-1 xl:px-1.5 py-1 text-2xs lg:text-3xs xl:text-2xs 2xl:text-xs font-medium text-[#5a3e36] hover:text-[#8b1a1a] transition-colors rounded-md hover:bg-[#d4b483]/10 group whitespace-nowrap"
                     >
                       {item.icon && (
-                        <item.icon className="mr-1 h-3 w-3 xl:h-4 xl:w-4 flex-shrink-0" />
+                        <item.icon className="mr-0.5 h-2.5 w-2.5 lg:h-3 lg:w-3 xl:h-3.5 xl:w-3.5 flex-shrink-0" />
                       )}
                       {item.name}
                       {item.submenu && (
-                        <ChevronDown className="ml-1 h-3 w-3 xl:h-4 xl:w-4 transition-transform duration-200 group-hover:rotate-180 flex-shrink-0" />
+                        <ChevronDown className="ml-0.5 h-2.5 w-2.5 lg:h-3 lg:w-3 xl:h-3.5 xl:w-3.5 transition-transform duration-200 group-hover:rotate-180 flex-shrink-0" />
                       )}
                       <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#8b1a1a] scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
                     </a>
@@ -180,14 +179,14 @@ export default function NavBar() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -5 }}
                             transition={{ duration: 0.2 }}
-                            className="absolute left-0 mt-1 w-40 bg-white rounded-md shadow-lg border border-[#d4b483]/30 z-50 overflow-hidden"
+                            className="absolute left-0 mt-1 w-48 bg-white rounded-md shadow-lg border border-[#d4b483]/30 z-50 overflow-hidden"
                           >
                             <div className="py-1">
                               {item.submenu.map((subitem) => (
                                 <a
                                   key={subitem.name}
                                   href={subitem.href}
-                                  className="block px-3 py-1 text-2xs xl:text-xs text-[#5a3e36] hover:bg-[#d4b483]/10 hover:text-[#8b1a1a] whitespace-nowrap"
+                                  className="block px-3 py-1 text-2xs lg:text-xs xl:text-sm text-[#5a3e36] hover:bg-[#d4b483]/10 hover:text-[#8b1a1a] whitespace-nowrap"
                                 >
                                   {subitem.name}
                                 </a>
@@ -220,7 +219,7 @@ export default function NavBar() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
-              className="lg:hidden bg-[#f8f3e9] border-t border-[#d4b483]/30 py-2 absolute w-full z-50 shadow-lg overflow-hidden"
+              className="lg:hidden bg-[#f8f3e9] border-t border-[#d4b483]/30 py-2 absolute w-full z-50 shadow-lg overflow-auto max-h-[80vh]"
             >
               <div className="container mx-auto px-4 flex flex-col">
                 {navItems.map((item) => (
@@ -242,7 +241,7 @@ export default function NavBar() {
                           : undefined
                       }
                     >
-                      <div className="flexitems-center">
+                      <div className="flex items-center">
                         <span className="w-2 h-2 bg-[#8b1a1a] rounded-full mr-2 flex-shrink-0"></span>
                         <span className="whitespace-nowrap">{item.name}</span>
                       </div>
