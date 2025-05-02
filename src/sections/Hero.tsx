@@ -16,12 +16,12 @@ import ImageSlider from "@/components/ui/image-slider";
 import SchoolCalendar from "@/components/ui/school-calendar";
 import SchoolActivities from "@/components/ui/school-activities";
 import AryavartHouses from "@/components/ui/aryavart-houses";
-import BeyondAcademics from "@/components/ui/beyond-academics";
 import FeedbackSection from "@/components/ui/feedback-section";
 import PrincipalMessage from "@/components/ui/principal-message";
 import NavBar from "@/components/ui/nav-bar";
 import Footer from "@/components/ui/footer";
 import StudentTestimonials from "@/components/ui/student-testimonials";
+import HeaderAcademyLogo from "@/components/ui/header-academylogo";
 
 export const Hero = () => {
   return (
@@ -111,7 +111,7 @@ export const Hero = () => {
                   href="/contact"
                   className="inline-flex items-center justify-center px-6 py-3 bg-[#f8f3e9] text-[#8b1a1a] border-2 border-[#8b1a1a] rounded-lg font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg hover:bg-[#8b1a1a]/10 shadow-md cta-button"
                 >
-                  Contact
+                  Contact Us
                 </a>
               </motion.div>
 
@@ -207,7 +207,7 @@ export const Hero = () => {
           </div>
         </div>
       </section>
-
+      <HeaderAcademyLogo />
       <ImageSlider />
 
       <SchoolLevels />
@@ -222,7 +222,6 @@ export const Hero = () => {
       <SchoolCalendar />
       <SchoolActivities />
       <AryavartHouses />
-      <BeyondAcademics />
       <PrincipalMessage />
       <StudentTestimonials />
       <FeedbackSection />

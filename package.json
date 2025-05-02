@@ -50,6 +50,7 @@
     "cloudinary": "^2.6.0",
     "clsx": "^2.1.1",
     "cmdk": "1.0.4",
+    "cobe": "^0.6.3",
     "date-fns": "4.1.0",
     "dotenv": "^16.5.0",
     "dotted-map": "^2.2.3",
