@@ -55,10 +55,9 @@ export default function AboutLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section className="min-h-screen bg-[#f8f3e9] overflow-x-hidden">
+    <section className="overflow-x-hidden">
       <NavBar />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">{children}</div>
+      <div>{children}</div>
       <Footer />
     </section>
   );
