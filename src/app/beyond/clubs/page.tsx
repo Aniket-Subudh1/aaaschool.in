@@ -1,0 +1,714 @@
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  BookOpen,
+  Camera,
+  Palette,
+  Music,
+  Quote,
+  Code,
+  Map,
+  ChevronLeft,
+  ChevronRight,
+  Users,
+  Calendar,
+  Sparkles,
+  Award,
+  X,
+  Clock,
+  Check,
+} from "lucide-react";
+
+
+// Type definition for club
+interface Club {
+  id: string;
+  name: string;
+  description: string;
+  meetingSchedule: string;
+  eligibility: string;
+  activities: string[];
+  image: string;
+  icon: React.ReactNode;
+  color: string;
+  achievements?: string[];
+}
+
+export default function ClubsPage() {
+  const [activeClub, setActiveClub] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  // Clubs Data
+  const clubs: Club[] = [
+    {
+      id: "book-club",
+      name: "Book Club",
+      description: 
+        "The Book Club at Aryavart Ancient Academy provides a platform for students to explore the world of literature, enhance their reading habits, and engage in meaningful discussions about books. Members read selected books, participate in literary discussions, and engage in various activities that promote a love for reading and critical thinking.",
+      meetingSchedule: "Every Friday, 3:30 PM - 4:30 PM",
+      eligibility: "Open to all students from Class 6 onwards",
+      activities: [
+        "Book discussions and debates",
+        "Author studies and literary analysis",
+        "Creative writing workshops",
+        "Book reviews and recommendations",
+        "Annual book fair organization",
+        "Literary quizzes and competitions"
+      ],
+      image: "/book-club.jpg",
+      icon: <BookOpen className="h-8 w-8" />,
+      color: "#1E88E5",
+      achievements: [
+        "Published an anthology of student writings",
+        "Organized successful inter-school literature festival",
+        "Established a student-run library corner",
+        "Conducted author visits and book signing events"
+      ]
+    },
+    {
+      id: "photography-club",
+      name: "Photography Club",
+      description: 
+        "The Photography Club helps students explore the art and science of photography. Members learn about camera techniques, composition, lighting, and digital editing to capture compelling images. The club provides hands-on experience and professional guidance to help students develop their photographic skills and creative vision.",
+      meetingSchedule: "Every Monday, 3:30 PM - 5:00 PM",
+      eligibility: "Open to students from Class 8 onwards",
+      activities: [
+        "Photography workshops and skill sessions",
+        "Photo walks and outdoor shoots",
+        "Digital editing and post-processing classes",
+        "Photo exhibitions and competitions",
+        "Yearbook and school event coverage",
+        "Guest lectures by professional photographers"
+      ],
+      image: "/photography-club.jpg",
+      icon: <Camera className="h-8 w-8" />,
+      color: "#8E24AA",
+      achievements: [
+        "Multiple winners in state-level photography competitions",
+        "Annual photography exhibition with public viewings",
+        "Published photography books showcasing student work",
+        "Documentary project on local cultural heritage"
+      ]
+    },
+    {
+      id: "art-club",
+      name: "Art Club",
+      description: 
+        "The Art Club fosters creativity and artistic expression among students through various visual arts mediums. Members explore drawing, painting, sketching, pottery, sculpture, and various craft forms under the guidance of experienced art teachers. The club provides a space for students to express themselves artistically and develop their talents.",
+      meetingSchedule: "Every Tuesday and Thursday, 3:30 PM - 5:00 PM",
+      eligibility: "Open to all students",
+      activities: [
+        "Drawing and painting sessions",
+        "Pottery and clay modeling",
+        "Craft workshops and DIY projects",
+        "Art exhibitions and competitions",
+        "Mural painting and school beautification",
+        "Art appreciation and history discussions"
+      ],
+      image: "/art-club.jpg",
+      icon: <Palette className="h-8 w-8" />,
+      color: "#EC407A",
+      achievements: [
+        "Regular participation in national art competitions",
+        "Created murals for public spaces in the community",
+        "Selected for special art exhibitions at state galleries",
+        "Collaboration with professional artists for workshops"
+      ]
+    },
+    {
+      id: "dance-club",
+      name: "Dance Club",
+      description: 
+        "The Dance Club provides a platform for students to express themselves through various dance forms and rhythmic movements. Members learn classical, folk, and contemporary dance styles under the guidance of trained instructors. The club helps students develop physical coordination, rhythm, and artistic expression while building confidence through performances.",
+      meetingSchedule: "Every Wednesday and Friday, 3:30 PM - 5:00 PM",
+      eligibility: "Open to all students",
+      activities: [
+        "Training in classical dance forms (Odissi, Bharatanatyam)",
+        "Folk dance workshops (regional and international)",
+        "Contemporary and western dance training",
+        "Choreography workshops and creative sessions",
+        "Cultural events and competition preparation",
+        "Annual dance recitals and performances"
+      ],
+      image: "/dance-club.jpg",
+      icon: <Music className="h-8 w-8" />,
+      color: "#66BB6A",
+      achievements: [
+        "State and national level dance competition winners",
+        "Performance at cultural festivals across the state",
+        "Choreographed original production showcasing local culture",
+        "Conducted outreach dance programs in the community"
+      ]
+    },
+    {
+      id: "chess-club",
+      name: "Chess Club",
+      description: 
+        "The Chess Club promotes strategic thinking, concentration, and sportsmanship through the game of chess. Members learn chess strategies, opening moves, and endgame techniques, and participate in regular practice sessions and tournaments. The club helps develop analytical skills, foresight, and patience while fostering healthy competition.",
+      meetingSchedule: "Every Monday and Thursday, 3:30 PM - 4:30 PM",
+      eligibility: "Open to all students from Class 3 onwards",
+      activities: [
+        "Chess theory and strategy sessions",
+        "Practice matches and simultaneous exhibitions",
+        "Tactics training and problem-solving",
+        "Intra-school tournaments and ladder competitions",
+        "Inter-school chess tournaments",
+        "Analysis of famous games and championship matches"
+      ],
+      image: "/chess-club.jpg",
+      icon: <Award className="h-8 w-8" />,
+      color: "#FFA000",
+      achievements: [
+        "District and state chess championship winners",
+        "Hosted regional school chess tournament",
+        "Multiple students achieving FIDE ratings",
+        "Organized chess exhibition with Grandmaster visit"
+      ]
+    },
+    {
+      id: "coding-club",
+      name: "Coding Club",
+      description: 
+        "The Coding Club introduces students to the world of programming and computational thinking. Members learn various programming languages, develop applications, solve problems, and work on innovative tech projects. The club nurtures logical thinking, problem-solving abilities, and digital literacy while preparing students for the technology-driven future.",
+      meetingSchedule: "Every Tuesday, 3:30 PM - 5:00 PM",
+      eligibility: "Open to students from Class 6 onwards",
+      activities: [
+        "Programming basics and language tutorials",
+        "Web development and app creation projects",
+        "Game development and design",
+        "Hackathons and coding competitions",
+        "Robotics and hardware programming",
+        "Tech talks and industry expert sessions"
+      ],
+      image: "/coding-club.jpg",
+      icon: <Code className="h-8 w-8" />,
+      color: "#00897B",
+      achievements: [
+        "Winners in multiple hackathons and coding competitions",
+        "Developed applications used within the school",
+        "Organized successful tech fairs and exhibition",
+        "Students selected for national coding championships"
+      ]
+    },
+    {
+      id: "music-club",
+      name: "Music Club",
+      description: 
+        "The Music Club nurtures musical talent and appreciation among students. Members learn vocal and instrumental music across various genres including classical, folk, and contemporary styles. The club provides opportunities for students to develop their musical abilities, perform before audiences, and appreciate diverse musical traditions.",
+      meetingSchedule: "Every Wednesday, 3:30 PM - 5:00 PM",
+      eligibility: "Open to all students",
+      activities: [
+        "Vocal music training (classical and contemporary)",
+        "Instrumental music sessions",
+        "Music theory and composition workshops",
+        "Choir and ensemble practice",
+        "School event performances and competitions",
+        "Annual music concert and recitals"
+      ],
+      image: "/music-club.jpg",
+      icon: <Music className="h-8 w-8" />,
+      color: "#F06292",
+      achievements: [
+        "Regular performances at district and state cultural events",
+        "Published album of original student compositions",
+        "Winners in national school music competitions",
+        "Organized successful music festival with professional artists"
+      ]
+    },
+    {
+      id: "tourism-club",
+      name: "Tourism Club",
+      description: 
+        "The Tourism Club encourages students to explore and appreciate local and national heritage, geography, and culture. Members learn about various tourist destinations, cultural practices, and environmental conservation while participating in educational trips and excursions. The club fosters a sense of appreciation for diversity, history, and natural beauty.",
+      meetingSchedule: "Every Friday, 3:30 PM - 4:30 PM and scheduled field trips",
+      eligibility: "Open to students from Class 7 onwards",
+      activities: [
+        "Study of tourist destinations and heritage sites",
+        "Local history and culture documentation",
+        "Educational field trips and excursions",
+        "Travel writing and photography",
+        "Map reading and navigation skills",
+        "Eco-tourism and sustainable travel practices"
+      ],
+      image: "/tourism-club.jpg",
+      icon: <Map className="h-8 w-8" />,
+      color: "#FF7043",
+      achievements: [
+        "Created digital guide to local historical sites",
+        "Organized heritage walks for the community",
+        "Published travel journal featuring student experiences",
+        "Collaboration with state tourism department for projects"
+      ]
+    },
+    {
+      id: "robotics-club",
+      name: "Robotics Club",
+      description: 
+        "The Robotics Club provides hands-on experience in designing, building, and programming robots. Members learn the fundamentals of robotics, electronics, and mechanical engineering through practical projects and competitions. The club nurtures innovation, problem-solving, and teamwork while introducing students to STEM concepts in an engaging way.",
+      meetingSchedule: "Every Saturday, 10:00 AM - 12:00 PM",
+      eligibility: "Open to students from Class 7 onwards",
+      activities: [
+        "Robot design and construction",
+        "Programming and coding for robotics",
+        "Electronics and circuit building",
+        "Robotics competitions and challenges",
+        "Tech exhibitions and demonstrations",
+        "Collaborative problem-solving projects"
+      ],
+      image: "/robotics-club.jpg",
+      icon: <Code className="h-8 w-8" />,
+      color: "#5C6BC0",
+      achievements: [
+        "Regional champions in robotics competition",
+        "Built functional robots for school applications",
+        "Represented school at national robotics festival",
+        "Conducted workshops for younger students"
+      ]
+    }
+  ];
+
+  // Categories for filtering
+  const categories = [
+    { id: "arts", name: "Arts & Culture", clubs: ["book-club", "art-club", "music-club"] },
+    { id: "tech", name: "Technology & STEM", clubs: ["coding-club", "robotics-club"] },
+    { id: "creative", name: "Creative Expression", clubs: ["photography-club", "dance-club"] },
+    { id: "games", name: "Games & Strategy", clubs: ["chess-club"] },
+    { id: "exploration", name: "Exploration", clubs: ["tourism-club"] }
+  ];
+
+  const openClubDetails = (clubId: string) => {
+    setActiveClub(clubId);
+  };
+
+  const closeClubDetails = () => {
+    setActiveClub(null);
+  };
+
+  const filterClubsByCategory = (categoryId: string | null) => {
+    setSelectedCategory(categoryId);
+  };
+
+  // Filter clubs based on selected category
+  const filteredClubs = selectedCategory 
+    ? clubs.filter(club => {
+        const category = categories.find(c => c.id === selectedCategory);
+        return category ? category.clubs.includes(club.id) : true;
+      })
+    : clubs;
+
+  return (
+    <div className="min-h-screen bg-[#f8f3e9]">
+      <main className=" pb-16">
+        {/* Header Section */}
+        <section className="relative bg-gradient-to-r from-[#8b1a1a] to-[#a52a2a] py-16 px-4 mb-16">
+          <div className="absolute inset-0 bg-[url('/club-pattern.png')] opacity-10"></div>
+
+          <div className="container mx-auto relative z-10">
+            <div className="mb-8">
+              <Link
+                href="/beyond"
+                className="inline-flex items-center text-white/80 hover:text-white transition-colors"
+              >
+                <ChevronLeft className="h-5 w-5 mr-2" />
+                <span>Back to Beyond Academics</span>
+              </Link>
+            </div>
+
+            <div className="max-w-3xl">
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 font-serif">
+                Clubs & Activities
+              </h1>
+              <p className="text-white/90 text-lg md:text-xl">
+                Our diverse range of clubs offers students the opportunity to explore their interests, develop new skills, and nurture their talents beyond the academic curriculum. From arts to technology, our clubs provide a platform for students to pursue their passions.
+              </p>
+            </div>
+          </div>
+          
+          {/* Decorative elements */}
+          <div className="absolute bottom-0 left-0 right-0 h-6 overflow-hidden">
+            <div className="flex justify-center w-full">
+              {Array.from({ length: 40 }).map((_, i) => (
+                <div
+                  key={`bottom-${i}`}
+                  className="w-6 h-6 bg-white/10 mx-0.5 rounded-t-lg"
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Filter Section */}
+        <section className="container mx-auto px-4 mb-12">
+          <div className="bg-white rounded-lg shadow-md p-6 border border-[#d4b483]/20">
+            <h2 className="text-2xl font-bold text-[#8b1a1a] mb-4">Explore Our Clubs</h2>
+            <p className="text-[#5a3e36] mb-6">Filter clubs by category to find the perfect match for your interests and passions.</p>
+            
+            <div className="flex flex-wrap gap-3">
+              <button 
+                onClick={() => filterClubsByCategory(null)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  selectedCategory === null 
+                    ? "bg-[#8b1a1a] text-white" 
+                    : "bg-[#f0e6d2] text-[#5a3e36] hover:bg-[#d4b483]/30"
+                }`}
+              >
+                All Clubs
+              </button>
+              
+              {categories.map(category => (
+                <button 
+                  key={category.id}
+                  onClick={() => filterClubsByCategory(category.id)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                    selectedCategory === category.id 
+                      ? "bg-[#8b1a1a] text-white" 
+                      : "bg-[#f0e6d2] text-[#5a3e36] hover:bg-[#d4b483]/30"
+                  }`}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Clubs Grid Section */}
+        <section className="container mx-auto px-4 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredClubs.map((club) => (
+              <motion.div
+                key={club.id}
+                whileHover={{ y: -5 }}
+                className="bg-white rounded-lg shadow-md overflow-hidden border border-[#d4b483]/20 cursor-pointer hover:shadow-lg transition-all duration-300"
+                onClick={() => openClubDetails(club.id)}
+              >
+                <div className="relative h-48">
+                  <Image
+                    src={club.image}
+                    alt={club.name}
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 w-full p-4">
+                    <div 
+                      className="w-12 h-12 rounded-full flex items-center justify-center mb-2"
+                      style={{ backgroundColor: club.color }}
+                    >
+                      <div className="text-white">{club.icon}</div>
+                    </div>
+                    <h3 className="text-xl font-bold text-white">{club.name}</h3>
+                  </div>
+                </div>
+                <div className="p-4">
+                  <div className="flex items-center text-sm text-[#5a3e36] mb-3">
+                    <Clock className="h-4 w-4 mr-2 text-[#8b1a1a]" />
+                    {club.meetingSchedule}
+                  </div>
+                  <p className="text-[#5a3e36] text-sm line-clamp-3">{club.description}</p>
+                  <button className="mt-4 inline-flex items-center text-[#8b1a1a] font-medium text-sm">
+                    View Details <ChevronRight className="h-4 w-4 ml-1" />
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* Benefits Section */}
+        <section className="bg-[#f0e6d2] py-16 px-4 mb-16">
+          <div className="container mx-auto">
+            <div className="text-center max-w-3xl mx-auto mb-12">
+              <div className="inline-block mb-2 bg-white p-3 rounded-full">
+                <Sparkles className="h-8 w-8 text-[#8b1a1a]" />
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-[#8b1a1a] mb-4 font-serif">
+                Benefits of Joining Clubs
+              </h2>
+              <p className="text-[#5a3e36]">
+                Club activities offer numerous advantages that complement academic learning and contribute to holistic development.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <div className="flex items-center mb-4">
+                  <div className="bg-[#8b1a1a]/10 p-2 rounded-full mr-3">
+                    <Users className="h-6 w-6 text-[#8b1a1a]" />
+                  </div>
+                  <h3 className="text-xl font-bold text-[#8b1a1a]">Social Skills</h3>
+                </div>
+                <p className="text-[#5a3e36]">
+                  Clubs provide an environment for students to interact with peers who share similar interests, helping develop communication, teamwork, and collaboration skills.
+                </p>
+              </div>
+
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <div className="flex items-center mb-4">
+                  <div className="bg-[#8b1a1a]/10 p-2 rounded-full mr-3">
+                    <Award className="h-6 w-6 text-[#8b1a1a]" />
+                  </div>
+                  <h3 className="text-xl font-bold text-[#8b1a1a]">Skill Development</h3>
+                </div>
+                <p className="text-[#5a3e36]">
+                  Students acquire specialized skills related to their chosen activities, from technical abilities to creative expression, problem-solving, and critical thinking.
+                </p>
+              </div>
+
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <div className="flex items-center mb-4">
+                  <div className="bg-[#8b1a1a]/10 p-2 rounded-full mr-3">
+                    <Calendar className="h-6 w-6 text-[#8b1a1a]" />
+                  </div>
+                  <h3 className="text-xl font-bold text-[#8b1a1a]">Time Management</h3>
+                </div>
+                <p className="text-[#5a3e36]">
+                  Balancing club activities with academic responsibilities helps students develop effective time management, organization, and prioritization skills.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials Section */}
+        <section className="container mx-auto px-4 mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-[#8b1a1a] mb-4 font-serif">
+              What Our Students Say
+            </h2>
+            <p className="text-[#5a3e36] max-w-2xl mx-auto">
+              Hear from our students about their experiences in various clubs.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-white p-6 rounded-lg shadow-md relative">
+              <div className="absolute top-4 right-4 text-[#8b1a1a]/20">
+                <Quote className="h-12 w-12" />
+              </div>
+              <p className="text-[#5a3e36] mb-6 italic">
+                "Being part of the Photography Club has transformed my perspective on the world around me. I've not only learned technical skills but also how to tell stories through images. The supportive environment has helped me grow both as a photographer and as a person."
+              </p>
+              <div className="flex items-center">
+                <div className="w-12 h-12 rounded-full overflow-hidden bg-[#f0e6d2] mr-4">
+                  <Image 
+                    src="/student1.jpg" 
+                    alt="Student" 
+                    width={48} 
+                    height={48}
+                    className="object-cover" 
+                  />
+                </div>
+                <div>
+                  <h4 className="font-bold text-[#8b1a1a]">Ananya Patel</h4>
+                  <p className="text-sm text-[#5a3e36]">Class 11, Photography Club</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow-md relative">
+              <div className="absolute top-4 right-4 text-[#8b1a1a]/20">
+                <Quote className="h-12 w-12" />
+              </div>
+              <p className="text-[#5a3e36] mb-6 italic">
+                "The Robotics Club opened up a whole new world of possibilities for me. I never thought I could build working robots until I joined. The hands-on approach, combined with teamwork and problem-solving challenges, has greatly enhanced my skills in science and mathematics."
+              </p>
+              <div className="flex items-center">
+                <div className="w-12 h-12 rounded-full overflow-hidden bg-[#f0e6d2] mr-4">
+                  <Image 
+                    src="/student2.jpg" 
+                    alt="Student" 
+                    width={48} 
+                    height={48}
+                    className="object-cover" 
+                  />
+                </div>
+                <div>
+                  <h4 className="font-bold text-[#8b1a1a]">Arjun Singh</h4>
+                  <p className="text-sm text-[#5a3e36]">Class 9, Robotics Club</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Join a Club CTA */}
+        <section className="container mx-auto px-4">
+          <div className="bg-gradient-to-r from-[#8b1a1a] to-[#a52a2a] rounded-lg overflow-hidden shadow-lg text-white">
+            <div className="md:flex">
+              <div className="md:w-2/3 p-8">
+                <h2 className="text-3xl font-bold mb-4">Join a Club Today</h2>
+                <p className="mb-6">
+                  Explore your interests, develop new skills, and connect with like-minded peers by joining one of our many clubs. There's something for everyone!
+                </p>
+                <div className="flex space-x-4">
+                  <a 
+                    href="/contact" 
+                    className="px-6 py-3 bg-white text-[#8b1a1a] rounded-md font-medium hover:bg-white/90 transition-colors"
+                  >
+                    Contact Us
+                  </a>
+                  <a 
+                    href="/enquiry" 
+                    className="px-6 py-3 bg-transparent border border-white text-white rounded-md font-medium hover:bg-white/10 transition-colors"
+                  >
+                    Learn More
+                  </a>
+                </div>
+              </div>
+              <div className="md:w-1/3 relative hidden md:block">
+                <div className="absolute inset-0 bg-black/20"></div>
+                <Image 
+                  src="/club-activities.jpg" 
+                  alt="Club Activities" 
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* Club Details Modal */}
+      <AnimatePresence>
+        {activeClub && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+            onClick={closeClubDetails}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              className="bg-white rounded-xl shadow-xl max-w-4xl w-full overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {clubs.find(club => club.id === activeClub) && (
+                <>
+                  <div className="relative h-56 md:h-72">
+                    <Image
+                      src={clubs.find(club => club.id === activeClub)?.image || ""}
+                      alt={clubs.find(club => club.id === activeClub)?.name || ""}
+                      fill
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent"></div>
+                    <motion.button
+                      className="absolute top-4 right-4 bg-white/20 p-2 rounded-full hover:bg-white/40 transition-colors"
+                      onClick={closeClubDetails}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <X className="h-5 w-5 text-white" />
+                    </motion.button>
+
+                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                      <div className="flex items-center">
+                        <div 
+                          className="w-12 h-12 rounded-full flex items-center justify-center mr-4"
+                          style={{ backgroundColor: clubs.find(club => club.id === activeClub)?.color }}
+                        >
+                          <div>{clubs.find(club => club.id === activeClub)?.icon}</div>
+                        </div>
+                        <div>
+                          <p className="text-sm text-white/80">Club</p>
+                          <h2 className="text-2xl font-bold">
+                            {clubs.find(club => club.id === activeClub)?.name}
+                          </h2>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-6">
+                    <div className="mb-6">
+                      <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">About the Club</h3>
+                      <p className="text-[#5a3e36]">
+                        {clubs.find(club => club.id === activeClub)?.description}
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                      <div>
+                        <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Meeting Schedule</h3>
+                        <div className="flex items-center bg-[#f8f3e9] p-3 rounded-md">
+                          <Clock className="h-5 w-5 text-[#8b1a1a] mr-3" />
+                          <p className="text-[#5a3e36]">
+                            {clubs.find(club => club.id === activeClub)?.meetingSchedule}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div>
+                        <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Eligibility</h3>
+                        <div className="flex items-center bg-[#f8f3e9] p-3 rounded-md">
+                          <Users className="h-5 w-5 text-[#8b1a1a] mr-3" />
+                          <p className="text-[#5a3e36]">
+                            {clubs.find(club => club.id === activeClub)?.eligibility}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mb-6">
+                      <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Club Activities</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {clubs.find(club => club.id === activeClub)?.activities.map((activity, index) => (
+                          <div key={index} className="flex items-start">
+                            <Check className="h-5 w-5 text-[#8b1a1a] mr-3 flex-shrink-0" />
+                            <p className="text-[#5a3e36]">{activity}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {clubs.find(club => club.id === activeClub)?.achievements && (
+                      <div className="mb-6">
+                        <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Achievements</h3>
+                        <div className="bg-[#8b1a1a]/5 p-4 rounded-lg">
+                          <ul className="space-y-2">
+                            {clubs.find(club => club.id === activeClub)?.achievements?.map((achievement, index) => (
+                              <li key={index} className="flex items-start">
+                                <Award className="h-5 w-5 text-[#8b1a1a] mr-3 flex-shrink-0" />
+                                <p className="text-[#5a3e36]">{achievement}</p>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="flex justify-between items-center mt-8">
+                      <a 
+                        href="/enquiry" 
+                        className="px-6 py-2 bg-[#8b1a1a] text-white rounded-md font-medium hover:bg-[#8b1a1a]/90 transition-colors"
+                      >
+                        Enquire to Join
+                      </a>
+                      <button
+                        onClick={closeClubDetails}
+                        className="px-6 py-2 bg-gray-100 text-gray-700 rounded-md font-medium hover:bg-gray-200 transition-colors"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}

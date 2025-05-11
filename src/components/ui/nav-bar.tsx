@@ -44,12 +44,16 @@ const navItems = [
     href: "#",
     icon: BookOpen,
     submenu: [
-      { name: "Curriculum", href: "#" },
+      { name: "Curriculum", href: "/academics/curriculum" },
       { name: "Our Staff", href: "/academics/faculty" },
-      { name: "Examination", href: "#" },
+      { name: "Integrated Class", href: "/academics/integrated" },
     ],
   },
-  { name: "BEYOND ACADEMICS", href: "/beyond", icon: null },
+  { name: "BEYOND ACADEMICS", href: "/beyond", icon: null,submenu: [
+    { name: "Service Unit", href: "/beyond/service" },
+    { name: "Club Culture", href: "/beyond/clubs" },
+    { name: "Sports", href: "/beyond/sports" },
+  ], },
   {
     name: "ACHIEVEMENTS",
     href: "/achievements",
