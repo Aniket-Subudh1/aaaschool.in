@@ -21,7 +21,7 @@ export default function AryavartHouses() {
       title: "The Savior",
       description:
         "DRONA had divine sight. Being a great teacher he not only taught but also protected humanity from destruction.",
-      color: "#1e3a8a",
+      color: "#EA5283", //pink
       icon: "🏹",
     },
     {
@@ -30,7 +30,7 @@ export default function AryavartHouses() {
       title: "The Unifying",
       description:
         "SANKARACHARYA means teacher of the way of Sankar. He propagated the message of Vedic Wisdom, pure consciousness, to the world. The truth is individual is not different from Brahman.",
-      color: "#b91c1c",
+      color: "#FBE04B", //yellow
       icon: "🔱",
     },
     {
@@ -39,7 +39,7 @@ export default function AryavartHouses() {
       title: "The Diplomat",
       description:
         "Guru Chanakya stands even for the unity and oneness for the nation. A great minister who formulated the most ancient theories of politics and diplomacy. Arthashastra the timeless wisdom.",
-      color: "#047857",
+      color: "#048298", //blue 
       icon: "📜",
     },
     {
@@ -48,7 +48,7 @@ export default function AryavartHouses() {
       title: "The Divine",
       description:
         "KRIPACHARYA is known for his spirituality towards creating divine souls. He stands as an example of truth, law, ethics and standards.",
-      color: "#f59e0b",
+      color: "#53297B", //purple
       icon: "✨",
     },
   ];

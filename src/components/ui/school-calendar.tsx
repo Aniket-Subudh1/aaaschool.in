@@ -246,7 +246,7 @@ export default function SchoolCalendar() {
           <div className="lg:w-1/3 flex justify-center items-center">
             <div className="bg-[#f0e6d2] rounded-lg shadow-lg border border-[#d4b483]/20 p-6 w-full mt-44 h-[400px] md:h-[550px] flex flex-col justify-center">
               <h3 className="text-2xl font-serif font-bold text-[#8b1a1a] mb-2 text-center">
-               Global Learning Methodology
+               Global Learning Methodologies
               </h3>
               <p className="text-center text-[#5a3e36] mb-6">
                 Exploring education across the world

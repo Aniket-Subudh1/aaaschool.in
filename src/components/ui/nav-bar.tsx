@@ -161,7 +161,7 @@ export default function NavBar() {
             </div>
 
             {/* Desktop Navigation - Increased width on laptop screens */}
-            <div className="hidden lg:flex items-center lg:w-4/5 xl:w-5/6 justify-end">
+            <div className="hidden left-10 lg:flex items-center lg:w-4/5 xl:w-5/6 justify-end">
               <div className="flex items-center justify-end gap-x-1 lg:gap-x-1.5 xl:gap-x-2 2xl:gap-x-4">
                 {navItems.map((item) => (
                   <div
