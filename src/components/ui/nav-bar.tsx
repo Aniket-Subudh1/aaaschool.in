@@ -135,11 +135,12 @@ export default function NavBar() {
         <div className="container mx-auto px-1 md:px-2 lg:px-1 xl:px-2 2xl:px-4 max-w-full">
           {/* Header */}
           <div className="flex justify-between items-center py-2">
-            <div className="flex items-center space-x-2 lg:w-1/4">
+            {/* Logo Section - Reduced width on laptop screens */}
+            <div className="flex items-center space-x-2 lg:w-1/5 xl:w-1/6">
               {/* Logo */}
               <div className="relative flex flex-col items-center justify-center text-[#8b1a1a]">
                 <div className="absolute items-center justify-center inset-0 bg-[#8b1a1a]/10 rounded-full blur-sm"></div>
-                <div className="relative h-10 w-10 md:h-12 md:w-12 lg:h-14 lg:w-14 flex-shrink-0">
+                <div className="relative h-10 w-10 md:h-12 md:w-12 lg:h-12 lg:w-12 flex-shrink-0">
                   <Image
                     src="/aaalogo.png"
                     alt="Aryavart Ancient Academy Logo"
@@ -150,18 +151,18 @@ export default function NavBar() {
                 </div>
               </div>
               <div className="flex-shrink-0">
-                <h2 className="text-xs md:text-sm font-bold text-[#8b1a1a] font-serif leading-tight">
+                <h2 className="text-xs md:text-sm lg:text-xs xl:text-sm font-bold text-[#8b1a1a] font-serif leading-tight">
                   Aryavart Ancient Academy
                 </h2>
-                <p className="text-3xs md:text-2xs text-[#8b1a1a]/80">
+                <p className="text-3xs md:text-2xs lg:text-3xs xl:text-2xs text-[#8b1a1a]/80">
                   Affiliated to CBSE (1530380)
                 </p>
               </div>
             </div>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center lg:w-3/4 justify-end">
-              <div className="flex items-center justify-end gap-x-1 lg:gap-x-2 xl:gap-x-3 2xl:gap-x-4">
+            {/* Desktop Navigation - Increased width on laptop screens */}
+            <div className="hidden lg:flex items-center lg:w-4/5 xl:w-5/6 justify-end">
+              <div className="flex items-center justify-end gap-x-1 lg:gap-x-1.5 xl:gap-x-2 2xl:gap-x-4">
                 {navItems.map((item) => (
                   <div
                     key={item.name}
