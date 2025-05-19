@@ -2,37 +2,61 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, CalendarIcon, Info } from "lucide-react";
+import { ChevronLeft, ChevronRight, CalendarIcon, Info, Calendar as CalendarRange } from "lucide-react";
 import Earth from "@/components/ui/globe";
 
 interface Holiday {
   _id?: string;
   date: string;
+  endDate?: string; 
   name: string;
-  type: "national" | "religious" | "school" | "exam";
+  type: "national" | "religious" | "school" | "exam" | "other";
+  customType?: string; 
   description?: string;
+  active?: boolean;
 }
 
 export default function SchoolCalendar() {
-  const [currentMonth, setCurrentMonth] = useState(3); // April
-  const [currentYear, setCurrentYear] = useState(2025);
+  // Set current month and year by default
+  const today = new Date();
+  const [currentMonth, setCurrentMonth] = useState(today.getMonth());
+  const [currentYear, setCurrentYear] = useState(today.getFullYear());
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<"month" | "week" | "day">("month");
   const [holidays, setHolidays] = useState<Holiday[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentDateHighlighted, setCurrentDateHighlighted] = useState(true);
 
   useEffect(() => {
+    // Set today's date as selected by default
+    const todayFormatted = formatDateString(today);
+    setSelectedDate(todayFormatted);
+    
     fetchHolidays();
   }, []);
 
-  const fetchHolidays = async () => {
+  // When month/year changes, fetch holidays for that specific period
+  useEffect(() => {
+    fetchHolidays(currentMonth + 1, currentYear);
+  }, [currentMonth, currentYear]);
+
+  const formatDateString = (date: Date): string => {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+  };
+
+  const fetchHolidays = async (month?: number, year?: number) => {
     try {
       setIsLoading(true);
       setError(null);
 
-      // Use ?format=raw to get raw array
-      const res = await fetch("/api/holidays?active=true&format=raw");
+      // Build query params for filtering by month and year if provided
+      let url = "/api/holidays?active=true&format=raw";
+      if (month && year) {
+        url += `&month=${month}&year=${year}`;
+      }
+
+      const res = await fetch(url);
       if (!res.ok) {
         console.error("Response status:", res.status);
         throw new Error("Failed to fetch holidays");
@@ -127,6 +151,7 @@ export default function SchoolCalendar() {
     } else {
       setCurrentMonth(currentMonth - 1);
     }
+    setCurrentDateHighlighted(false);
   };
 
   const nextMonth = () => {
@@ -136,31 +161,99 @@ export default function SchoolCalendar() {
     } else {
       setCurrentMonth(currentMonth + 1);
     }
+    setCurrentDateHighlighted(false);
   };
 
-  const isHoliday = (date: string) => {
-    return holidays.find((holiday) => holiday.date === date);
+  const goToCurrentMonth = () => {
+    const now = new Date();
+    setCurrentMonth(now.getMonth());
+    setCurrentYear(now.getFullYear());
+    setCurrentDateHighlighted(true);
+    // Also select today's date
+    const todayFormatted = formatDateString(now);
+    setSelectedDate(todayFormatted);
   };
 
-  const getHolidayType = (date: string) => {
-    const holiday = holidays.find((holiday) => holiday.date === date);
+  // Check if a given date has a holiday
+  const isHoliday = (dateString: string) => {
+    return holidays.find((holiday) => {
+      // Check if the date matches exactly
+      if (holiday.date === dateString) return true;
+      
+      // If holiday has a date range, check if the date is within the range
+      if (holiday.endDate && holiday.date <= dateString && dateString <= holiday.endDate) {
+        return true;
+      }
+      
+      return false;
+    });
+  };
+
+  // Get the holiday type for a given date
+  const getHolidayType = (dateString: string) => {
+    const holiday = holidays.find((holiday) => {
+      if (holiday.date === dateString) return true;
+      
+      if (holiday.endDate && holiday.date <= dateString && dateString <= holiday.endDate) {
+        return true;
+      }
+      
+      return false;
+    });
+    
     return holiday ? holiday.type : null;
   };
 
-  const getHolidayDetails = (date: string) => {
-    return holidays.find((holiday) => holiday.date === date);
+  // Get holiday details for a given date
+  const getHolidayDetails = (dateString: string) => {
+    return holidays.find((holiday) => {
+      if (holiday.date === dateString) return true;
+      
+      if (holiday.endDate && holiday.date <= dateString && dateString <= holiday.endDate) {
+        return true;
+      }
+      
+      return false;
+    });
+  };
+
+  // Get a user-friendly label for a holiday type
+  const getHolidayTypeLabel = (type: string, customType?: string) => {
+    if (type === 'other' && customType) {
+      return customType;
+    }
+    
+    const types: Record<string, string> = {
+      'national': 'National Holiday',
+      'religious': 'Religious Holiday',
+      'school': 'School Event',
+      'exam': 'Examination',
+      'other': 'Other'
+    };
+    
+    return types[type] || type;
+  };
+
+  // Check if a date is today
+  const isToday = (year: number, month: number, day: number) => {
+    const today = new Date();
+    return (
+      day === today.getDate() &&
+      month === today.getMonth() &&
+      year === today.getFullYear()
+    );
   };
 
   const renderCalendar = () => {
     if (isLoading) {
       return (
-        <div className="grid grid-cols-7 gap-1">
-          {Array(35)
+        <div className="grid grid-cols-7 gap-0">
+          {Array(42)
             .fill(0)
             .map((_, index) => (
               <div
                 key={`loading-${index}`}
-                className="h-14 md:h-20 p-1 animate-pulse bg-gray-200 rounded"
+                className="h-16 md:h-24 border border-gray-200 animate-pulse bg-gray-200"
               ></div>
             ))}
         </div>
@@ -169,70 +262,158 @@ export default function SchoolCalendar() {
 
     const daysInMonth = getDaysInMonth(currentYear, currentMonth);
     const firstDayOfMonth = getFirstDayOfMonth(currentYear, currentMonth);
-
-    const days: JSX.Element[] = [];
-
-    // Add empty cells for days before the first day of the month
+    
+    // Create a 6x7 grid for the calendar (42 cells)
+    const calendarGrid = Array(42).fill(null);
+    
+    // Calculate previous month days to display
+    const prevMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+    const prevMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+    const daysInPrevMonth = getDaysInMonth(prevMonthYear, prevMonth);
+    
+    // Fill in the previous month days
     for (let i = 0; i < firstDayOfMonth; i++) {
-      days.push(
-        <div
-          key={`empty-${i}`}
-          className="h-14 md:h-20 p-1 text-center text-gray-500 border border-[#d4b483]/10"
-        >
-          <span className="text-sm md:text-base">
-            {getDaysInMonth(
-              currentYear,
-              currentMonth - 1 < 0 ? 11 : currentMonth - 1
-            ) -
-              firstDayOfMonth +
-              i +
-              1}
-          </span>
-        </div>
-      );
+      const day = daysInPrevMonth - firstDayOfMonth + i + 1;
+      const dateString = `${prevMonthYear}-${String(prevMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+      const isPrevMonthHoliday = isHoliday(dateString);
+      
+      calendarGrid[i] = {
+        day,
+        month: prevMonth,
+        year: prevMonthYear,
+        dateString,
+        isCurrentMonth: false,
+        isHoliday: isPrevMonthHoliday,
+        holidayDetails: isPrevMonthHoliday ? getHolidayDetails(dateString) : null
+      };
     }
-
-    // Add cells for each day of the month
-    for (let day = 1; day <= daysInMonth; day++) {
-      const dateString = `${currentYear}-${String(currentMonth + 1).padStart(
-        2,
-        "0"
-      )}-${String(day).padStart(2, "0")}`;
-      const holiday = isHoliday(dateString);
-      const holidayType = getHolidayType(dateString);
-
-      let bgColor = "";
-      if (holidayType === "national") bgColor = "bg-[#8b1a1a]/10";
-      else if (holidayType === "religious") bgColor = "bg-[#d4b483]/20";
-      else if (holidayType === "school") bgColor = "bg-green-100";
-      else if (holidayType === "exam") bgColor = "bg-blue-100";
-
-      days.push(
-        <div
-          key={day}
-          className={`h-14 md:h-20 p-1 text-center border border-[#d4b483]/10 relative cursor-pointer transition-colors hover:bg-[#f0e6d2] ${bgColor} ${
-            selectedDate === dateString ? "ring-2 ring-[#8b1a1a]" : ""
-          }`}
-          onClick={() => setSelectedDate(dateString)}
-        >
-          <div className="flex flex-col h-full">
-            <span className="text-base md:text-lg font-medium">{day}</span>
-            {holiday && (
-              <div className="mt-auto">
-                <div className="text-xs md:text-sm truncate text-[#8b1a1a] font-medium">
-                  {holiday.name}
-                </div>
+    
+    // Fill in the current month days
+    for (let i = 0; i < daysInMonth; i++) {
+      const day = i + 1;
+      const dateString = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+      const currentMonthHoliday = isHoliday(dateString);
+      
+      calendarGrid[firstDayOfMonth + i] = {
+        day,
+        month: currentMonth,
+        year: currentYear,
+        dateString,
+        isCurrentMonth: true,
+        isHoliday: currentMonthHoliday,
+        holidayDetails: currentMonthHoliday ? getHolidayDetails(dateString) : null
+      };
+    }
+    
+    // Fill in the next month days
+    const nextMonthYear = currentMonth === 11 ? currentYear + 1 : currentYear;
+    const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1;
+    
+    for (let i = firstDayOfMonth + daysInMonth; i < 42; i++) {
+      const day = i - (firstDayOfMonth + daysInMonth) + 1;
+      const dateString = `${nextMonthYear}-${String(nextMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+      const isNextMonthHoliday = isHoliday(dateString);
+      
+      calendarGrid[i] = {
+        day,
+        month: nextMonth,
+        year: nextMonthYear,
+        dateString,
+        isCurrentMonth: false,
+        isHoliday: isNextMonthHoliday,
+        holidayDetails: isNextMonthHoliday ? getHolidayDetails(dateString) : null
+      };
+    }
+    
+    // Render the grid
+    return (
+      <div className="grid grid-cols-7 gap-0">
+        {calendarGrid.map((cell, index) => {
+          if (!cell) return <div key={`empty-${index}`} className="h-16 md:h-24 border border-gray-200"></div>;
+          
+          const {
+            day,
+            month,
+            year,
+            dateString,
+            isCurrentMonth,
+            isHoliday,
+            holidayDetails
+          } = cell;
+          
+          const isSelectedDate = selectedDate === dateString;
+          const isTodayDate = isToday(year, month, day);
+          
+          let holidayType = holidayDetails?.type;
+          let bgColor = "";
+          
+          if (isHoliday) {
+            if (holidayType === "national") bgColor = "bg-[#8b1a1a]/10";
+            else if (holidayType === "religious") bgColor = "bg-[#d4b483]/20";
+            else if (holidayType === "school") bgColor = "bg-green-100";
+            else if (holidayType === "exam") bgColor = "bg-blue-100";
+            else if (holidayType === "other") bgColor = "bg-purple-100";
+          }
+          
+          const todayClass = isTodayDate && currentDateHighlighted
+            ? "ring-2 ring-blue-500 bg-blue-50"
+            : "";
+            
+          return (
+            <div
+              key={`${year}-${month}-${day}`}
+              className={`h-16 md:h-24 p-1 border border-gray-200 relative ${
+                isCurrentMonth ? "bg-white" : "bg-gray-50"
+              } ${bgColor} ${
+                isSelectedDate ? "ring-2 ring-[#8b1a1a]" : todayClass
+              } cursor-pointer hover:bg-[#f0e6d2]`}
+              onClick={() => setSelectedDate(dateString)}
+            >
+              <div className="flex flex-col h-full">
+                <span 
+                  className={`text-sm md:text-base font-medium ${
+                    !isCurrentMonth ? "text-gray-400" : ""
+                  } ${isTodayDate && currentDateHighlighted ? "text-blue-700" : ""}`}
+                >
+                  {day}
+                </span>
+                {isHoliday && (
+                  <div className="mt-auto overflow-hidden">
+                    <div 
+                      className={`text-xs truncate font-medium ${
+                        isCurrentMonth ? "text-[#8b1a1a]" : "text-gray-400"
+                      }`}
+                    >
+                      {holidayDetails?.name}
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-          {holiday && (
-            <div className="absolute bottom-0 right-0 w-0 h-0 border-8 border-transparent border-b-[#8b1a1a] border-r-[#8b1a1a]"></div>
-          )}
-        </div>
-      );
-    }
+              {isHoliday && (
+                <div className="absolute bottom-0 right-0 w-0 h-0 border-8 border-transparent border-b-[#8b1a1a] border-r-[#8b1a1a]"></div>
+              )}
+              {holidayDetails?.endDate && holidayDetails.date !== holidayDetails.endDate && (
+                <div className="absolute top-0 right-0">
+                  <CalendarRange size={10} className="text-[#8b1a1a]" />
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
 
-    return days;
+  // Format date for display in the selected date details
+  const formatSelectedDate = (dateString: string) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
   };
 
   return (
@@ -262,6 +443,7 @@ export default function SchoolCalendar() {
               </div>
             </div>
           </div>
+          
           {/* Calendar Component */}
           <div className="lg:w-2/3">
             <div className="text-center mb-6">
@@ -289,6 +471,7 @@ export default function SchoolCalendar() {
                   <button
                     onClick={prevMonth}
                     className="p-2 rounded-full hover:bg-white/10 transition-colors"
+                    aria-label="Previous month"
                   >
                     <ChevronLeft className="h-5 w-5" />
                   </button>
@@ -298,11 +481,22 @@ export default function SchoolCalendar() {
                   <button
                     onClick={nextMonth}
                     className="p-2 rounded-full hover:bg-white/10 transition-colors"
+                    aria-label="Next month"
                   >
                     <ChevronRight className="h-5 w-5" />
                   </button>
                 </div>
                 <div className="flex space-x-2">
+                  <button
+                    onClick={goToCurrentMonth}
+                    className={`px-3 py-1 rounded-md text-sm hover:bg-white/10 ${
+                      isToday(currentYear, currentMonth, today.getDate()) && currentDateHighlighted
+                        ? "bg-white text-[#8b1a1a]"
+                        : ""
+                    }`}
+                  >
+                    Today
+                  </button>
                   <button
                     onClick={() => setViewMode("month")}
                     className={`px-3 py-1 rounded-md text-sm ${
@@ -337,13 +531,13 @@ export default function SchoolCalendar() {
               </div>
 
               {/* Calendar Body */}
-              <div>
+              <div className="calendar-container">
                 {/* Day Names */}
-                <div className="grid grid-cols-7 bg-[#f0e6d2]">
+                <div className="grid grid-cols-7 bg-[#f0e6d2] gap-0">
                   {dayNames.map((day) => (
                     <div
                       key={day}
-                      className="p-2 text-center font-medium text-[#8b1a1a]"
+                      className="p-2 text-center font-medium text-[#8b1a1a] border-b border-[#d4b483]/20"
                     >
                       {day}
                     </div>
@@ -351,7 +545,7 @@ export default function SchoolCalendar() {
                 </div>
 
                 {/* Calendar Grid */}
-                <div className="grid grid-cols-7">{renderCalendar()}</div>
+                {renderCalendar()}
               </div>
 
               {/* Legend */}
@@ -377,6 +571,10 @@ export default function SchoolCalendar() {
                     <div className="w-4 h-4 bg-blue-100 mr-2"></div>
                     <span className="text-sm text-[#5a3e36]">Examination</span>
                   </div>
+                  <div className="flex items-center">
+                    <div className="w-4 h-4 bg-purple-100 mr-2"></div>
+                    <span className="text-sm text-[#5a3e36]">Other Event</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -396,12 +594,16 @@ export default function SchoolCalendar() {
                     </div>
                     <div>
                       <h4 className="text-lg font-medium text-[#8b1a1a]">
-                        {new Date(selectedDate).toLocaleDateString("en-US", {
-                          weekday: "long",
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
+                        {formatSelectedDate(selectedDate)}
+                        {isToday(
+                          new Date(selectedDate).getFullYear(),
+                          new Date(selectedDate).getMonth(),
+                          new Date(selectedDate).getDate()
+                        ) && currentDateHighlighted && (
+                          <span className="ml-2 text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                            Today
+                          </span>
+                        )}
                       </h4>
                       {isHoliday(selectedDate) ? (
                         <div className="mt-2">
@@ -418,6 +620,8 @@ export default function SchoolCalendar() {
                               " School Event"}
                             {getHolidayType(selectedDate) === "exam" &&
                               " Examination Period"}
+                            {getHolidayType(selectedDate) === "other" && 
+                              ` ${getHolidayTypeLabel('other', getHolidayDetails(selectedDate)?.customType)}`}
                           </p>
                           {getHolidayDetails(selectedDate)?.description && (
                             <p className="text-sm text-[#5a3e36] mt-2">
@@ -434,7 +638,27 @@ export default function SchoolCalendar() {
                                 "Special activities planned for students."}
                               {getHolidayType(selectedDate) === "exam" &&
                                 "Students should prepare according to the exam schedule."}
+                              {getHolidayType(selectedDate) === "other" &&
+                                "Please check with school administration for more details."}
                             </p>
+                          )}
+                          
+                          {/* Show date range info if applicable */}
+                          {getHolidayDetails(selectedDate)?.endDate && 
+                           getHolidayDetails(selectedDate)?.date !== getHolidayDetails(selectedDate)?.endDate && (
+                            <div className="mt-2 p-2 bg-gray-50 rounded border border-gray-200">
+                              <p className="text-sm text-gray-700 flex items-center">
+                                <CalendarRange size={14} className="mr-1 text-[#8b1a1a]" />
+                                This is a multi-day event from{" "}
+                                <span className="font-medium mx-1">
+                                  {new Date(getHolidayDetails(selectedDate)?.date || "").toLocaleDateString()}
+                                </span>{" "}
+                                to{" "}
+                                <span className="font-medium mx-1">
+                                  {new Date(getHolidayDetails(selectedDate)?.endDate || "").toLocaleDateString()}
+                                </span>
+                              </p>
+                            </div>
                           )}
                         </div>
                       ) : (

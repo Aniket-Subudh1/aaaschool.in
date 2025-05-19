@@ -2,22 +2,27 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Calendar, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Calendar, CheckCircle, AlertCircle } from 'lucide-react';
 import { FormControls } from '@/components/admin/FormControls';
 import { authFetch } from '@/lib/authFetch';
 
+// Updated holiday type options with "Other" option
 const holidayTypeOptions = [
   { value: 'national', label: 'National Holiday' },
   { value: 'religious', label: 'Religious Holiday' },
   { value: 'school', label: 'School Event' },
   { value: 'exam', label: 'Examination' },
+  { value: 'other', label: 'Other' }, // Added "Other" option
 ];
 
 export default function NewHolidayPage() {
   const [formData, setFormData] = useState({
     name: '',
     date: '',
+    endDate: '', 
+    isDateRange: false, 
     type: 'national',
+    customType: '',
     description: '',
     active: true,
   });
@@ -36,17 +41,50 @@ export default function NewHolidayPage() {
     }));
   };
   
+  const validateForm = () => {
+    if (!formData.name.trim()) {
+      setError('Holiday name is required');
+      return false;
+    }
+    
+    if (!formData.date) {
+      setError('Start date is required');
+      return false;
+    }
+    
+    if (formData.isDateRange && !formData.endDate) {
+      setError('End date is required when using date range');
+      return false;
+    }
+    
+    if (formData.isDateRange && formData.endDate < formData.date) {
+      setError('End date must be after start date');
+      return false;
+    }
+    
+    if (formData.type === 'other' && !formData.customType.trim()) {
+      setError('Custom type is required when "Other" is selected');
+      return false;
+    }
+    
+    return true;
+  };
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name.trim() || !formData.date || !formData.type) {
-      setError('Name, date, and type are required');
-      return;
-    }
+    if (!validateForm()) return;
     
     try {
       setIsSubmitting(true);
       setError(null);
+      
+      // Prepare data for submission
+      const holidayData = {
+        ...formData,
+        endDate: formData.isDateRange ? formData.endDate : undefined,
+        customType: formData.type === 'other' ? formData.customType : undefined,
+      };
       
       // Use authFetch instead of fetch
       const res = await authFetch('/api/holidays', {
@@ -54,7 +92,7 @@ export default function NewHolidayPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(holidayData),
       });
       
       const data = await res.json();
@@ -63,27 +101,30 @@ export default function NewHolidayPage() {
         throw new Error(data.message || 'Failed to create holiday');
       }
       
-      // Set success message
+    
       setSuccessMessage('Holiday added successfully!');
       
-      // Clear form after successful submission
+      
       setFormData({
         name: '',
         date: '',
+        endDate: '',
+        isDateRange: false,
         type: 'national',
+        customType: '',
         description: '',
         active: true,
       });
       
-      // Optionally redirect after a short delay
       setTimeout(() => {
         router.push('/admin/holidays');
       }, 2000);
-    } catch (err: any) {
+
+    } catch (err: Error | unknown) {
       console.error('Error creating holiday:', err);
-      setError(err.message || 'Failed to create holiday');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to create holiday';
+      setError(errorMessage);
     } finally {
-      setIsSubmitting(false);
     }
   };
   
@@ -111,8 +152,9 @@ export default function NewHolidayPage() {
       </div>
       
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md mb-6">
-          {error}
+        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md mb-6 flex items-center">
+          <AlertCircle size={16} className="mr-2 flex-shrink-0" />
+          <span>{error}</span>
         </div>
       )}
 
@@ -143,18 +185,53 @@ export default function NewHolidayPage() {
             </div>
             
             <div>
-              <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">
-                Date <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="date"
-                id="date"
-                name="date"
-                value={formData.date}
-                onChange={handleChange}
-                className="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
-                required
-              />
+              <div className="flex items-center mb-2">
+                <input
+                  type="checkbox"
+                  id="isDateRange"
+                  name="isDateRange"
+                  checked={formData.isDateRange}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, isDateRange: e.target.checked }))}
+                  className="h-4 w-4 text-[#8b1a1a] focus:ring-[#8b1a1a]/50 border-gray-300 rounded"
+                />
+                <label htmlFor="isDateRange" className="ml-2 block text-sm text-gray-700">
+                  Date Range (Multiple Days)
+                </label>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">
+                    {formData.isDateRange ? 'Start Date' : 'Date'} <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    id="date"
+                    name="date"
+                    value={formData.date}
+                    onChange={handleChange}
+                    className="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
+                    required
+                  />
+                </div>
+                
+                {formData.isDateRange && (
+                  <div>
+                    <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 mb-1">
+                      End Date <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      id="endDate"
+                      name="endDate"
+                      value={formData.endDate}
+                      onChange={handleChange}
+                      className="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
+                      required={formData.isDateRange}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
             
             <div>
@@ -176,6 +253,24 @@ export default function NewHolidayPage() {
                 ))}
               </select>
             </div>
+            
+            {formData.type === 'other' && (
+              <div>
+                <label htmlFor="customType" className="block text-sm font-medium text-gray-700 mb-1">
+                  Custom Holiday Type <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="customType"
+                  name="customType"
+                  value={formData.customType}
+                  onChange={handleChange}
+                  className="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
+                  placeholder="Enter custom holiday type"
+                  required={formData.type === 'other'}
+                />
+              </div>
+            )}
             
             <div>
               <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">

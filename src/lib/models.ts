@@ -23,8 +23,10 @@ export interface Notification {
 export interface Holiday {
   _id?: string;
   date: string;
+  endDate?: string; 
   name: string;
-  type: 'national' | 'religious' | 'school' | 'exam';
+  type: 'national' | 'religious' | 'school' | 'exam' | 'other'; 
+  customType?: string; 
   description?: string;
   active: boolean;
   createdAt: Date;

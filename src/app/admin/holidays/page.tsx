@@ -2,17 +2,26 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Calendar, Plus, Edit, Trash2, Search, EyeOff, Eye, AlertCircle, CheckCircle } from 'lucide-react';
+import { Calendar, Plus, Edit, Trash2, Search, EyeOff, Eye, AlertCircle, Calendar as CalendarIcon } from 'lucide-react';
 import NoData from '@/components/admin/NoData';
 import DeleteConfirmation from '@/components/admin/DeleteConfirmation';
 import { Holiday } from '@/lib/models';
 import { authFetch } from '@/lib/authFetch';
 
-const holidayTypeLabels = {
-  'national': 'National Holiday',
-  'religious': 'Religious Holiday',
-  'school': 'School Event',
-  'exam': 'Examination'
+const getHolidayTypeLabel = (holiday: Holiday) => {
+  if (holiday.type === 'other' && holiday.customType) {
+    return holiday.customType;
+  }
+  
+  const holidayTypeLabels: Record<string, string> = {
+    'national': 'National Holiday',
+    'religious': 'Religious Holiday',
+    'school': 'School Event',
+    'exam': 'Examination',
+    'other': 'Other'
+  };
+  
+  return holidayTypeLabels[holiday.type] || holiday.type;
 };
 
 export default function HolidaysPage() {
@@ -127,10 +136,23 @@ export default function HolidaysPage() {
     }
   };
   
+  // Format date range display
+  const formatDateDisplay = (holiday: Holiday) => {
+    const startDate = new Date(holiday.date);
+    
+    if (holiday.endDate && holiday.endDate !== holiday.date) {
+      const endDate = new Date(holiday.endDate);
+      return `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`;
+    }
+    
+    return startDate.toLocaleDateString();
+  };
+  
   // Filter holidays based on search query
   const filteredHolidays = holidays.filter((holiday) =>
     holiday.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    holiday.type.toLowerCase().includes(searchQuery.toLowerCase())
+    getHolidayTypeLabel(holiday).toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (holiday.description && holiday.description.toLowerCase().includes(searchQuery.toLowerCase()))
   );
   
   return (
@@ -219,18 +241,27 @@ export default function HolidaysPage() {
               >
                 <div className="flex items-start space-x-3">
                   <div className={`p-2 rounded-full ${holiday.active ? 'bg-amber-50 text-amber-600' : 'bg-gray-100 text-gray-500'}`}>
-                    <Calendar size={18} />
+                    {holiday.endDate && holiday.endDate !== holiday.date ? (
+                      <CalendarIcon size={18} />
+                    ) : (
+                      <Calendar size={18} />
+                    )}
                   </div>
                   <div>
                     <h3 className={`font-medium ${holiday.active ? 'text-gray-900' : 'text-gray-500'}`}>
                       {holiday.name}
                     </h3>
                     <p className="text-sm text-gray-500">
-                      {new Date(holiday.date).toLocaleDateString()}
+                      {formatDateDisplay(holiday)}
                       {' '}•{' '}
-                      {holidayTypeLabels[holiday.type]}
+                      {getHolidayTypeLabel(holiday)}
                       {!holiday.active && ' • Inactive'}
                     </p>
+                    {holiday.description && (
+                      <p className="text-xs text-gray-500 mt-1 max-w-md truncate">
+                        {holiday.description}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">

@@ -35,7 +35,6 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    // Verify authentication
     const authResult = await verifyAuth(request);
     if (!authResult.isAuthenticated) {
       return NextResponse.json(
@@ -45,6 +44,28 @@ export async function PUT(
     }
 
     const body = await request.json();
+    
+    if (!body.name || !body.date || !body.type) {
+      return NextResponse.json(
+        { message: 'Name, date, and type are required' },
+        { status: 400 }
+      );
+    }
+    
+    if (body.type === 'other' && !body.customType) {
+      return NextResponse.json(
+        { message: "Custom type is required when type is 'other'" },
+        { status: 400 }
+      );
+    }
+    
+    if (body.endDate && body.endDate < body.date) {
+      return NextResponse.json(
+        { message: "End date must be after start date" },
+        { status: 400 }
+      );
+    }
+    
     const updateResult = await updateHoliday(params.id, body);
     
     if (updateResult.matchedCount === 0) {
