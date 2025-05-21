@@ -5,7 +5,7 @@ import ReactCrop, { type Crop, centerCrop, makeAspectCrop } from "react-image-cr
 import "react-image-crop/dist/ReactCrop.css";
 import { Slider } from "@/components/ui/slider";
 import { Loader2 } from "lucide-react";
-import Image from "next/image";
+
 interface ImageCropperProps {
   image: string;
   onCrop: (croppedImage: Blob) => void;
@@ -21,11 +21,9 @@ export function ImageCropper({ image, onCrop, aspectRatio = 3/4 }: ImageCropperP
   const imgRef = useRef<HTMLImageElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Set initial crop when image loads
   function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
     const { width, height } = e.currentTarget;
     
-    // Create a centered crop with specified aspect ratio
     const crop = centerCrop(
       makeAspectCrop(
         {
@@ -43,7 +41,6 @@ export function ImageCropper({ image, onCrop, aspectRatio = 3/4 }: ImageCropperP
     setCrop(crop);
   }
 
-  // When crop is changed, draw the cropped image on a canvas for preview
   useEffect(() => {
     if (completedCrop?.width && completedCrop?.height && imgRef.current && canvasRef.current) {
       canvasDraw(completedCrop);
@@ -143,7 +140,8 @@ export function ImageCropper({ image, onCrop, aspectRatio = 3/4 }: ImageCropperP
               minWidth={50}
               minHeight={50}
             >
-              <Image
+              {/* Using regular img tag instead of Next.js Image component */}
+              <img
                 ref={imgRef}
                 src={image}
                 alt="Crop preview"
