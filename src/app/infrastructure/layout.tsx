@@ -3,7 +3,6 @@ import NavBar from "@/components/ui/nav-bar";
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 
-
 export const metadata: Metadata = {
   title: {
     default: "World-Class Infrastructure | Aryavart Ancient Academy",
@@ -26,7 +25,12 @@ export const metadata: Metadata = {
     "school virtual tour",
     "meditation gardens",
     "school safety and security",
-    "smart classrooms"
+    "smart classrooms",
+    "school library facilities",
+    "sports grounds",
+    "auditorium",
+    "indoor sports complex",
+    "science labs"
   ],
   applicationName: "Aryavart Ancient Academy Campus Explorer",
   authors: [{ name: "Aryavart Ancient Academy Facilities Team" }],
@@ -50,7 +54,7 @@ export const metadata: Metadata = {
     url: "https://www.aaaschool.in/infrastructure",
     title: "World-Class Infrastructure | Aryavart Ancient Academy",
     description:
-      "Explore our 35-acre campus featuring modern classrooms, laboratories, sports facilities, and specialized learning spaces designed for holistic education.",
+      "Explore our campus featuring modern classrooms, laboratories, sports facilities, and specialized learning spaces designed for holistic education.",
     siteName: "Aryavart Ancient Academy",
     images: [
       {
@@ -58,6 +62,12 @@ export const metadata: Metadata = {
         width: 1200,
         height: 630,
         alt: "Aryavart Ancient Academy Campus",
+      },
+      {
+        url: "/aaa.png",
+        width: 600,
+        height: 600,
+        alt: "Aryavart Ancient Academy Logo",
       },
     ],
   },
@@ -67,6 +77,8 @@ export const metadata: Metadata = {
     description:
       "Discover our campus blending traditional architecture with modern educational facilities at Aryavart Ancient Academy, Khordha.",
     images: ["https://www.aaaschool.in/infrastructure-twitter.jpg"],
+    site: "@aaaschool",
+    creator: "@aaaschool",
   },
   verification: {
     google: "your-google-site-verification-code",
@@ -115,7 +127,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 2,
+  maximumScale: 5,
   userScalable: true,
   themeColor: "#8b1a1a",
 };
@@ -132,14 +144,24 @@ export default function InfrastructureLayout({
         id="infrastructure-structured-data"
         type="application/ld+json"
         strategy="lazyOnload"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
+      >
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Infrastructure | Aryavart Ancient Academy",
+          "description": "Explore our world-class infrastructure and facilities designed to provide an optimal learning environment",
+          "url": "https://www.aaaschool.in/infrastructure",
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "Aryavart Ancient Academy",
+            "url": "https://www.aaaschool.in"
+          },
+          "about": {
             "@type": "EducationalOrganization",
             "name": "Aryavart Ancient Academy",
             "description": "A premier educational institution in Khordha, Odisha, offering holistic education",
             "url": "https://www.aaaschool.in",
-            "logo": "https://www.aaaschool.in/logo.png",
+            "logo": "https://www.aaaschool.in/aaa.png",
             "address": {
               "@type": "PostalAddress",
               "streetAddress": "School Address Line",
@@ -150,20 +172,12 @@ export default function InfrastructureLayout({
             },
             "telephone": "+91-9124654094",
             "email": "aryavartaa.krd@gmail.com",
-            "foundingDate": "1995",
             "sameAs": [
-              "https://www.facebook.com/AryavartAcademy",
-              "https://www.instagram.com/aryavart_academy",
-              "https://twitter.com/AryavartAcademy"
+              "https://www.instagram.com/aaaschoolkrd/?hl=en",
+              "http://facebook.com/aaaschoolkrd/?locale=ms_MY",
+              "https://x.com/aaaschool",
+              "https://www.youtube.com/@aaaschool"
             ],
-            "areaServed": "Khordha, Odisha",
-            "alumni": {
-              "@type": "OrganizationRole",
-              "alumniOf": {
-                "@type": "EducationalOrganization",
-                "name": "Aryavart Ancient Academy"
-              }
-            },
             "facility": [
               {
                 "@type": "Place",
@@ -249,18 +263,53 @@ export default function InfrastructureLayout({
                 "value": true
               }
             ]
-          })
-        }}
-      />
-
-      {/* Breadcrumb structured data */}
-      <Script
-        id="breadcrumb-structured-data"
-        type="application/ld+json"
-        strategy="lazyOnload"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
+          },
+          "mainEntity": {
+            "@type": "ItemList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Campus",
+                "item": {
+                  "@type": "Thing",
+                  "name": "Main Campus Facilities",
+                  "description": "Academic buildings, auditorium, and gardens"
+                }
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Laboratories",
+                "item": {
+                  "@type": "Thing",
+                  "name": "Educational Laboratories",
+                  "description": "Science, computer, and language labs"
+                }
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Sports Facilities",
+                "item": {
+                  "@type": "Thing",
+                  "name": "Sports Infrastructure",
+                  "description": "Outdoor and indoor sports facilities"
+                }
+              },
+              {
+                "@type": "ListItem",
+                "position": 4,
+                "name": "Specialized Facilities",
+                "item": {
+                  "@type": "Thing",
+                  "name": "Specialized Learning Spaces",
+                  "description": "Library, music room, art studio, and smart classrooms"
+                }
+              }
+            ]
+          },
+          "breadcrumb": {
             "@type": "BreadcrumbList",
             "itemListElement": [
               {
@@ -276,104 +325,114 @@ export default function InfrastructureLayout({
                 "item": "https://www.aaaschool.in/infrastructure"
               }
             ]
-          })
-        }}
-      />
+          },
+          "specialty": "Modern educational facilities blended with traditional architecture",
+          "potentialAction": {
+            "@type": "ViewAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://www.aaaschool.in/infrastructure/virtual-tour",
+              "actionPlatform": [
+                "http://schema.org/DesktopWebPlatform",
+                "http://schema.org/MobileWebPlatform"
+              ]
+            }
+          }
+        })}
+      </Script>
 
-      {/* Virtual tour structured data */}
+      {/* FAQPage for Infrastructure FAQ */}
+      <Script
+        id="faq-infrastructure-structured-data"
+        type="application/ld+json"
+        strategy="lazyOnload"
+      >
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How large is the Aryavart Ancient Academy campus?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Our campus spans 35 acres of lush green environment, providing ample space for academic buildings, sports facilities, and outdoor learning areas."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What laboratory facilities are available at Aryavart Ancient Academy?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "We have fully equipped physics, chemistry, biology, and computer laboratories with modern equipment and technology to support hands-on learning experiences."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What sports facilities are available on campus?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Our campus features an expansive sports field with a 400-meter track, basketball and volleyball courts, and an indoor sports complex for table tennis, chess, and other indoor games."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does the school have a library?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, our central library houses over 10,000 books, journals, and digital resources to support academic excellence in a comfortable and inviting space."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What safety measures are in place at Aryavart Ancient Academy?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "We prioritize safety with 24/7 security personnel, CCTV surveillance throughout the campus, and comprehensive fire safety systems including alarms, extinguishers, and regular evacuation drills."
+              }
+            }
+          ]
+        })}
+      </Script>
+
+      {/* Virtual Tour Event Structured Data */}
       <Script
         id="virtualtour-structured-data"
         type="application/ld+json"
         strategy="lazyOnload"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Event",
-            "name": "Aryavart Ancient Academy Virtual Campus Tour",
-            "description": "Experience our world-class infrastructure and facilities with our interactive virtual tour",
-            "image": "https://www.aaaschool.in/virtual-tour-image.jpg",
+      >
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Event",
+          "name": "Aryavart Ancient Academy Virtual Campus Tour",
+          "description": "Experience our world-class infrastructure and facilities with our interactive virtual tour",
+          "image": "https://www.aaaschool.in/virtual-tour-image.jpg",
+          "url": "https://www.aaaschool.in/infrastructure/virtual-tour",
+          "startDate": "2023-01-01T00:00:00+05:30",
+          "endDate": "2025-12-31T23:59:59+05:30",
+          "eventStatus": "https://schema.org/EventScheduled",
+          "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+          "location": {
+            "@type": "VirtualLocation",
+            "url": "https://www.aaaschool.in/infrastructure/virtual-tour"
+          },
+          "organizer": {
+            "@type": "Organization",
+            "name": "Aryavart Ancient Academy",
+            "url": "https://www.aaaschool.in"
+          },
+          "offers": {
+            "@type": "Offer",
             "url": "https://www.aaaschool.in/infrastructure/virtual-tour",
-            "startDate": "2023-01-01T00:00:00+05:30",
-            "endDate": "2025-12-31T23:59:59+05:30",
-            "eventStatus": "https://schema.org/EventScheduled",
-            "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
-            "location": {
-              "@type": "VirtualLocation",
-              "url": "https://www.aaaschool.in/infrastructure/virtual-tour"
-            },
-            "organizer": {
-              "@type": "Organization",
-              "name": "Aryavart Ancient Academy",
-              "url": "https://www.aaaschool.in"
-            },
-            "offers": {
-              "@type": "Offer",
-              "url": "https://www.aaaschool.in/infrastructure/virtual-tour",
-              "price": "0",
-              "priceCurrency": "INR",
-              "availability": "https://schema.org/InStock",
-              "validFrom": "2023-01-01T00:00:00+05:30"
-            }
-          })
-        }}
-      />
+            "price": "0",
+            "priceCurrency": "INR",
+            "availability": "https://schema.org/InStock",
+            "validFrom": "2023-01-01T00:00:00+05:30"
+          }
+        })}
+      </Script>
 
-      {/* FAQPage for Common Infrastructure Questions */}
-      <Script
-        id="faq-structured-data"
-        type="application/ld+json"
-        strategy="lazyOnload"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "mainEntity": [
-              {
-                "@type": "Question",
-                "name": "How large is the Aryavart Ancient Academy campus?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Our campus spans 35 acres of lush green environment, providing ample space for academic buildings, sports facilities, and outdoor learning areas."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "What laboratory facilities are available at Aryavart Ancient Academy?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "We have fully equipped physics, chemistry, biology, and computer laboratories with modern equipment and technology to support hands-on learning experiences."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "What sports facilities are available on campus?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Our campus features an expansive sports field with a 400-meter track, basketball and volleyball courts, and an indoor sports complex for table tennis, chess, and other indoor games."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Does the school have a library?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes, our central library houses over 10,000 books, journals, and digital resources to support academic excellence in a comfortable and inviting space."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "What safety measures are in place at Aryavart Ancient Academy?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "We prioritize safety with 24/7 security personnel, CCTV surveillance throughout the campus, and comprehensive fire safety systems including alarms, extinguishers, and regular evacuation drills."
-                }
-              }
-            ]
-          })
-        }}
-      />
-
-      {/* Google Analytics (if needed) */}
+      {/* Global Site Tag for Analytics */}
       <Script
         strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=G-YOUR_GA_MEASUREMENT_ID`}

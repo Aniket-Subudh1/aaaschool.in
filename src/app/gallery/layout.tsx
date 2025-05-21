@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import NavBar from "@/components/ui/nav-bar";
+import Footer from "@/components/ui/footer";
 
 export const metadata: Metadata = {
   title: {
@@ -7,7 +9,7 @@ export const metadata: Metadata = {
     template: "%s | Aryavart Ancient Academy Gallery",
   },
   description:
-    "Browse photos, videos, and news from Aryavart Ancient Academy's cultural events, educational activities, and student achievements.",
+    "Browse photos, videos, and news from Aryavart Ancient Academy's cultural events, educational activities, and student achievements. Explore our vibrant campus life through our comprehensive media gallery.",
   keywords: [
     "school gallery",
     "Aryavart Ancient Academy photos",
@@ -17,6 +19,13 @@ export const metadata: Metadata = {
     "news bulletins",
     "school memories",
     "education gallery",
+    "Khordha school photos",
+    "Odisha school events",
+    "student achievements gallery",
+    "campus activities",
+    "school celebrations",
+    "cultural programs",
+    "school media gallery"
   ],
   applicationName: "Aryavart Ancient Academy Gallery Portal",
   authors: [{ name: "Aryavart Ancient Academy Media Team" }],
@@ -42,10 +51,16 @@ export const metadata: Metadata = {
     siteName: "Aryavart Ancient Academy",
     images: [
       {
-        url: "/seo.png",
+        url: "/gallery-og.jpg",
         width: 1200,
         height: 630,
         alt: "Aryavart Ancient Academy Gallery",
+      },
+      {
+        url: "/aaa.png",
+        width: 600,
+        height: 600,
+        alt: "Aryavart Ancient Academy Logo",
       },
     ],
   },
@@ -55,9 +70,14 @@ export const metadata: Metadata = {
     description:
       "Explore our rich collection of photos, videos, and news bulletins showcasing the vibrant life at Aryavart Ancient Academy.",
     images: ["https://www.aaaschool.in/twitter-gallery.jpg"],
+    site: "@aaaschool",
+    creator: "@aaaschool",
   },
   verification: {
     google: "your-google-site-verification-code",
+  },
+  alternates: {
+    canonical: "https://www.aaaschool.in/gallery",
   },
   category: "Education",
 };
@@ -66,8 +86,9 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: "#8b1a1a",
 };
 
 export default function GalleryLayout({
@@ -85,39 +106,44 @@ export default function GalleryLayout({
         {JSON.stringify({
           "@context": "https://schema.org",
           "@type": "CollectionPage",
-          name: "Aryavart Ancient Academy Gallery",
-          description:
-            "Collection of photos, videos, and news from school events and activities",
-          publisher: {
+          "name": "Aryavart Ancient Academy Gallery",
+          "description": "Collection of photos, videos, and news from school events and activities",
+          "publisher": {
             "@type": "EducationalOrganization",
-            name: "Aryavart Ancient Academy",
-            logo: "https://www.aaaschool.in/logo.png",
+            "name": "Aryavart Ancient Academy",
+            "logo": "https://www.aaaschool.in/aaa.png",
           },
-          url: "https://www.aaaschool.in/gallery",
-          mainEntity: {
+          "url": "https://www.aaaschool.in/gallery",
+          "mainEntity": {
             "@type": "ItemList",
-            itemListElement: [
+            "itemListElement": [
               {
                 "@type": "ListItem",
-                position: 1,
-                url: "https://www.aaaschool.in/gallery/photo",
+                "position": 1,
+                "url": "https://www.aaaschool.in/gallery/photo",
+                "name": "Photo Albums",
+                "description": "Collections of photographs from various school events and activities"
               },
               {
                 "@type": "ListItem",
-                position: 2,
-                url: "https://www.aaaschool.in/gallery/video",
+                "position": 2,
+                "url": "https://www.aaaschool.in/gallery/video",
+                "name": "Video Gallery",
+                "description": "Videos showcasing performances, events, and campus highlights"
               },
               {
                 "@type": "ListItem",
-                position: 3,
-                url: "https://www.aaaschool.in/gallery/news-bulletin",
-              },
-            ],
-          },
+                "position": 3,
+                "url": "https://www.aaaschool.in/gallery/news-bulletin",
+                "name": "News Bulletins",
+                "description": "School newsletters, announcements and updates"
+              }
+            ]
+          }
         })}
       </Script>
 
-      {/* Global Site Tag for Analytics (optional) */}
+      {/* Global Site Tag for Analytics */}
       <Script
         strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=G-YOUR_GA_MEASUREMENT_ID`}
@@ -135,7 +161,9 @@ export default function GalleryLayout({
         }}
       />
 
-      <main className="flex-grow ">{children}</main>
+      <NavBar />
+      <main className="flex-grow">{children}</main>
+      <Footer />
     </div>
   );
 }

@@ -22,6 +22,10 @@ export const metadata: Metadata = {
     "traditional learning",
     "modern education",
     "Khordha school academics",
+    "CBSE curriculum",
+    "academic achievements",
+    "student assessment",
+    "learning outcomes",
   ],
   applicationName: "Aryavart Ancient Academy Academic Portal",
   authors: [{ name: "Aryavart Ancient Academy Academic Team" }],
@@ -54,6 +58,12 @@ export const metadata: Metadata = {
         height: 630,
         alt: "Aryavart Ancient Academy Academics",
       },
+      {
+        url: "/aaa.png",
+        width: 600,
+        height: 600,
+        alt: "Aryavart Ancient Academy Logo",
+      },
     ],
   },
   twitter: {
@@ -62,9 +72,14 @@ export const metadata: Metadata = {
     description:
       "Discover our holistic approach to education blending traditional wisdom with modern curriculum at Aryavart Ancient Academy.",
     images: ["https://www.aaaschool.in/academics-twitter.jpg"],
+    site: "@aaaschool",
+    creator: "@aaaschool",
   },
   verification: {
     google: "your-google-site-verification-code",
+  },
+  alternates: {
+    canonical: "https://www.aaaschool.in/academics",
   },
   category: "Education",
 };
@@ -73,8 +88,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  maximumScale: 5,
+  userScalable: true,
   themeColor: "#8b1a1a",
 };
 
@@ -92,72 +107,87 @@ export default function AcademicsLayout({
       >
         {JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "EducationalOrganization",
-          name: "Aryavart Ancient Academy",
-          description:
-            "A premier educational institution in Khordha, Odisha, offering holistic education",
-          url: "https://www.aaaschool.in",
-          logo: "https://www.aaaschool.in/logo.png",
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: "School Address Line",
-            addressLocality: "Khordha",
-            addressRegion: "Odisha",
-            postalCode: "000000",
-            addressCountry: "IN",
+          "@type": "WebPage",
+          "name": "Academics | Aryavart Ancient Academy",
+          "description": "Comprehensive academic programs from primary to secondary education combining traditional wisdom with modern curriculum",
+          "url": "https://www.aaaschool.in/academics",
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "Aryavart Ancient Academy",
+            "url": "https://www.aaaschool.in"
           },
-          hasCredential: [
-            {
-              "@type": "EducationalOccupationalCredential",
-              name: "CBSE Affiliated",
-              credentialCategory: "School Board",
-            },
-          ],
-          offers: {
-            "@type": "Offer",
-            category: "Educational Program",
-            description:
-              "Comprehensive academic programs from primary to secondary education",
+          "about": {
+            "@type": "EducationalOrganization",
+            "name": "Aryavart Ancient Academy",
+            "description": "A premier educational institution in Khordha, Odisha, offering holistic education",
+            "url": "https://www.aaaschool.in",
+            "logo": "https://www.aaaschool.in/aaa.png",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "School Address Line",
+              "addressLocality": "Khordha",
+              "addressRegion": "Odisha",
+              "postalCode": "752056",
+              "addressCountry": "IN"
+            }
           },
-          department: [
-            {
-              "@type": "Organization",
-              name: "Mathematics Department",
-              description: "Offering courses in mathematics at all levels",
+          "mainEntity": {
+            "@type": "EducationalOrganization",
+            "name": "Aryavart Ancient Academy",
+            "hasCredential": [
+              {
+                "@type": "EducationalOccupationalCredential",
+                "name": "CBSE Affiliated",
+                "credentialCategory": "School Board",
+              }
+            ],
+            "offers": {
+              "@type": "Offer",
+              "category": "Educational Program",
+              "description": "Comprehensive academic programs from primary to secondary education"
             },
-            {
-              "@type": "Organization",
-              name: "Science Department",
-              description:
-                "Offering comprehensive science education including Physics, Chemistry and Biology",
-            },
-            {
-              "@type": "Organization",
-              name: "Languages Department",
-              description:
-                "Offering language courses in English, Hindi, and Sanskrit",
-            },
-            {
-              "@type": "Organization",
-              name: "Social Studies Department",
-              description:
-                "Offering courses in History, Geography, Civics and Economics",
-            },
-          ],
-          alumni: {
-            "@type": "OrganizationRole",
-            alumniOf: {
-              "@type": "EducationalOrganization",
-              name: "Aryavart Ancient Academy",
-            },
+            "department": [
+              {
+                "@type": "Organization",
+                "name": "Mathematics Department",
+                "description": "Offering courses in mathematics at all levels"
+              },
+              {
+                "@type": "Organization",
+                "name": "Science Department",
+                "description": "Offering comprehensive science education including Physics, Chemistry and Biology"
+              },
+              {
+                "@type": "Organization",
+                "name": "Languages Department",
+                "description": "Offering language courses in English, Hindi, and Sanskrit"
+              },
+              {
+                "@type": "Organization",
+                "name": "Social Studies Department",
+                "description": "Offering courses in History, Geography, Civics and Economics"
+              }
+            ]
           },
-          employee: {
-            "@type": "OrganizationRole",
-            worksFor: {
-              "@type": "EducationalOrganization",
-              name: "Aryavart Ancient Academy",
-            },
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.aaaschool.in"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Academics",
+                "item": "https://www.aaaschool.in/academics"
+              }
+            ]
           },
+          "specialty": "Holistic education blending modern curriculum with ancient wisdom",
+          "keywords": "CBSE curriculum, holistic education, academic excellence, traditional learning, modern education"
         })}
       </Script>
       <NavBar />
