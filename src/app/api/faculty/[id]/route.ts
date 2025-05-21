@@ -62,9 +62,9 @@ export async function PUT(
     const joinDate = formData.get('joinDate') as string;
     const active = formData.get('active') === 'true';
     
-    if (!name || !position || !department || !email) {
+    if (!name || !position || !department) {
       return NextResponse.json(
-        { message: 'Name, position, department, and email are required' },
+        { message: 'Name, position, and department are required' },
         { status: 400 }
       );
     }
@@ -76,7 +76,7 @@ export async function PUT(
       name: string;
       position: string;
       department: string;
-      email: string;
+      email?: string;
       bio?: string;
       qualifications?: string[];
       joinDate?: string;
@@ -87,21 +87,27 @@ export async function PUT(
       name,
       position,
       department,
-      email,
       bio,
       qualifications,
       joinDate,
       active
     };
     
+    // Only add email if provided
+    if (email) {
+      updateData.email = email;
+    }
+    
     // Check if a new photo was uploaded
     const photo = formData.get('photo') as File;
     if (photo && photo instanceof File && photo.size > 0) {
-      // Delete the old photo from Cloudinary
-      try {
-        await deleteFromCloudinary(faculty.photoPublicId);
-      } catch (cloudinaryError) {
-        console.error('Error deleting old photo from Cloudinary:', cloudinaryError);
+      // Delete the old photo from Cloudinary if it exists
+      if (faculty.photoPublicId) {
+        try {
+          await deleteFromCloudinary(faculty.photoPublicId);
+        } catch (cloudinaryError) {
+          console.error('Error deleting old photo from Cloudinary:', cloudinaryError);
+        }
       }
       
       const fileBuffer = Buffer.from(await photo.arrayBuffer());
@@ -163,11 +169,13 @@ export async function DELETE(
       );
     }
     
-    // Delete the photo from Cloudinary
-    try {
-      await deleteFromCloudinary(faculty.photoPublicId);
-    } catch (cloudinaryError) {
-      console.error('Error deleting photo from Cloudinary:', cloudinaryError);
+    // Delete the photo from Cloudinary if it exists
+    if (faculty.photoPublicId) {
+      try {
+        await deleteFromCloudinary(faculty.photoPublicId);
+      } catch (cloudinaryError) {
+        console.error('Error deleting photo from Cloudinary:', cloudinaryError);
+      }
     }
     
     const deleteResult = await deleteFaculty(params.id);

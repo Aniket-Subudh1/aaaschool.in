@@ -49,9 +49,9 @@ export async function POST(request: NextRequest) {
     const joinDate = formData.get('joinDate') as string;
     const active = formData.get('active') === 'true';
     
-    if (!name || !position || !department || !email) {
+    if (!name || !position || !department) {
       return NextResponse.json(
-        { message: 'Name, position, department, and email are required' },
+        { message: 'Name, position, and department are required' },
         { status: 400 }
       );
     }
@@ -59,26 +59,27 @@ export async function POST(request: NextRequest) {
     // Parse qualifications if provided
     const qualifications = qualificationsStr?.split(',').map(q => q.trim()).filter(Boolean);
     
-    // Handle photo upload
+    let photoUrl = '';
+    let photoPublicId = '';
+    
+    // Handle photo upload (now optional)
     const photo = formData.get('photo') as File;
-    if (!photo || !(photo instanceof File)) {
-      return NextResponse.json(
-        { message: 'Faculty photo is required' },
-        { status: 400 }
+    if (photo && photo instanceof File && photo.size > 0) {
+      // Convert file to buffer for Cloudinary upload
+      const fileBuffer = Buffer.from(await photo.arrayBuffer());
+      
+      const sanitizedFilename = `faculty-${name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
+      
+      const uploadResult = await uploadToCloudinary(
+        fileBuffer, 
+        'school-faculty',
+        sanitizedFilename,
+        photo.type
       );
+      
+      photoUrl = uploadResult.secure_url;
+      photoPublicId = uploadResult.public_id;
     }
-    
-    // Convert file to buffer for Cloudinary upload
-    const fileBuffer = Buffer.from(await photo.arrayBuffer());
-    
-    const sanitizedFilename = `faculty-${name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
-    
-    const uploadResult = await uploadToCloudinary(
-      fileBuffer, 
-      'school-faculty',
-      sanitizedFilename,
-      photo.type
-    );
     
     // Create faculty record
     const newFaculty = await createFaculty({
@@ -86,8 +87,8 @@ export async function POST(request: NextRequest) {
       position,
       department,
       email,
-      photoUrl: uploadResult.secure_url,
-      photoPublicId: uploadResult.public_id,
+      photoUrl,
+      photoPublicId,
       bio,
       qualifications,
       joinDate,

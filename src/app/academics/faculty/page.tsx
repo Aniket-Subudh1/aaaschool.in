@@ -12,6 +12,7 @@ import {
   ChevronRight,
   Filter,
   Users,
+  User,
 } from "lucide-react";
 
 interface Faculty {
@@ -267,41 +268,49 @@ export default function FacultyPage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredFaculty.map((member) => (
-              <div
-                key={member._id}
-                className="w-full relative h-[430px] group mx-auto bg-white border rounded-md text-black flex flex-col shadow-sm hover:shadow-md transition-shadow"
-              >
-                <div className="w-full rounded-t-md h-[350px] group-hover:h-[410px] overflow-hidden transition-all duration-300">
-                  <Image
-                    src={member.photoUrl || "/placeholder-faculty.png"}
-                    alt={member.name}
-                    width={600}
-                    height={600}
-                    className="h-full w-full scale-105 group-hover:scale-100 grayscale group-hover:grayscale-0 object-cover transition-all duration-300"
-                  />
-                </div>
-                <article className="relative overflow-hidden flex-grow">
-                  <div className="info p-3 translate-y-0 group-hover:-translate-y-20 transition-all duration-300">
-                    <p className="text-xl md:text-2xl font-semibold">
-                      {member.name}
-                    </p>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Building className="h-4 w-4 mr-1" />
-                      <p>{member.department}</p>
-                    </div>
-                  </div>
-                  <div className="absolute h-20 -bottom-20 opacity-0 group-hover:opacity-100 group-hover:bottom-0 transition-all duration-300 w-full text-center p-3 bg-[#f8f3e9]">
-                    <p className="text-lg font-medium text-[#8b1a1a]">
-                      {member.position}
-                    </p>
-                    <div className="flex items-center justify-center mt-1 text-gray-700">
-                      <Mail className="h-4 w-4 mr-1" />
-                      <p className="text-sm">{member.email}</p>
-                    </div>
-                  </div>
-                </article>
-              </div>
-            ))}
+  <div
+    key={member._id}
+    className="w-full relative h-[430px] group mx-auto bg-white border rounded-md text-black flex flex-col shadow-sm hover:shadow-md transition-shadow"
+  >
+    <div className="w-full rounded-t-md h-[350px] group-hover:h-[410px] overflow-hidden transition-all duration-300">
+      {member.photoUrl ? (
+        <Image
+          src={member.photoUrl || "/placeholder-faculty.png"}
+          alt={member.name}
+          width={600}
+          height={600}
+          className="h-full w-full scale-105 group-hover:scale-100 grayscale group-hover:grayscale-0 object-cover transition-all duration-300"
+        />
+      ) : (
+        <div className="flex items-center justify-center h-full w-full bg-gray-200">
+          <User className="h-16 w-16 text-gray-400" />
+        </div>
+      )}
+    </div>
+    <article className="relative overflow-hidden flex-grow">
+      <div className="info p-3 translate-y-0 group-hover:-translate-y-20 transition-all duration-300">
+        <p className="text-xl md:text-2xl font-semibold">
+          {member.name}
+        </p>
+        <div className="flex items-center text-sm text-gray-600">
+          <Building className="h-4 w-4 mr-1" />
+          <p>{member.department}</p>
+        </div>
+      </div>
+      <div className="absolute h-20 -bottom-20 opacity-0 group-hover:opacity-100 group-hover:bottom-0 transition-all duration-300 w-full text-center p-3 bg-[#f8f3e9]">
+        <p className="text-lg font-medium text-[#8b1a1a]">
+          {member.position}
+        </p>
+        {member.email && (
+          <div className="flex items-center justify-center mt-1 text-gray-700">
+            <Mail className="h-4 w-4 mr-1" />
+            <p className="text-sm">{member.email}</p>
+          </div>
+        )}
+      </div>
+    </article>
+  </div>
+))}
           </div>
         )}
       </div>

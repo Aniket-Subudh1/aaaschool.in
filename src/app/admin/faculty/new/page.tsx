@@ -6,6 +6,7 @@ import Image from "next/image";
 import { ArrowLeft, Upload, X, User } from "lucide-react";
 import { FormControls } from "@/components/admin/FormControls";
 import { authFetch } from "@/lib/authFetch";
+import { ImageCropper } from "@/components/admin/ImageCropper";
 
 export default function NewFacultyPage() {
   const router = useRouter();
@@ -26,6 +27,10 @@ export default function NewFacultyPage() {
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // Image cropping state
+  const [showCropper, setShowCropper] = useState(false);
+  const [originalImage, setOriginalImage] = useState<string | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -67,9 +72,34 @@ export default function NewFacultyPage() {
       return;
     }
 
-    setPhoto(file);
-    setPhotoPreview(URL.createObjectURL(file));
+    // Read the file and open the cropper
+    const reader = new FileReader();
+    reader.onload = () => {
+      setOriginalImage(reader.result as string);
+      setShowCropper(true);
+    };
+    reader.readAsDataURL(file);
+    
     setError(null);
+  };
+  
+  const handleCroppedImage = async (croppedImage: Blob) => {
+    // Convert the cropped blob to a File object
+    const croppedFile = new File([croppedImage], "cropped_image.jpg", {
+      type: "image/jpeg",
+    });
+    
+    setPhoto(croppedFile);
+    setPhotoPreview(URL.createObjectURL(croppedFile));
+    setShowCropper(false);
+  };
+
+  const cancelCrop = () => {
+    setShowCropper(false);
+    setOriginalImage(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const removePhoto = () => {
@@ -94,14 +124,9 @@ export default function NewFacultyPage() {
       if (
         !formData.name.trim() ||
         !formData.position.trim() ||
-        !formData.department.trim() ||
-        !formData.email.trim()
+        !formData.department.trim()
       ) {
-        throw new Error("Name, position, department, and email are required");
-      }
-
-      if (!photo) {
-        throw new Error("Please upload a photo of the faculty member");
+        throw new Error("Name, position, and department are required");
       }
 
       // Create FormData for file upload
@@ -109,12 +134,18 @@ export default function NewFacultyPage() {
       submitData.append("name", formData.name);
       submitData.append("position", formData.position);
       submitData.append("department", formData.department);
-      submitData.append("email", formData.email);
+      if (formData.email) {
+        submitData.append("email", formData.email);
+      }
       submitData.append("bio", formData.bio);
       submitData.append("qualifications", formData.qualifications);
       submitData.append("joinDate", formData.joinDate);
       submitData.append("active", formData.active.toString());
-      submitData.append("photo", photo);
+      
+      // Only add photo if one is selected
+      if (photo) {
+        submitData.append("photo", photo);
+      }
 
       const res = await authFetch("/api/faculty", {
         method: "POST",
@@ -234,7 +265,7 @@ export default function NewFacultyPage() {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Email Address <span className="text-red-500">*</span>
+                Email Address
               </label>
               <input
                 type="email"
@@ -243,8 +274,7 @@ export default function NewFacultyPage() {
                 value={formData.email}
                 onChange={handleChange}
                 className="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
-                placeholder="Enter email address"
-                required
+                placeholder="Enter email address (optional)"
               />
             </div>
 
@@ -306,7 +336,7 @@ export default function NewFacultyPage() {
 
             <div className="md:col-span-2">
               <p className="block text-sm font-medium text-gray-700 mb-2">
-                Faculty Photo <span className="text-red-500">*</span>
+                Faculty Photo
               </p>
 
               {photoPreview ? (
@@ -346,13 +376,13 @@ export default function NewFacultyPage() {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none"
+                  className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none mr-2"
                 >
                   <Upload size={16} className="mr-2" />
                   {photo ? "Change Photo" : "Upload Photo"}
                 </button>
                 <p className="mt-1 text-xs text-gray-500">
-                  JPEG, PNG or WebP. Max 5MB.
+                  JPEG, PNG or WebP. Max 5MB. Recommended aspect ratio: 3:4.
                 </p>
               </div>
             </div>
@@ -380,6 +410,47 @@ export default function NewFacultyPage() {
           />
         </form>
       </div>
+      
+      {/* Image Cropper Modal */}
+      {showCropper && originalImage && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-75 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+            <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+              <h3 className="text-lg font-medium">Adjust Faculty Photo</h3>
+              <button 
+                onClick={cancelCrop}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            
+            <div className="p-4 flex-grow overflow-auto">
+              <ImageCropper 
+                image={originalImage} 
+                onCrop={handleCroppedImage}
+                aspectRatio={3/4} // Set aspect ratio to match the faculty card
+              />
+            </div>
+            
+            <div className="p-4 border-t border-gray-200 flex justify-between">
+              <button
+                type="button"
+                onClick={cancelCrop}
+                className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="px-4 py-2 bg-[#8b1a1a] rounded-md text-sm font-medium text-white hover:bg-[#8b1a1a]/90 focus:outline-none"
+              >
+                Apply Crop
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
