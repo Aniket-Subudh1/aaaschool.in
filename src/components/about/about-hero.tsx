@@ -11,47 +11,47 @@ const galleryImages = [
   {
     title: "School Campus",
     alt: "Our beautiful school campus",
-    src: "https://aniket-1.s3.ap-south-1.amazonaws.com/cul.jpg",
+    src: "https://aaaschool.s3.ap-south-1.amazonaws.com/cul.jpg",
   },
   {
     title: "Cultural Programs",
     alt: "Students performing in cultural program",
-    src: "https://aniket-1.s3.ap-south-1.amazonaws.com/LIB.jpg",
+    src: "https://aaaschool.s3.ap-south-1.amazonaws.com/LIB.jpg",
   },
   {
     title: "Science Labs",
     alt: "Modern science laboratory",
-    src: "https://aniket-1.s3.ap-south-1.amazonaws.com/tk.jpg",
+    src: "https://aaaschool.s3.ap-south-1.amazonaws.com/tk.jpg",
   },
   {
     title: "Library",
     alt: "Our well-stocked library",
-    src: "https://aniket-1.s3.ap-south-1.amazonaws.com/tb.jpg",
+    src: "https://aaaschool.s3.ap-south-1.amazonaws.com/tb.jpg",
   },
   {
     title: "Sports Facilities",
     alt: "Sports ground and facilities",
-    src: "https://aniket-1.s3.ap-south-1.amazonaws.com/gui.jpg",
+    src: "https://aaaschool.s3.ap-south-1.amazonaws.com/gui.jpg",
   },
   {
     title: "Meditation Center",
     alt: "Peaceful meditation space",
-    src: "/il.jpg",
+    src: "https://aaaschool.s3.ap-south-1.amazonaws.com/il.jpg",
   },
   {
     title: "Art Studio",
     alt: "Creative art space",
-    src: "/sc.jpg",
+    src: "https://aaaschool.s3.ap-south-1.amazonaws.com/sc.jpg",
   },
   {
     title: "Computer Lab",
     alt: "Modern computer laboratory",
-    src: "/dr.jpg",
+    src: "https://aaaschool.s3.ap-south-1.amazonaws.com/dr.jpg",
   },
   {
     title: "School Events",
     alt: "Annual school function",
-    src: "/ncc.jpg",
+    src: "https://aaaschool.s3.ap-south-1.amazonaws.com/ncc.jpg",
   },
 ];
 

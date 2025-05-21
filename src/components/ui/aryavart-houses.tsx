@@ -58,7 +58,7 @@ export default function AryavartHouses() {
       {/* Background with overlay */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/hs.jpg"
+          src="https://aaaschool.s3.ap-south-1.amazonaws.com/hs.jpg"
           alt="Green campus"
           fill
           className="object-cover"

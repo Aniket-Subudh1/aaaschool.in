@@ -142,7 +142,7 @@ export default function NavBar() {
                 <div className="absolute items-center justify-center inset-0 bg-[#8b1a1a]/10 rounded-full blur-sm"></div>
                 <div className="relative h-10 w-10 md:h-12 md:w-12 lg:h-12 lg:w-12 flex-shrink-0">
                   <Image
-                    src="/aaalogo.png"
+                    src="https://aaaschool.s3.ap-south-1.amazonaws.com/aaa.png"
                     alt="Aryavart Ancient Academy Logo"
                     fill
                     style={{ objectFit: "contain" }}

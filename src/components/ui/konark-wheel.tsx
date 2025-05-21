@@ -14,7 +14,7 @@ export default function KonarkWheel() {
       <div className="relative">
         <div className="w-12 h-12 opacity-20"></div>
         <Image
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-aaa-CpIW78OZFZG6FBpF9os3cxpWu7bmcN.png"
+          src="https://aaaschool.s3.ap-south-1.amazonaws.com/aaa.png"
           alt="Aryavart Ancient Academy Logo"
           width={60}
           height={60}
@@ -58,7 +58,7 @@ export default function KonarkWheel() {
         })}
       </svg>
       <Image
-        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-aaa-CpIW78OZFZG6FBpF9os3cxpWu7bmcN.png"
+        src="https://aaaschool.s3.ap-south-1.amazonaws.com/aaa.png"
         alt="Aryavart Ancient Academy Logo"
         width={60}
         height={60}

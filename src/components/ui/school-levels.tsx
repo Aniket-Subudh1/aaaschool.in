@@ -38,7 +38,7 @@ export default function SchoolLevels() {
       color: "#8b1a1a",
       description:
         "Covering Nursery to K.G. II, the elementary school adopts an informal approach towards learning. Children here are encouraged to explore their environment while also being taught basic concepts in language, mathematics, computers, art and craft, dance and music.",
-      image: "/ps.jfif",
+      image: "https://aaaschool.s3.ap-south-1.amazonaws.com/ps.jfif",
     },
     {
       id: "dwitiya",
@@ -48,7 +48,7 @@ export default function SchoolLevels() {
       color: "#a52a2a",
       description:
         "Spanning classes I - V, the junior school is the child's introduction to full day school. This stage of school aims to build on the child's growing spirit of discovery and exploration. Emphasis is placed on the acquisition of sound language skills, mathematical concepts and scientific fundamentals.",
-      image: "/dw.jpeg",
+      image: "https://aaaschool.s3.ap-south-1.amazonaws.com/dw.jpeg",
     },
     {
       id: "tritya",
@@ -58,7 +58,7 @@ export default function SchoolLevels() {
       color: "#b33939",
       description:
         "Comprising classes VI to VIII, this stage sees the introduction of a third language, Sanskrit, as well the detailing of history, geography, physics, chemistry and biology as separate subjects and all the excitement of their first examination.",
-      image: "/tr.jpg",
+      image: "https://aaaschool.s3.ap-south-1.amazonaws.com/tr.jpg",
     },
     {
       id: "chaturtha",
@@ -68,7 +68,7 @@ export default function SchoolLevels() {
       color: "#c0392b",
       description:
         "Comprising classes IX to XII, the senior school is where early life's lessons are put to test. Rigorous practice and study techniques with special emphasis on analysis and conceptualization are woven into the curriculum, as students prepare to appear for their board examinations.",
-      image: "/lb.jpg",
+      image: "https://aaaschool.s3.ap-south-1.amazonaws.com/lb.jpg",
     },
   ];
 

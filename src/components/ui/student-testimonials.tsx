@@ -73,62 +73,64 @@ export default function StudentTestimonials() {
   const [isMounted, setIsMounted] = useState(false);
 
   // All testimonials data
-  const testimonials = [
-    {
-      id: "jijnasa",
-      name: "JIJNASA PATRA",
-      stream: "SCIENCE",
-      class: "11th Class",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-rRTpPICcipUhMAldjLYJGvugK5G1xE.png",
-      text: "AAA illuminates the path to success, instills the fundamental morals of life and molds us into more exemplary individuals. Since my very first day here, never once have I ever felt alienated. This school and it's community have become like a second home to me, a close-knit family that provides a sense of belonging and warmth.",
-    },
-    {
-      id: "payal",
-      name: "PAYAL PRADHAN",
-      stream: "SCIENCE",
-      class: "11th Class",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-rRTpPICcipUhMAldjLYJGvugK5G1xE.png",
-      text: "AAA stands as a paragon excellence among Educational institutions. I wish to extend my gratitude to the school administration for their unwavering dedication and tireless endeavors. Here, teachers are considerate, understanding, and commendable. It excuses a comforting ambience akin to a second home.",
-    },
-    {
-      id: "sahana",
-      name: "SAHANA JAGYONSENI BARIK",
-      stream: "SCIENCE",
-      class: "11th Class",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-1k1Zv8qTH8LfP3W3weVX2Y68X7Psqf.png",
-      text: "AAA has profoundly transformed my life. The institution offers an environment conducive to both academic and extracurricular growth. In just 2 months, my experience at AAA has already surpassed my expectations. The school boosts and shapes us in a way to tackle the hurdles.",
-    },
-    {
-      id: "atulya",
-      name: "ATULYA BALIARSINGH",
-      stream: "",
-      class: "11th Class",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-u7jUGFj2deXM54s7xcTKjG3JIR6B4C.png",
-      text: "Settled in the vibrant community of Khordha, AAA includes a spirit of inclusivity and excellence. For the moment, I stepped through its doors, I felt welcomed and supported by the teachers and the head of the school I.e the Principal too, nurturing each students potential.",
-    },
-    {
-      id: "sagun",
-      name: "SAGUN AGARWAL",
-      stream: "COMMERCE",
-      class: "11th Class",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-u7jUGFj2deXM54s7xcTKjG3JIR6B4C.png",
-      text: "Aryavart Ancient Academy the place where students poised on the precipice of triumph. My stay at this school heightened the depth of my experiential journey. It enabled me to enhance proficiency not only in academics but also in sports and extra curricular activities, thereby broadening my horizons.",
-    },
-    {
-      id: "deepika",
-      name: "DEEPIKA RAJAK",
-      stream: "COMMERCE",
-      class: "11th Class",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-u7jUGFj2deXM54s7xcTKjG3JIR6B4C.png",
-      text: "I am deeply delighted and honored to be a member of AAA. AAA stands for Awesome Adorable, and Affordable. Aryavart has created an environment where students cab uncover and cultivate their innate qualities. Over the past three months, my experience at this institution has been both gratifying and extraordinary.",
-    },
-  ];
+ const testimonials = [
+  {
+    id: "jijnasa",
+    name: "Ankita Lenka",
+    stream: "SCIENCE",
+    class: "12th Class",
+    image:
+      "https://aaaschool.s3.ap-south-1.amazonaws.com/Screenshot+2025-05-22+021544.png",
+    text: "AAA has truly become a second home. The educators and peers are consistently supportive, and I have always felt a strong sense of inclusion and belonging.",
+  },
+  {
+    id: "payal",
+    name: "Asha Kiran",
+    stream: "COMMERCE",
+    class: "12th Class",
+    image:
+      "https://aaaschool.s3.ap-south-1.amazonaws.com/Screenshot+2025-05-22+021658.png",
+    text: "The faculty members are approachable and genuinely committed to students’ growth. AAA offers an environment that fosters both academic and personal development.",
+  },
+  {
+    id: "sahana",
+    name: "Abhigyan Sahoo",
+    stream: "SCIENCE",
+    class: "12th Class",
+    image:
+      "https://aaaschool.s3.ap-south-1.amazonaws.com/Screenshot+2025-05-22+022428.png",
+    text: "In a short span of two months, AAA has contributed significantly to my development. It provides an excellent platform for learning and self-improvement.",
+  },
+  {
+    id: "atulya",
+    name: "Rounak Prasad",
+    stream: "SCIENCE",
+    class: "12th Class",
+    image:
+      "https://aaaschool.s3.ap-south-1.amazonaws.com/Screenshot+2025-05-22+022525.png",
+    text: "From the very first day, I experienced a warm and welcoming environment. The faculty is attentive and the overall atmosphere is highly motivating.",
+  },
+  {
+    id: "sagun",
+    name: "Arati Paikaray",
+    stream: "SCIENCE",
+    class: "12th Class",
+    image:
+      "https://aaaschool.s3.ap-south-1.amazonaws.com/Screenshot+2025-05-22+022614.png",
+    text: "AAA has enabled me to identify and develop my potential in both academics and extracurriculars. It has been a fulfilling and enriching experience.",
+  },
+  {
+    id: "deepika",
+    name: "Pratikshya Nanda Tripathy",
+    stream: "SCIENCE",
+    class: "12th Class",
+    image:
+      "https://aaaschool.s3.ap-south-1.amazonaws.com/Screenshot+2025-05-22+022710.png",
+    text: "Being a part of AAA has been truly rewarding. The institution fosters a culture of respect, excellence, and holistic growth for every student.",
+  },
+];
+
+
 
   // Create two different arrangements of testimonials to avoid same order in both rows
   const topRowTestimonials = [...testimonials, ...testimonials];

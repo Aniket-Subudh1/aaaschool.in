@@ -60,7 +60,7 @@ export default function InfiniteLogoScroll() {
             >
               <div className="relative w-5 h-5 overflow-hidden rounded-full border border-[#8b1a1a]/20 mr-2">
                 <Image
-                  src="/aaa.png"
+                  src="https://aaaschool.s3.ap-south-1.amazonaws.com/aaa.png"
                   alt="Aryavart Logo"
                   fill
                   sizes="20px"
@@ -85,7 +85,7 @@ export default function InfiniteLogoScroll() {
             >
               <div className="relative w-5 h-5 overflow-hidden rounded-full border border-[#8b1a1a]/20 mr-2">
                 <Image
-                  src="/aaa.png"
+                  src="https://aaaschool.s3.ap-south-1.amazonaws.com/aaa.png"
                   alt="Aryavart Logo"
                   fill
                   sizes="20px"

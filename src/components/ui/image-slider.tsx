@@ -122,35 +122,35 @@ export default function ImageSlider() {
   // Sample images - replace with actual school images
   const images: SliderImage[] = [
     {
-      src: "/sc.jpg",
+      src: "https://aaaschool.s3.ap-south-1.amazonaws.com/sc.jpg",
       alt: "School campus",
       title: "Our Beautiful Campus",
       description:
         "35 acres of lush green environment designed for holistic learning",
     },
     {
-      src: "/il.jpg",
+      src: "https://aaaschool.s3.ap-south-1.amazonaws.com/il.jpg",
       alt: "Students in classroom",
       title: "Interactive Learning",
       description:
         "Modern classrooms equipped with smart technology for enhanced learning",
     },
     {
-      src: "/dr.jpg",
+      src: "https://aaaschool.s3.ap-south-1.amazonaws.com/dr.jpg",
       alt: "School activities",
       title: "Extracurricular Excellence",
       description:
         "A wide range of activities to nurture talents beyond academics",
     },
     {
-      src: "/sp.jpg",
+      src: "https://aaaschool.s3.ap-south-1.amazonaws.com/sp.jpg",
       alt: "Sports day",
       title: "Sports & Athletics",
       description:
         "State-of-the-art facilities for physical development and sportsmanship",
     },
     {
-      src: "/cul.jpg",
+      src: "https://aaaschool.s3.ap-south-1.amazonaws.com/cul.jpg",
       alt: "Cultural event",
       title: "Cultural Celebrations",
       description:

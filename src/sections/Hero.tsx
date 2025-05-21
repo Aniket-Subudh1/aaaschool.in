@@ -74,7 +74,7 @@ export const Hero = () => {
                   <div className="absolute inset-0 bg-[#f8f3e9] rounded-full shadow-lg opacity-75 blur-md"></div>
                   <div className="relative z-10 transform transition-transform duration-500 hover:scale-110 logo-pulse">
                     <Image
-                      src="./aaa.png"
+                      src="https://aaaschool.s3.ap-south-1.amazonaws.com/aaa.png"
                       alt="Aryavart Ancient Academy Logo"
                       width={120}
                       height={120}
@@ -169,7 +169,7 @@ export const Hero = () => {
 
                   <div className="relative flex items-center justify-center pt-4">
                     <Image
-                      src="/sch.jpeg"
+                      src="https://aaaschool.s3.ap-south-1.amazonaws.com/sch.jpeg"
                       alt="Students learning"
                       width={1000}
                       height={400}

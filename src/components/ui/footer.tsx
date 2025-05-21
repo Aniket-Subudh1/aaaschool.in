@@ -157,7 +157,7 @@ export default function Footer() {
                 <div className="relative mr-3">
                   <div className="absolute inset-0 bg-white/10 rounded-full blur-sm"></div>
                   <Image
-                    src="/aaa.png"
+                    src="https://aaaschool.s3.ap-south-1.amazonaws.com/aaa.png"
                     alt="Aryavart Ancient Academy Logo"
                     width={60}
                     height={60}

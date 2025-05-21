@@ -26,7 +26,7 @@ export default function PrincipalMessage() {
             {/* Image Section */}
             <div className="md:w-1/2">
               <Image
-                src="/pric.jpg"
+                src="https://aaaschool.s3.ap-south-1.amazonaws.com/pric.jpg"
                 alt="Principal"
                 width={900}
                 height={600}

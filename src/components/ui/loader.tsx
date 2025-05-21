@@ -121,7 +121,7 @@ export const Loader = () => {
               />
               
               <Image
-                src="/aaa.png"
+                src="https://aaaschool.s3.ap-south-1.amazonaws.com/aaa.png"
                 alt="AAA Logo"
                 width={112}
                 height={112}

@@ -35,7 +35,7 @@ export default function SchoolActivities() {
       title: "Teacher's Empowerment",
       description:
         "Teachers are also learners. Staying updated is the key to success in any field, especially teaching. Our teachers undergo regular training to enhance their skills.",
-      image: "/tec.jpg",
+      image: "https://aaaschool.s3.ap-south-1.amazonaws.com/tec.jpg",
       icon: <Users className="h-6 w-6" />,
     },
     {
@@ -43,7 +43,7 @@ export default function SchoolActivities() {
       title: "Student's Empowerment",
       description:
         "By providing a conducive and encouraging environment, the students are mentored to become future leaders with strong values and principles.",
-      image: "/lab.jpg",
+      image: "https://aaaschool.s3.ap-south-1.amazonaws.com/lab.jpg",
       icon: <BookOpen className="h-6 w-6" />,
     },
     {
@@ -51,7 +51,7 @@ export default function SchoolActivities() {
       title: "Student's Achievements",
       description:
         "Our students excel in academics, sports, arts, and cultural activities, bringing laurels to the school at district, state, and national levels.",
-      image: "/ac.jpg",
+      image: "https://aaaschool.s3.ap-south-1.amazonaws.com/ac.jpg",
       icon: <Award className="h-6 w-6" />,
     },
     {
@@ -59,7 +59,7 @@ export default function SchoolActivities() {
       title: "Library",
       description:
         "Our Library has been enriched with subscriptions for more number of newspapers, magazines, and books to foster a love for reading and knowledge.",
-      image: "/LIB.jpg",
+      image: "https://aaaschool.s3.ap-south-1.amazonaws.com/LIB.jpg",
       icon: <Library className="h-6 w-6" />,
     },
     {
@@ -67,7 +67,7 @@ export default function SchoolActivities() {
       title: "Social Responsibility",
       description:
         "It is important for the children to realize how privileged they are to have wonderful parents. We teach them to give back to society through various community service activities.",
-      image: "/jrc.jpg",
+      image: "https://aaaschool.s3.ap-south-1.amazonaws.com/jrc.jpg",
       icon: <Heart className="h-6 w-6" />,
     },
     {
@@ -75,7 +75,7 @@ export default function SchoolActivities() {
       title: "Parent's Enrichment",
       description:
         "An orientation programme in the beginning of session is held to build up a strong bond between the school and parents, ensuring collaborative growth of the child.",
-      image: "/ori.jpeg",
+      image: "https://aaaschool.s3.ap-south-1.amazonaws.com/ori.jpeg",
       icon: <UserRound className="h-6 w-6" />,
     },
   ];
