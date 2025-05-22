@@ -83,7 +83,7 @@ export default function ContactInfo() {
         <div className="flex items-center mb-8">
           <div className="w-16 h-16 rounded-full overflow-hidden mr-4 flex-shrink-0 border-4 border-[#f0e6d2]">
             <Image
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-aaa-CpIW78OZFZG6FBpF9os3cxpWu7bmcN.png"
+              src="https://aaaschool.s3.ap-south-1.amazonaws.com/aaa.png"
               alt="Aryavart Ancient Academy Logo"
               width={64}
               height={64}

@@ -33,7 +33,7 @@ export default function TopSchool() {
       {/* Improved background image with parallax effect */}
       <motion.div style={{ y: backgroundY }} className="absolute inset-0 z-0">
         <Image
-          src="/cp.jpg"
+          src="https://aaaschool.s3.ap-south-1.amazonaws.com/cp.jpg"
           alt="School campus aerial view"
           fill
           className="object-cover object-center"

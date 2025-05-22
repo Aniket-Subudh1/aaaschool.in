@@ -125,7 +125,7 @@ export default function OurHistory() {
                 <div className="flex mb-4">
                   <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm">
                     <Image
-                      src="/aaa.png"
+                      src="https://aaaschool.s3.ap-south-1.amazonaws.com/aaa.png"
                       alt="Aryavart Ancient Academy Logo"
                       width={28}
                       height={28}
@@ -175,7 +175,7 @@ export default function OurHistory() {
                 <div className="relative bg-white p-3 rounded-2xl shadow-xl border border-[#d4b483]/30">
                   <div className="overflow-hidden rounded-xl">
                     <Image
-                      src="/ns.jpg"
+                      src="https://aaaschool.s3.ap-south-1.amazonaws.com/ns.jpg"
                       alt="School students and building"
                       width={500}
                       height={380}
