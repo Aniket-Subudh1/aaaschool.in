@@ -77,7 +77,7 @@ export default function AdminSidebar() {
       icon: <BookOpen size={20} />,
     },
     {
-      name: "Faculty",
+      name: "Staff",
       href: "/admin/faculty",
       icon: <GraduationCap size={20} />,
     },

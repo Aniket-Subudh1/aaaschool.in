@@ -354,7 +354,7 @@ export default function FacultyPage() {
           <div>
             {/* Teaching Staff Section */}
             <FacultySection
-              title="Teaching Staff"
+              title="Our Staff"
               faculty={groupedFaculty.normal}
               icon={GraduationCap}
               description="Our dedicated educators committed to academic excellence"
