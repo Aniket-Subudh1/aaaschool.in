@@ -1,3 +1,4 @@
+// Update src/app/api/faculty/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { getFaculty, createFaculty } from '@/lib/db';
 import { verifyAuth } from '@/lib/auth';
@@ -8,13 +9,22 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const onlyActive = searchParams.get('active') === 'true';
     const department = searchParams.get('department');
+    const staffType = searchParams.get('staffType');
     
     const faculty = await getFaculty(onlyActive);
     
-    // If department is specified, filter by department
-    const filteredFaculty = department 
-      ? faculty.filter(f => f.department === department)
-      : faculty;
+    let filteredFaculty = faculty;
+    
+    if (department) {
+      filteredFaculty = filteredFaculty.filter(f => f.department === department);
+    }
+    
+    if (staffType) {
+      filteredFaculty = filteredFaculty.filter(f => {
+        const memberStaffType = f.staffType || 'normal';
+        return memberStaffType === staffType;
+      });
+    }
       
     return NextResponse.json(filteredFaculty);
   } catch (error) {
@@ -39,7 +49,6 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
     
-    // Extract form fields
     const name = formData.get('name') as string;
     const position = formData.get('position') as string;
     const department = formData.get('department') as string;
@@ -47,6 +56,7 @@ export async function POST(request: NextRequest) {
     const bio = formData.get('bio') as string;
     const qualificationsStr = formData.get('qualifications') as string;
     const joinDate = formData.get('joinDate') as string;
+    const staffType = formData.get('staffType') as 'normal' | 'office' | 'supporting';
     const active = formData.get('active') === 'true';
     
     if (!name || !position || !department) {
@@ -56,16 +66,13 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Parse qualifications if provided
     const qualifications = qualificationsStr?.split(',').map(q => q.trim()).filter(Boolean);
     
     let photoUrl = '';
     let photoPublicId = '';
     
-    // Handle photo upload (now optional)
     const photo = formData.get('photo') as File;
     if (photo && photo instanceof File && photo.size > 0) {
-      // Convert file to buffer for Cloudinary upload
       const fileBuffer = Buffer.from(await photo.arrayBuffer());
       
       const sanitizedFilename = `faculty-${name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
@@ -81,7 +88,6 @@ export async function POST(request: NextRequest) {
       photoPublicId = uploadResult.public_id;
     }
     
-    // Create faculty record
     const newFaculty = await createFaculty({
       name,
       position,
@@ -92,6 +98,7 @@ export async function POST(request: NextRequest) {
       bio,
       qualifications,
       joinDate,
+      staffType: staffType || 'normal',
       active
     });
     

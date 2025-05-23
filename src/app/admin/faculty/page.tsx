@@ -14,6 +14,9 @@ import {
   Mail,
   BookOpen,
   Building,
+  Users,
+  UserCheck,
+  UserCog,
 } from "lucide-react";
 import NoData from "@/components/admin/NoData";
 import DeleteConfirmation from "@/components/admin/DeleteConfirmation";
@@ -30,6 +33,7 @@ interface Faculty {
   qualifications?: string[];
   joinDate?: string;
   active: boolean;
+  staffType?: 'normal' | 'office' | 'supporting';
   createdAt: string;
 }
 
@@ -39,6 +43,7 @@ export default function FacultyPage() {
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterDepartment, setFilterDepartment] = useState<string | null>(null);
+  const [filterStaffType, setFilterStaffType] = useState<string | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [deleteModal, setDeleteModal] = useState<{
     isOpen: boolean;
@@ -54,17 +59,19 @@ export default function FacultyPage() {
 
   useEffect(() => {
     fetchFaculty();
-  }, [filterDepartment]);
+  }, [filterDepartment, filterStaffType]);
 
   const fetchFaculty = async () => {
     try {
       setIsLoading(true);
       setError(null);
 
-      const queryParams = filterDepartment
-        ? `?department=${encodeURIComponent(filterDepartment)}`
-        : "";
-      const res = await authFetch(`/api/faculty${queryParams}`);
+      const queryParams = new URLSearchParams();
+      if (filterDepartment) queryParams.append('department', filterDepartment);
+      if (filterStaffType) queryParams.append('staffType', filterStaffType);
+      
+      const queryString = queryParams.toString();
+      const res = await authFetch(`/api/faculty${queryString ? `?${queryString}` : ''}`);
 
       if (!res.ok) {
         throw new Error("Failed to fetch faculty");
@@ -135,6 +142,18 @@ export default function FacultyPage() {
   // Get unique departments for filtering
   const departments = [...new Set(faculty.map((f) => f.department))];
 
+  // Get staff type display info
+  const getStaffTypeInfo = (type?: string) => {
+    switch (type) {
+      case 'office':
+        return { icon: UserCog, label: 'Office Staff', color: 'bg-blue-100 text-blue-800' };
+      case 'supporting':
+        return { icon: UserCheck, label: 'Supporting Staff', color: 'bg-green-100 text-green-800' };
+      default:
+        return { icon: Users, label: 'Teaching Staff', color: 'bg-gray-100 text-gray-800' };
+    }
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -173,46 +192,62 @@ export default function FacultyPage() {
               className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
             />
           </div>
-          <div className="relative">
-            <button
-              className="flex items-center text-sm text-gray-600 hover:text-gray-900 px-3 py-2 border border-gray-300 rounded-md"
-              onClick={() => setIsFilterOpen(!isFilterOpen)}
+          
+          <div className="flex gap-2">
+            {/* Staff Type Filter */}
+            <select
+              value={filterStaffType || ''}
+              onChange={(e) => setFilterStaffType(e.target.value || null)}
+              className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
             >
-              <Filter size={16} className="mr-2" />
-              {filterDepartment
-                ? `Department: ${filterDepartment}`
-                : "Filter by Department"}
-            </button>
+              <option value="">All Staff Types</option>
+              <option value="normal">Teaching Staff</option>
+              <option value="office">Office Staff</option>
+              <option value="supporting">Supporting Staff</option>
+            </select>
 
-            {isFilterOpen && departments.length > 0 && (
-              <div className="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg overflow-hidden z-10 border border-gray-200">
-                <button
-                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={() => {
-                    setFilterDepartment(null);
-                    setIsFilterOpen(false);
-                  }}
-                >
-                  Show All Departments
-                </button>
-                {departments.map((department) => (
+            {/* Department Filter */}
+            <div className="relative">
+              <button
+                className="flex items-center text-sm text-gray-600 hover:text-gray-900 px-3 py-2 border border-gray-300 rounded-md"
+                onClick={() => setIsFilterOpen(!isFilterOpen)}
+              >
+                <Filter size={16} className="mr-2" />
+                {filterDepartment
+                  ? `Department: ${filterDepartment}`
+                  : "Filter by Department"}
+              </button>
+
+              {isFilterOpen && departments.length > 0 && (
+                <div className="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg overflow-hidden z-10 border border-gray-200">
                   <button
-                    key={department}
-                    className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 ${
-                      filterDepartment === department
-                        ? "bg-gray-100 font-medium"
-                        : "text-gray-700"
-                    }`}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     onClick={() => {
-                      setFilterDepartment(department);
+                      setFilterDepartment(null);
                       setIsFilterOpen(false);
                     }}
                   >
-                    {department}
+                    Show All Departments
                   </button>
-                ))}
-              </div>
-            )}
+                  {departments.map((department) => (
+                    <button
+                      key={department}
+                      className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 ${
+                        filterDepartment === department
+                          ? "bg-gray-100 font-medium"
+                          : "text-gray-700"
+                      }`}
+                      onClick={() => {
+                        setFilterDepartment(department);
+                        setIsFilterOpen(false);
+                      }}
+                    >
+                      {department}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -257,6 +292,12 @@ export default function FacultyPage() {
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
+                    Staff Type
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
                     Contact
                   </th>
                   <th
@@ -274,83 +315,94 @@ export default function FacultyPage() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {filteredFaculty.map((member) => (
-                  <tr key={member._id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0 h-10 w-10 rounded-full bg-gray-200 overflow-hidden">
-                          {member.photoUrl ? (
-                            <Image
-                              src={member.photoUrl}
-                              alt={member.name}
-                              width={40}
-                              height={40}
-                              className="h-full w-full object-cover"
-                            />
-                          ) : (
-                            <User className="h-10 w-10 text-gray-400 p-2" />
-                          )}
-                        </div>
-                        <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">
-                            {member.name}
+                {filteredFaculty.map((member) => {
+                  const staffTypeInfo = getStaffTypeInfo(member.staffType);
+                  const StaffIcon = staffTypeInfo.icon;
+                  
+                  return (
+                    <tr key={member._id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          <div className="flex-shrink-0 h-10 w-10 rounded-full bg-gray-200 overflow-hidden">
+                            {member.photoUrl ? (
+                              <Image
+                                src={member.photoUrl}
+                                alt={member.name}
+                                width={40}
+                                height={40}
+                                className="h-full w-full object-cover"
+                              />
+                            ) : (
+                              <User className="h-10 w-10 text-gray-400 p-2" />
+                            )}
+                          </div>
+                          <div className="ml-4">
+                            <div className="text-sm font-medium text-gray-900">
+                              {member.name}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900 flex items-center">
-                        <Building className="h-4 w-4 mr-1 text-gray-500" />
-                        {member.department}
-                      </div>
-                      <div className="text-sm text-gray-500 mt-1 flex items-center">
-                        <BookOpen className="h-4 w-4 mr-1 text-gray-400" />
-                        {member.position}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900 flex items-center">
-                        <Mail className="h-4 w-4 mr-1 text-gray-500" />
-                        {member.email}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          member.active
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
-                        }`}
-                      >
-                        {member.active ? "Active" : "Inactive"}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <div className="flex items-center justify-end space-x-2">
-                        <Link
-                          href={`/admin/faculty/${member._id}`}
-                          className="text-blue-600 hover:text-blue-900 px-2 py-1 rounded hover:bg-blue-50"
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900 flex items-center">
+                          <Building className="h-4 w-4 mr-1 text-gray-500" />
+                          {member.department}
+                        </div>
+                        <div className="text-sm text-gray-500 mt-1 flex items-center">
+                          <BookOpen className="h-4 w-4 mr-1 text-gray-400" />
+                          {member.position}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full items-center ${staffTypeInfo.color}`}>
+                          <StaffIcon className="h-3 w-3 mr-1" />
+                          {staffTypeInfo.label}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900 flex items-center">
+                          <Mail className="h-4 w-4 mr-1 text-gray-500" />
+                          {member.email}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span
+                          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            member.active
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-100 text-red-800"
+                          }`}
                         >
-                          <Eye className="h-5 w-5" />
-                        </Link>
-                        <Link
-                          href={`/admin/faculty/${member._id}/edit`}
-                          className="text-amber-600 hover:text-amber-900 px-2 py-1 rounded hover:bg-amber-50"
-                        >
-                          <Edit className="h-5 w-5" />
-                        </Link>
-                        <button
-                          onClick={() =>
-                            handleDeleteClick(member._id, member.name)
-                          }
-                          className="text-red-600 hover:text-red-900 px-2 py-1 rounded hover:bg-red-50"
-                        >
-                          <Trash2 className="h-5 w-5" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                          {member.active ? "Active" : "Inactive"}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <div className="flex items-center justify-end space-x-2">
+                          <Link
+                            href={`/admin/faculty/${member._id}`}
+                            className="text-blue-600 hover:text-blue-900 px-2 py-1 rounded hover:bg-blue-50"
+                          >
+                            <Eye className="h-5 w-5" />
+                          </Link>
+                          <Link
+                            href={`/admin/faculty/${member._id}/edit`}
+                            className="text-amber-600 hover:text-amber-900 px-2 py-1 rounded hover:bg-amber-50"
+                          >
+                            <Edit className="h-5 w-5" />
+                          </Link>
+                          <button
+                            onClick={() =>
+                              handleDeleteClick(member._id, member.name)
+                            }
+                            className="text-red-600 hover:text-red-900 px-2 py-1 rounded hover:bg-red-50"
+                          >
+                            <Trash2 className="h-5 w-5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

@@ -13,6 +13,8 @@ import {
   Filter,
   Users,
   User,
+  UserCog,
+  UserCheck,
 } from "lucide-react";
 
 interface Faculty {
@@ -23,7 +25,8 @@ interface Faculty {
   email: string;
   photoUrl: string;
   active: boolean;
-  createdAt: Date; // Ensure this field is typed properly
+  staffType?: 'normal' | 'office' | 'supporting';
+  createdAt: Date;
 }
 
 export default function FacultyPage() {
@@ -48,7 +51,6 @@ export default function FacultyPage() {
 
         let data = await res.json();
         
-        // Convert string dates to Date objects and sort by createdAt (oldest first)
         data = Array.isArray(data) ? data.map(f => ({
           ...f,
           createdAt: new Date(f.createdAt)
@@ -66,10 +68,8 @@ export default function FacultyPage() {
     fetchFaculty();
   }, []);
 
-  // Get unique departments for filtering
   const departments = [...new Set(faculty.map((f) => f.department))];
 
-  // Apply search filter
   const searchedFaculty = faculty.filter(
     (member) =>
       searchQuery === "" ||
@@ -78,10 +78,87 @@ export default function FacultyPage() {
       member.department.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Then apply department filter
   const filteredFaculty = department
     ? searchedFaculty.filter((f) => f.department === department)
     : searchedFaculty;
+
+  const groupedFaculty = {
+    normal: filteredFaculty.filter(f => !f.staffType || f.staffType === 'normal'),
+    office: filteredFaculty.filter(f => f.staffType === 'office'),
+    supporting: filteredFaculty.filter(f => f.staffType === 'supporting')
+  };
+
+  const FacultySection = ({ 
+    title, 
+    faculty, 
+    icon: Icon, 
+    description 
+  }: { 
+    title: string; 
+    faculty: Faculty[]; 
+    icon: React.ElementType; 
+    description: string;
+  }) => {
+
+    return (
+      <div className="mb-12">
+        <div className="flex items-center mb-6">
+          <Icon className="w-8 h-8 text-[#8b1a1a] mr-3" />
+          <div>
+            <h2 className="text-2xl font-bold text-[#8b1a1a]">{title}</h2>
+            <p className="text-gray-600">{description}</p>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {faculty.map((member) => (
+            <div
+              key={member._id}
+              className="w-full relative h-[430px] group mx-auto bg-white border rounded-md text-black flex flex-col shadow-sm hover:shadow-md transition-shadow"
+            >
+              <div className="w-full rounded-t-md h-[350px] group-hover:h-[410px] overflow-hidden transition-all duration-300">
+                {member.photoUrl ? (
+                  <Image
+                    src={member.photoUrl || "/placeholder-faculty.png"}
+                    alt={member.name}
+                    width={600}
+                    height={600}
+                    className="h-full w-full scale-105 group-hover:scale-100 grayscale group-hover:grayscale-0 object-cover transition-all duration-300"
+                  />
+                ) : (
+                  <div className="flex items-center justify-center h-full w-full bg-gray-200">
+                    <User className="h-16 w-16 text-gray-400" />
+                  </div>
+                )}
+              </div>
+              <article className="relative overflow-hidden flex-grow">
+                <div className="info p-3 translate-y-0 group-hover:-translate-y-20 transition-all duration-300">
+                  <p className="text-xl md:text-2xl font-semibold">
+                    {member.name}
+                  </p>
+                  <div className="flex items-center text-sm text-gray-600">
+                    <Building className="h-4 w-4 mr-1" />
+                    <p>{member.department}</p>
+                  </div>
+                </div>
+                <div className="absolute h-20 -bottom-20 opacity-0 group-hover:opacity-100 group-hover:bottom-0 transition-all duration-300 w-full text-center p-3 bg-[#f8f3e9]">
+                  <p className="text-lg font-medium text-[#8b1a1a]">
+                    {member.position}
+                  </p>
+                  {member.email && (
+                    <div className="flex items-center justify-center mt-1 text-gray-700">
+                      <Mail className="h-4 w-4 mr-1" />
+                      <p className="text-sm">{member.email}</p>
+                    </div>
+                  )}
+                </div>
+              </article>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-[#f8f3e9]/30">
@@ -119,7 +196,7 @@ export default function FacultyPage() {
 
           <h1 className="text-3xl md:text-4xl font-bold mb-3">Our Staff</h1>
           <p className="text-lg max-w-3xl opacity-90">
-            Meet our dedicated team of educators who are committed to nurturing
+            Meet our dedicated team of educators and staff who are committed to nurturing
             the intellectual and personal growth of each student at Aryavart
             Ancient Academy.
           </p>
@@ -131,7 +208,7 @@ export default function FacultyPage() {
             </div>
             <div className="flex items-center bg-white/20 px-3 py-1.5 rounded-full text-sm backdrop-blur-sm">
               <BookOpen size={14} className="mr-1.5" />
-              Expert Educators
+              Expert Educators & Support Staff
             </div>
           </div>
         </div>
@@ -274,51 +351,30 @@ export default function FacultyPage() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredFaculty.map((member) => (
-              <div
-                key={member._id}
-                className="w-full relative h-[430px] group mx-auto bg-white border rounded-md text-black flex flex-col shadow-sm hover:shadow-md transition-shadow"
-              >
-                <div className="w-full rounded-t-md h-[350px] group-hover:h-[410px] overflow-hidden transition-all duration-300">
-                  {member.photoUrl ? (
-                    <Image
-                      src={member.photoUrl || "/placeholder-faculty.png"}
-                      alt={member.name}
-                      width={600}
-                      height={600}
-                      className="h-full w-full scale-105 group-hover:scale-100 grayscale group-hover:grayscale-0 object-cover transition-all duration-300"
-                    />
-                  ) : (
-                    <div className="flex items-center justify-center h-full w-full bg-gray-200">
-                      <User className="h-16 w-16 text-gray-400" />
-                    </div>
-                  )}
-                </div>
-                <article className="relative overflow-hidden flex-grow">
-                  <div className="info p-3 translate-y-0 group-hover:-translate-y-20 transition-all duration-300">
-                    <p className="text-xl md:text-2xl font-semibold">
-                      {member.name}
-                    </p>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Building className="h-4 w-4 mr-1" />
-                      <p>{member.department}</p>
-                    </div>
-                  </div>
-                  <div className="absolute h-20 -bottom-20 opacity-0 group-hover:opacity-100 group-hover:bottom-0 transition-all duration-300 w-full text-center p-3 bg-[#f8f3e9]">
-                    <p className="text-lg font-medium text-[#8b1a1a]">
-                      {member.position}
-                    </p>
-                    {member.email && (
-                      <div className="flex items-center justify-center mt-1 text-gray-700">
-                        <Mail className="h-4 w-4 mr-1" />
-                        <p className="text-sm">{member.email}</p>
-                      </div>
-                    )}
-                  </div>
-                </article>
-              </div>
-            ))}
+          <div>
+            {/* Teaching Staff Section */}
+            <FacultySection
+              title="Teaching Staff"
+              faculty={groupedFaculty.normal}
+              icon={GraduationCap}
+              description="Our dedicated educators committed to academic excellence"
+            />
+
+            {/* Office Staff Section */}
+            <FacultySection
+              title="Office Staff"
+              faculty={groupedFaculty.office}
+              icon={UserCog}
+              description="Our administrative team ensuring smooth operations"
+            />
+
+            {/* Supporting Staff Section */}
+            <FacultySection
+              title="Supporting Staff"
+              faculty={groupedFaculty.supporting}
+              icon={UserCheck}
+              description="Our support team contributing to the school community"
+            />
           </div>
         )}
       </div>
@@ -331,8 +387,8 @@ export default function FacultyPage() {
           </h2>
           <p className="text-gray-700 mb-8 max-w-3xl mx-auto">
             Aryavart Ancient Academy is always looking for passionate educators
-            who are committed to excellence in teaching and the holistic
-            development of students.
+            and dedicated staff members who are committed to excellence in education
+            and the holistic development of students.
           </p>
           <a
             href="/careers"

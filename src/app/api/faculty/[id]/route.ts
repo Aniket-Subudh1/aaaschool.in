@@ -26,13 +26,11 @@ export async function GET(
     );
   }
 }
-
 export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    // Verify authentication
     const authResult = await verifyAuth(request);
     if (!authResult.isAuthenticated) {
       return NextResponse.json(
@@ -60,6 +58,7 @@ export async function PUT(
     const bio = formData.get('bio') as string;
     const qualificationsStr = formData.get('qualifications') as string;
     const joinDate = formData.get('joinDate') as string;
+    const staffType = formData.get('staffType') as 'normal' | 'office' | 'supporting';
     const active = formData.get('active') === 'true';
     
     if (!name || !position || !department) {
@@ -69,7 +68,6 @@ export async function PUT(
       );
     }
     
-    // Parse qualifications if provided
     const qualifications = qualificationsStr?.split(',').map(q => q.trim()).filter(Boolean);
     
     const updateData: {
@@ -80,6 +78,7 @@ export async function PUT(
       bio?: string;
       qualifications?: string[];
       joinDate?: string;
+      staffType?: 'normal' | 'office' | 'supporting';
       active: boolean;
       photoUrl?: string;
       photoPublicId?: string;
@@ -90,6 +89,7 @@ export async function PUT(
       bio,
       qualifications,
       joinDate,
+      staffType: staffType || 'normal',
       active
     };
     
@@ -147,6 +147,8 @@ export async function PUT(
     );
   }
 }
+
+
 
 export async function DELETE(
   request: NextRequest,

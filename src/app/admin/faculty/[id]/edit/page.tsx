@@ -17,6 +17,7 @@ interface Faculty {
   bio?: string;
   qualifications?: string[];
   joinDate?: string;
+  staffType?: 'normal' | 'office' | 'supporting';
   active: boolean;
 }
 
@@ -34,6 +35,7 @@ export default function EditFacultyPage() {
     bio: "",
     qualifications: "",
     joinDate: "",
+    staffType: "normal" as 'normal' | 'office' | 'supporting',
     active: true,
   });
 
@@ -75,6 +77,7 @@ export default function EditFacultyPage() {
           ? data.qualifications.join(", ")
           : "",
         joinDate: data.joinDate || "",
+        staffType: data.staffType || "normal",
         active: data.active || false,
       });
 
@@ -168,7 +171,6 @@ export default function EditFacultyPage() {
         fileInputRef.current.value = "";
       }
     } else {
-      // If using existing photo from faculty, just reset to that
       setPhoto(null);
       setPhotoPreview(faculty.photoUrl);
       if (fileInputRef.current) {
@@ -204,9 +206,9 @@ export default function EditFacultyPage() {
       submitData.append("bio", formData.bio);
       submitData.append("qualifications", formData.qualifications);
       submitData.append("joinDate", formData.joinDate);
+      submitData.append("staffType", formData.staffType);
       submitData.append("active", formData.active.toString());
 
-      // Only add photo if a new one is selected
       if (photo) {
         submitData.append("photo", photo);
       }
@@ -221,7 +223,6 @@ export default function EditFacultyPage() {
         throw new Error(errorData.message || "Failed to update faculty member");
       }
 
-      // Redirect to faculty list
       router.push("/admin/faculty");
     } catch (err) {
       console.error("Error updating faculty member:", err);
@@ -347,6 +348,27 @@ export default function EditFacultyPage() {
 
             <div>
               <label
+                htmlFor="staffType"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Staff Type <span className="text-red-500">*</span>
+              </label>
+              <select
+                id="staffType"
+                name="staffType"
+                value={formData.staffType}
+                onChange={handleChange}
+                className="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
+                required
+              >
+                <option value="normal">Teaching Staff</option>
+                <option value="office">Office Staff</option>
+                <option value="supporting">Supporting Staff</option>
+              </select>
+            </div>
+
+            <div>
+              <label
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
@@ -380,7 +402,7 @@ export default function EditFacultyPage() {
               />
             </div>
 
-            <div>
+            <div className="md:col-span-2">
               <label
                 htmlFor="qualifications"
                 className="block text-sm font-medium text-gray-700 mb-1"

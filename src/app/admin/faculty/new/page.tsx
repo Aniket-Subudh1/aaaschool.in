@@ -20,6 +20,7 @@ export default function NewFacultyPage() {
     bio: "",
     qualifications: "",
     joinDate: "",
+    staffType: "normal" as 'normal' | 'office' | 'supporting',
     active: true,
   });
 
@@ -140,6 +141,7 @@ export default function NewFacultyPage() {
       submitData.append("bio", formData.bio);
       submitData.append("qualifications", formData.qualifications);
       submitData.append("joinDate", formData.joinDate);
+      submitData.append("staffType", formData.staffType);
       submitData.append("active", formData.active.toString());
       
       // Only add photo if one is selected
@@ -262,6 +264,27 @@ export default function NewFacultyPage() {
 
             <div>
               <label
+                htmlFor="staffType"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Staff Type <span className="text-red-500">*</span>
+              </label>
+              <select
+                id="staffType"
+                name="staffType"
+                value={formData.staffType}
+                onChange={handleChange}
+                className="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
+                required
+              >
+                <option value="normal">Teaching Staff</option>
+                <option value="office">Office Staff</option>
+                <option value="supporting">Supporting Staff</option>
+              </select>
+            </div>
+
+            <div>
+              <label
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
@@ -295,7 +318,7 @@ export default function NewFacultyPage() {
               />
             </div>
 
-            <div>
+            <div className="md:col-span-2">
               <label
                 htmlFor="qualifications"
                 className="block text-sm font-medium text-gray-700 mb-1"
@@ -329,8 +352,7 @@ export default function NewFacultyPage() {
                 value={formData.bio}
                 onChange={handleChange}
                 rows={4}
-                className="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
-                placeholder="Enter a brief bio or description"
+                className="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"placeholder="Enter a brief bio or description"
               ></textarea>
             </div>
 

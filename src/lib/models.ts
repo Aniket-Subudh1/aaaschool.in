@@ -294,6 +294,7 @@ export interface Faculty {
   qualifications?: string[];
   joinDate?: string;
   active: boolean;
+  staffType?: 'normal' | 'office' | 'supporting'; 
   createdAt: Date;
   updatedAt: Date;
 }
