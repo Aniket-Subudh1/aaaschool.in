@@ -467,167 +467,174 @@ export default function SportsPage() {
       </main>
 
       {/* Sport Details Modal */}
-      <AnimatePresence>
-        {activeSport && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-            onClick={closeSportDetails}
-          >
-            <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}
-              className="bg-white rounded-xl shadow-xl max-w-4xl w-full overflow-hidden max-h-[90vh] overflow-y-auto"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {sports.find(sport => sport.id === activeSport) && (
-                <>
-                  <div className="relative h-56 md:h-72">
-                    <Image
-                      src={sports.find(sport => sport.id === activeSport)?.image || ""}
-                      alt={sports.find(sport => sport.id === activeSport)?.name || ""}
-                      fill
-                      className="object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent"></div>
-                    <motion.button
-                      className="absolute top-4 right-4 bg-white/20 p-2 rounded-full hover:bg-white/40 transition-colors"
-                      onClick={closeSportDetails}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <X className="h-5 w-5 text-white" />
-                    </motion.button>
 
-                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                      <div className="flex items-center">
-                        <div 
-                          className="w-12 h-12 rounded-full flex items-center justify-center mr-4"
-                          style={{ backgroundColor: sports.find(sport => sport.id === activeSport)?.color }}
-                        >
-                          <div>{sports.find(sport => sport.id === activeSport)?.icon}</div>
-                        </div>
-                        <div>
-                          <p className="text-sm text-white/80">Sport</p>
-                          <h2 className="text-2xl font-bold">
-                            {sports.find(sport => sport.id === activeSport)?.name}
-                          </h2>
-                        </div>
-                      </div>
-                    </div>
+<AnimatePresence>
+  {activeSport && (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+      onClick={closeSportDetails}
+    >
+      <motion.div
+        initial={{ scale: 0.9, y: 20 }}
+        animate={{ scale: 1, y: 0 }}
+        exit={{ scale: 0.9, y: 20 }}
+        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+        className="bg-white rounded-xl shadow-xl w-full max-w-4xl max-h-[95vh] flex flex-col overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {sports.find(sport => sport.id === activeSport) && (
+          <>
+            {/* Header Image - Fixed Height */}
+            <div className="relative h-48 md:h-56 flex-shrink-0">
+              <Image
+                src={sports.find(sport => sport.id === activeSport)?.image || ""}
+                alt={sports.find(sport => sport.id === activeSport)?.name || ""}
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent"></div>
+              <motion.button
+                className="absolute top-4 right-4 bg-white/20 p-2 rounded-full hover:bg-white/40 transition-colors"
+                onClick={closeSportDetails}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <X className="h-5 w-5 text-white" />
+              </motion.button>
+
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                <div className="flex items-center">
+                  <div 
+                    className="w-12 h-12 rounded-full flex items-center justify-center mr-4"
+                    style={{ backgroundColor: sports.find(sport => sport.id === activeSport)?.color }}
+                  >
+                    <div>{sports.find(sport => sport.id === activeSport)?.icon}</div>
                   </div>
+                  <div>
+                    <p className="text-sm text-white/80">Sport</p>
+                    <h2 className="text-2xl font-bold">
+                      {sports.find(sport => sport.id === activeSport)?.name}
+                    </h2>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                  <div className="p-6">
-                    <div className="mb-6">
-                      <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">About the Sport</h3>
+            {/* Scrollable Content */}
+            <div className="flex-1 overflow-y-auto">
+              <div className="p-6">
+                <div className="mb-6">
+                  <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">About the Sport</h3>
+                  <p className="text-[#5a3e36]">
+                    {sports.find(sport => sport.id === activeSport)?.description}
+                  </p>
+                </div>
+
+                <div className="mb-6">
+                  <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Practice Schedule</h3>
+                  <div className="bg-[#f8f3e9] p-4 rounded-lg">
+                    <div className="flex items-start">
+                      <Clock className="h-5 w-5 text-[#8b1a1a] mr-3 flex-shrink-0 mt-0.5" />
                       <p className="text-[#5a3e36]">
-                        {sports.find(sport => sport.id === activeSport)?.description}
+                        {sports.find(sport => sport.id === activeSport)?.schedule}
                       </p>
                     </div>
-
-                    <div className="mb-6">
-                      <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Practice Schedule</h3>
-                      <div className="bg-[#f8f3e9] p-4 rounded-lg">
-                        <div className="flex items-start">
-                          <Clock className="h-5 w-5 text-[#8b1a1a] mr-3 flex-shrink-0 mt-0.5" />
-                          <p className="text-[#5a3e36]">
-                            {sports.find(sport => sport.id === activeSport)?.schedule}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                      <div>
-                        <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Coaches</h3>
-                        <ul className="space-y-2">
-                          {sports.find(sport => sport.id === activeSport)?.coaches.map((coach, index) => (
-                            <li key={index} className="flex items-start">
-                              <User className="h-5 w-5 text-[#8b1a1a] mr-3 flex-shrink-0" />
-                              <p className="text-[#5a3e36]">{coach}</p>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div>
-                        <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Age Groups</h3>
-                        <ul className="space-y-2">
-                          {sports.find(sport => sport.id === activeSport)?.ageGroups?.map((group, index) => (
-                            <li key={index} className="flex items-start">
-                              <Users className="h-5 w-5 text-[#8b1a1a] mr-3 flex-shrink-0" />
-                              <p className="text-[#5a3e36]">{group}</p>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-
-                    <div className="mb-6">
-                      <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Facilities</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {sports.find(sport => sport.id === activeSport)?.facilities.map((facility, index) => (
-                          <div key={index} className="flex items-start bg-[#f8f3e9] p-3 rounded-md">
-                            <CheckCircle className="h-5 w-5 text-[#8b1a1a] mr-3 flex-shrink-0" />
-                            <p className="text-[#5a3e36]">{facility}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="mb-6">
-                      <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Tournaments & Competitions</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {sports.find(sport => sport.id === activeSport)?.tournaments?.map((tournament, index) => (
-                          <div key={index} className="flex items-start">
-                            <Trophy className="h-5 w-5 text-[#8b1a1a] mr-3 flex-shrink-0" />
-                            <p className="text-[#5a3e36]">{tournament}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="mb-6">
-                      <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Recent Achievements</h3>
-                      <div className="bg-[#8b1a1a]/5 p-4 rounded-lg">
-                        <ul className="space-y-2">
-                          {sports.find(sport => sport.id === activeSport)?.achievements.map((achievement, index) => (
-                            <li key={index} className="flex items-start">
-                              <Medal className="h-5 w-5 text-[#8b1a1a] mr-3 flex-shrink-0" />
-                              <p className="text-[#5a3e36]">{achievement}</p>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-between items-center mt-8">
-                      <a 
-                        href="/enquiry" 
-                        className="px-6 py-2 bg-[#8b1a1a] text-white rounded-md font-medium hover:bg-[#8b1a1a]/90 transition-colors"
-                      >
-                        Join This Sport
-                      </a>
-                      <button
-                        onClick={closeSportDetails}
-                        className="px-6 py-2 bg-gray-100 text-gray-700 rounded-md font-medium hover:bg-gray-200 transition-colors"
-                      >
-                        Close
-                      </button>
-                    </div>
                   </div>
-                </>
-              )}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                </div>
 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <div>
+                    <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Coaches</h3>
+                    <ul className="space-y-2">
+                      {sports.find(sport => sport.id === activeSport)?.coaches.map((coach, index) => (
+                        <li key={index} className="flex items-start">
+                          <User className="h-5 w-5 text-[#8b1a1a] mr-3 flex-shrink-0 mt-0.5" />
+                          <p className="text-[#5a3e36]">{coach}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Age Groups</h3>
+                    <ul className="space-y-2">
+                      {sports.find(sport => sport.id === activeSport)?.ageGroups?.map((group, index) => (
+                        <li key={index} className="flex items-start">
+                          <Users className="h-5 w-5 text-[#8b1a1a] mr-3 flex-shrink-0 mt-0.5" />
+                          <p className="text-[#5a3e36]">{group}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="mb-6">
+                  <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Facilities</h3>
+                  <div className="grid grid-cols-1 gap-3">
+                    {sports.find(sport => sport.id === activeSport)?.facilities.map((facility, index) => (
+                      <div key={index} className="flex items-start bg-[#f8f3e9] p-3 rounded-md">
+                        <CheckCircle className="h-5 w-5 text-[#8b1a1a] mr-3 flex-shrink-0 mt-0.5" />
+                        <p className="text-[#5a3e36]">{facility}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mb-6">
+                  <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Tournaments & Competitions</h3>
+                  <div className="grid grid-cols-1 gap-3">
+                    {sports.find(sport => sport.id === activeSport)?.tournaments?.map((tournament, index) => (
+                      <div key={index} className="flex items-start">
+                        <Trophy className="h-5 w-5 text-[#8b1a1a] mr-3 flex-shrink-0 mt-0.5" />
+                        <p className="text-[#5a3e36]">{tournament}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mb-6">
+                  <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Recent Achievements</h3>
+                  <div className="bg-[#8b1a1a]/5 p-4 rounded-lg">
+                    <ul className="space-y-3">
+                      {sports.find(sport => sport.id === activeSport)?.achievements.map((achievement, index) => (
+                        <li key={index} className="flex items-start">
+                          <Medal className="h-5 w-5 text-[#8b1a1a] mr-3 flex-shrink-0 mt-0.5" />
+                          <p className="text-[#5a3e36]">{achievement}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Fixed Footer */}
+            <div className="flex-shrink-0 border-t border-gray-200 bg-gray-50 px-6 py-4">
+              <div className="flex justify-between items-center">
+                <a 
+                  href="/enquiry" 
+                  className="px-6 py-2 bg-[#8b1a1a] text-white rounded-md font-medium hover:bg-[#8b1a1a]/90 transition-colors"
+                >
+                  Join This Sport
+                </a>
+                <button
+                  onClick={closeSportDetails}
+                  className="px-6 py-2 bg-gray-100 text-gray-700 rounded-md font-medium hover:bg-gray-200 transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+      </motion.div>
+    </motion.div>
+  )}
+</AnimatePresence>
     </div>
   );
 }
@@ -648,26 +655,6 @@ function CheckCircle({ className, ...props }: any) {
     >
       <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
       <polyline points="22 4 12 14.01 9 11.01" />
-    </svg>
-  );
-}
-
-// Helper Component for Quote icon
-function Quote({ className, ...props }: any) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      {...props}
-    >
-      <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" />
-      <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z" />
     </svg>
   );
 }
