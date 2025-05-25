@@ -9,7 +9,6 @@ import {
   Camera,
   Palette,
   Music,
-  Quote,
   Code,
   Map,
   ChevronLeft,
@@ -474,67 +473,6 @@ export default function ClubsPage() {
           </div>
         </section>
 
-        {/* Testimonials Section */}
-        <section className="container mx-auto px-4 mb-16">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-[#8b1a1a] mb-4 font-serif">
-              What Our Students Say
-            </h2>
-            <p className="text-[#5a3e36] max-w-2xl mx-auto">
-              Hear from our students about their experiences in various clubs.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-md relative">
-              <div className="absolute top-4 right-4 text-[#8b1a1a]/20">
-                <Quote className="h-12 w-12" />
-              </div>
-              <p className="text-[#5a3e36] mb-6 italic">
-                "Being part of the Photography Club has transformed my perspective on the world around me. I've not only learned technical skills but also how to tell stories through images. The supportive environment has helped me grow both as a photographer and as a person."
-              </p>
-              <div className="flex items-center">
-                <div className="w-12 h-12 rounded-full overflow-hidden bg-[#f0e6d2] mr-4">
-                  <Image 
-                    src="/student1.jpg" 
-                    alt="Student" 
-                    width={48} 
-                    height={48}
-                    className="object-cover" 
-                  />
-                </div>
-                <div>
-                  <h4 className="font-bold text-[#8b1a1a]">Ananya Patel</h4>
-                  <p className="text-sm text-[#5a3e36]">Class 11, Photography Club</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-lg shadow-md relative">
-              <div className="absolute top-4 right-4 text-[#8b1a1a]/20">
-                <Quote className="h-12 w-12" />
-              </div>
-              <p className="text-[#5a3e36] mb-6 italic">
-                "The Robotics Club opened up a whole new world of possibilities for me. I never thought I could build working robots until I joined. The hands-on approach, combined with teamwork and problem-solving challenges, has greatly enhanced my skills in science and mathematics."
-              </p>
-              <div className="flex items-center">
-                <div className="w-12 h-12 rounded-full overflow-hidden bg-[#f0e6d2] mr-4">
-                  <Image 
-                    src="/student2.jpg" 
-                    alt="Student" 
-                    width={48} 
-                    height={48}
-                    className="object-cover" 
-                  />
-                </div>
-                <div>
-                  <h4 className="font-bold text-[#8b1a1a]">Arjun Singh</h4>
-                  <p className="text-sm text-[#5a3e36]">Class 9, Robotics Club</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Join a Club CTA */}
         <section className="container mx-auto px-4">
@@ -543,7 +481,7 @@ export default function ClubsPage() {
               <div className="md:w-2/3 p-8">
                 <h2 className="text-3xl font-bold mb-4">Join a Club Today</h2>
                 <p className="mb-6">
-                  Explore your interests, develop new skills, and connect with like-minded peers by joining one of our many clubs. There's something for everyone!
+                  Explore your interests, develop new skills, and connect with like-minded peers by joining one of our many clubs. There&apos;s something for everyone!
                 </p>
                 <div className="flex space-x-4">
                   <a 
@@ -574,141 +512,147 @@ export default function ClubsPage() {
         </section>
       </main>
 
-      {/* Club Details Modal */}
-      <AnimatePresence>
-        {activeClub && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-            onClick={closeClubDetails}
-          >
-            <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}
-              className="bg-white rounded-xl shadow-xl max-w-4xl w-full overflow-hidden"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {clubs.find(club => club.id === activeClub) && (
-                <>
-                  <div className="relative h-56 md:h-72">
-                    <Image
-                      src={clubs.find(club => club.id === activeClub)?.image || ""}
-                      alt={clubs.find(club => club.id === activeClub)?.name || ""}
-                      fill
-                      className="object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent"></div>
-                    <motion.button
-                      className="absolute top-4 right-4 bg-white/20 p-2 rounded-full hover:bg-white/40 transition-colors"
-                      onClick={closeClubDetails}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <X className="h-5 w-5 text-white" />
-                    </motion.button>
+     <AnimatePresence>
+  {activeClub && (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+      onClick={closeClubDetails}
+    >
+      <motion.div
+        initial={{ scale: 0.9, y: 20 }}
+        animate={{ scale: 1, y: 0 }}
+        exit={{ scale: 0.9, y: 20 }}
+        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+        className="bg-white rounded-xl shadow-xl w-full max-w-4xl max-h-[95vh] flex flex-col overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {clubs.find(club => club.id === activeClub) && (
+          <>
+            {/* Header Image - Fixed Height */}
+            <div className="relative h-48 md:h-56 flex-shrink-0">
+              <Image
+                src={clubs.find(club => club.id === activeClub)?.image || ""}
+                alt={clubs.find(club => club.id === activeClub)?.name || ""}
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent"></div>
+              <motion.button
+                className="absolute top-4 right-4 bg-white/20 p-2 rounded-full hover:bg-white/40 transition-colors"
+                onClick={closeClubDetails}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <X className="h-5 w-5 text-white" />
+              </motion.button>
 
-                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                      <div className="flex items-center">
-                        <div 
-                          className="w-12 h-12 rounded-full flex items-center justify-center mr-4"
-                          style={{ backgroundColor: clubs.find(club => club.id === activeClub)?.color }}
-                        >
-                          <div>{clubs.find(club => club.id === activeClub)?.icon}</div>
-                        </div>
-                        <div>
-                          <p className="text-sm text-white/80">Club</p>
-                          <h2 className="text-2xl font-bold">
-                            {clubs.find(club => club.id === activeClub)?.name}
-                          </h2>
-                        </div>
-                      </div>
-                    </div>
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                <div className="flex items-center">
+                  <div 
+                    className="w-12 h-12 rounded-full flex items-center justify-center mr-4"
+                    style={{ backgroundColor: clubs.find(club => club.id === activeClub)?.color }}
+                  >
+                    <div>{clubs.find(club => club.id === activeClub)?.icon}</div>
                   </div>
+                  <div>
+                    <p className="text-sm text-white/80">Club</p>
+                    <h2 className="text-2xl font-bold">
+                      {clubs.find(club => club.id === activeClub)?.name}
+                    </h2>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                  <div className="p-6">
-                    <div className="mb-6">
-                      <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">About the Club</h3>
+            {/* Scrollable Content */}
+            <div className="flex-1 overflow-y-auto">
+              <div className="p-6">
+                <div className="mb-6">
+                  <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">About the Club</h3>
+                  <p className="text-[#5a3e36]">
+                    {clubs.find(club => club.id === activeClub)?.description}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <div>
+                    <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Meeting Schedule</h3>
+                    <div className="flex items-center bg-[#f8f3e9] p-3 rounded-md">
+                      <Clock className="h-5 w-5 text-[#8b1a1a] mr-3" />
                       <p className="text-[#5a3e36]">
-                        {clubs.find(club => club.id === activeClub)?.description}
+                        {clubs.find(club => club.id === activeClub)?.meetingSchedule}
                       </p>
                     </div>
+                  </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                      <div>
-                        <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Meeting Schedule</h3>
-                        <div className="flex items-center bg-[#f8f3e9] p-3 rounded-md">
-                          <Clock className="h-5 w-5 text-[#8b1a1a] mr-3" />
-                          <p className="text-[#5a3e36]">
-                            {clubs.find(club => club.id === activeClub)?.meetingSchedule}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div>
-                        <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Eligibility</h3>
-                        <div className="flex items-center bg-[#f8f3e9] p-3 rounded-md">
-                          <Users className="h-5 w-5 text-[#8b1a1a] mr-3" />
-                          <p className="text-[#5a3e36]">
-                            {clubs.find(club => club.id === activeClub)?.eligibility}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="mb-6">
-                      <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Club Activities</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {clubs.find(club => club.id === activeClub)?.activities.map((activity, index) => (
-                          <div key={index} className="flex items-start">
-                            <Check className="h-5 w-5 text-[#8b1a1a] mr-3 flex-shrink-0" />
-                            <p className="text-[#5a3e36]">{activity}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {clubs.find(club => club.id === activeClub)?.achievements && (
-                      <div className="mb-6">
-                        <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Achievements</h3>
-                        <div className="bg-[#8b1a1a]/5 p-4 rounded-lg">
-                          <ul className="space-y-2">
-                            {clubs.find(club => club.id === activeClub)?.achievements?.map((achievement, index) => (
-                              <li key={index} className="flex items-start">
-                                <Award className="h-5 w-5 text-[#8b1a1a] mr-3 flex-shrink-0" />
-                                <p className="text-[#5a3e36]">{achievement}</p>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="flex justify-between items-center mt-8">
-                      <a 
-                        href="/enquiry" 
-                        className="px-6 py-2 bg-[#8b1a1a] text-white rounded-md font-medium hover:bg-[#8b1a1a]/90 transition-colors"
-                      >
-                        Enquire to Join
-                      </a>
-                      <button
-                        onClick={closeClubDetails}
-                        className="px-6 py-2 bg-gray-100 text-gray-700 rounded-md font-medium hover:bg-gray-200 transition-colors"
-                      >
-                        Close
-                      </button>
+                  <div>
+                    <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Eligibility</h3>
+                    <div className="flex items-center bg-[#f8f3e9] p-3 rounded-md">
+                      <Users className="h-5 w-5 text-[#8b1a1a] mr-3" />
+                      <p className="text-[#5a3e36]">
+                        {clubs.find(club => club.id === activeClub)?.eligibility}
+                      </p>
                     </div>
                   </div>
-                </>
-              )}
-            </motion.div>
-          </motion.div>
+                </div>
+
+                <div className="mb-6">
+                  <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Club Activities</h3>
+                  <div className="grid grid-cols-1 gap-3">
+                    {clubs.find(club => club.id === activeClub)?.activities.map((activity, index) => (
+                      <div key={index} className="flex items-start">
+                        <Check className="h-5 w-5 text-[#8b1a1a] mr-3 flex-shrink-0 mt-0.5" />
+                        <p className="text-[#5a3e36]">{activity}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {clubs.find(club => club.id === activeClub)?.achievements && (
+                  <div className="mb-6">
+                    <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Achievements</h3>
+                    <div className="bg-[#8b1a1a]/5 p-4 rounded-lg">
+                      <ul className="space-y-3">
+                        {clubs.find(club => club.id === activeClub)?.achievements?.map((achievement, index) => (
+                          <li key={index} className="flex items-start">
+                            <Award className="h-5 w-5 text-[#8b1a1a] mr-3 flex-shrink-0 mt-0.5" />
+                            <p className="text-[#5a3e36]">{achievement}</p>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Fixed Footer */}
+            <div className="flex-shrink-0 border-t border-gray-200 bg-gray-50 px-6 py-4">
+              <div className="flex justify-between items-center">
+                <a 
+                  href="/enquiry" 
+                  className="px-6 py-2 bg-[#8b1a1a] text-white rounded-md font-medium hover:bg-[#8b1a1a]/90 transition-colors"
+                >
+                  Enquire to Join
+                </a>
+                <button
+                  onClick={closeClubDetails}
+                  className="px-6 py-2 bg-gray-100 text-gray-700 rounded-md font-medium hover:bg-gray-200 transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </>
         )}
-      </AnimatePresence>
+      </motion.div>
+    </motion.div>
+  )}
+</AnimatePresence>
     </div>
   );
 }

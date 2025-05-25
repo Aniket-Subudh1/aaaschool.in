@@ -8,25 +8,18 @@ import {
   ChevronLeft,
   ChevronRight,
   Trophy,
-  Medal,
-  Target,
-  Flag,
+  Medal, 
   Users,
-  Calendar,
   Clock,
   Dumbbell,
   Flame,
   Dribbble,
   X,
   BarChart2,
-  MapPin,
   User,
-  Award,
   ArrowRight,
 } from "lucide-react";
 
-
-// Type definition for sport
 interface Sport {
   id: string;
   name: string;
@@ -259,34 +252,7 @@ export default function SportsPage() {
       })
     : sports;
 
-  // Get upcoming tournament data
-  const upcomingTournaments = [
-    {
-      name: "District Basketball Championship",
-      date: "June 15-18, 2025",
-      venue: "District Sports Complex, Khordha",
-      categories: "U-14, U-17, U-19 (Boys & Girls)"
-    },
-    {
-      name: "CBSE East Zone Cricket Tournament",
-      date: "July 10-15, 2025",
-      venue: "Regional Sports Stadium",
-      categories: "U-17, U-19 (Boys)"
-    },
-    {
-      name: "State Level Taekwondo Championship",
-      date: "August 5-7, 2025",
-      venue: "State Sports Academy, Bhubaneswar",
-      categories: "All Weight Categories & Age Groups"
-    },
-    {
-      name: "Inter-School Indigenous Sports Meet",
-      date: "September 12-14, 2025",
-      venue: "Aryavart Ancient Academy",
-      categories: "Kho Kho, Kabaddi, Traditional Games"
-    }
-  ];
-
+  
   return (
     <div className="min-h-screen bg-[#f8f3e9]">
       <main className="pb-16">
@@ -406,146 +372,6 @@ export default function SportsPage() {
           </div>
         </section>
 
-        {/* Achievements Showcase */}
-        <section className="bg-[#f0e6d2] py-16 px-4 mb-16">
-          <div className="container mx-auto">
-            <div className="text-center max-w-3xl mx-auto mb-12">
-              <div className="inline-block mb-2 bg-white p-3 rounded-full">
-                <Trophy className="h-8 w-8 text-[#8b1a1a]" />
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#8b1a1a] mb-4 font-serif">
-                Sports Achievements
-              </h2>
-              <p className="text-[#5a3e36]">
-                Our students have excelled in various sports competitions, bringing laurels to the school.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-bold text-[#8b1a1a] mb-4 flex items-center">
-                  <Medal className="h-6 w-6 mr-2 text-yellow-500" />
-                  National Level Accomplishments
-                </h3>
-                <ul className="space-y-4">
-                  <li className="flex items-start">
-                    <div className="bg-[#8b1a1a]/10 p-1 rounded-full mr-3 mt-1">
-                      <Trophy className="h-4 w-4 text-[#8b1a1a]" />
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-[#5a3e36]">CBSE National Sports Meet</h4>
-                      <p className="text-sm text-[#5a3e36]">Multiple medals in Taekwondo and Basketball</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start">
-                    <div className="bg-[#8b1a1a]/10 p-1 rounded-full mr-3 mt-1">
-                      <Trophy className="h-4 w-4 text-[#8b1a1a]" />
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-[#5a3e36]">School Games Federation of India</h4>
-                      <p className="text-sm text-[#5a3e36]">Top 8 finish in Cricket and Kabaddi</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start">
-                    <div className="bg-[#8b1a1a]/10 p-1 rounded-full mr-3 mt-1">
-                      <Trophy className="h-4 w-4 text-[#8b1a1a]" />
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-[#5a3e36]">All India Traditional Sports Competition</h4>
-                      <p className="text-sm text-[#5a3e36]">Gold medals in Kho Kho (U-17 Girls)</p>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-bold text-[#8b1a1a] mb-4 flex items-center">
-                  <Medal className="h-6 w-6 mr-2 text-[#8b1a1a]" />
-                  State & Regional Achievements
-                </h3>
-                <ul className="space-y-4">
-                  <li className="flex items-start">
-                    <div className="bg-[#8b1a1a]/10 p-1 rounded-full mr-3 mt-1">
-                      <Trophy className="h-4 w-4 text-[#8b1a1a]" />
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-[#5a3e36]">State School Games</h4>
-                      <p className="text-sm text-[#5a3e36]">Champions in Basketball, Volleyball, and Kabaddi</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start">
-                    <div className="bg-[#8b1a1a]/10 p-1 rounded-full mr-3 mt-1">
-                      <Trophy className="h-4 w-4 text-[#8b1a1a]" />
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-[#5a3e36]">District Championships</h4>
-                      <p className="text-sm text-[#5a3e36]">Multiple gold medals across various sports</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start">
-                    <div className="bg-[#8b1a1a]/10 p-1 rounded-full mr-3 mt-1">
-                      <Trophy className="h-4 w-4 text-[#8b1a1a]" />
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-[#5a3e36]">CBSE East Zone Tournaments</h4>
-                      <p className="text-sm text-[#5a3e36]">Winners in multiple categories and age groups</p>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Upcoming Tournaments */}
-        <section className="container mx-auto px-4 mb-16">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-[#8b1a1a] mb-4 font-serif">
-              Upcoming Tournaments
-            </h2>
-            <p className="text-[#5a3e36] max-w-2xl mx-auto">
-              Stay informed about the forthcoming sports events and competitions where our teams will participate.
-            </p>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="min-w-full bg-white rounded-lg shadow-md overflow-hidden">
-              <thead className="bg-[#8b1a1a] text-white">
-                <tr>
-                  <th className="px-6 py-3 text-left text-sm font-medium">Tournament</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium">Date</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium">Venue</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium">Categories</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {upcomingTournaments.map((tournament, index) => (
-                  <tr key={index} className="hover:bg-[#f8f3e9]/50 transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap text-[#5a3e36] font-medium">
-                      {tournament.name}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-[#5a3e36]">
-                      <div className="flex items-center">
-                        <Calendar className="h-4 w-4 text-[#8b1a1a] mr-2" />
-                        {tournament.date}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-[#5a3e36]">
-                      <div className="flex items-center">
-                        <MapPin className="h-4 w-4 text-[#8b1a1a] mr-2" />
-                        {tournament.venue}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-[#5a3e36]">
-                      {tournament.categories}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-
         {/* Benefits of Sports */}
         <section className="bg-white py-16 px-4 mb-16">
           <div className="container mx-auto">
@@ -557,7 +383,7 @@ export default function SportsPage() {
                 Benefits of Sports
               </h2>
               <p className="text-[#5a3e36]">
-                Participation in sports contributes significantly to a student's overall development in various dimensions.
+                Participation in sports contributes significantly to a student&apos;s overall development in various dimensions.
               </p>
             </div>
 
@@ -601,75 +427,6 @@ export default function SportsPage() {
           </div>
         </section>
 
-        {/* Student Success Stories */}
-        <section className="container mx-auto px-4 mb-16">
-        <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-[#8b1a1a] mb-4 font-serif">
-              Student Success Stories
-            </h2>
-            <p className="text-[#5a3e36] max-w-2xl mx-auto">
-              Meet some of our outstanding student athletes who have excelled in their respective sports.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="md:flex">
-                <div className="md:w-1/3 relative h-48 md:h-auto">
-                  <Image 
-                    src="/athlete1.jpg" 
-                    alt="Student Athlete" 
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="md:w-2/3 p-6">
-                  <h3 className="text-xl font-bold text-[#8b1a1a] mb-2">Aditya Patel</h3>
-                  <p className="text-sm text-[#5a3e36] mb-4">Basketball Team Captain, Class 12</p>
-                  <p className="text-[#5a3e36] mb-4">
-                    "Basketball has taught me more than just sport skills - it's shaped my character and leadership abilities. The coaching and support at our school helped me secure a sports scholarship for my higher education."
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="bg-[#8b1a1a]/10 text-[#8b1a1a] px-3 py-1 rounded-full text-xs font-medium">
-                      State Team Selection
-                    </span>
-                    <span className="bg-[#8b1a1a]/10 text-[#8b1a1a] px-3 py-1 rounded-full text-xs font-medium">
-                      Sports Scholarship
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="md:flex">
-                <div className="md:w-1/3 relative h-48 md:h-auto">
-                  <Image 
-                    src="/athlete2.jpg" 
-                    alt="Student Athlete" 
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="md:w-2/3 p-6">
-                  <h3 className="text-xl font-bold text-[#8b1a1a] mb-2">Meera Sharma</h3>
-                  <p className="text-sm text-[#5a3e36] mb-4">Taekwondo Champion, Class 10</p>
-                  <p className="text-[#5a3e36] mb-4">
-                    "The discipline and focus I've gained through Taekwondo have positively impacted all areas of my life. I'm grateful for the opportunity to represent my school at the national level."
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="bg-[#8b1a1a]/10 text-[#8b1a1a] px-3 py-1 rounded-full text-xs font-medium">
-                      National Gold Medalist
-                    </span>
-                    <span className="bg-[#8b1a1a]/10 text-[#8b1a1a] px-3 py-1 rounded-full text-xs font-medium">
-                      Black Belt
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Join Our Sports Programs CTA */}
         <section className="container mx-auto px-4">
