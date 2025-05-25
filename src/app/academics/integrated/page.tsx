@@ -6,7 +6,6 @@ import Image from "next/image";
 import {
   ChevronRight, 
   BookOpen, 
-  Award,
   Star,
   Calendar,
   Clock,
@@ -15,15 +14,12 @@ import {
   GraduationCap,
   Microscope,
   Calculator,
-  BarChart,
   FileText,
   Brain,
-  Lightbulb,
   BadgeCheck,
   Target,
   ArrowRight,
   Download,
-  Medal,
   Sword,
   Building,
   ChevronDown
@@ -36,7 +32,7 @@ const batches = [
     icon: <Microscope />,
     color: "#22c55e",
     description: "Comprehensive preparation for the National Eligibility cum Entrance Test (NEET) for medical aspirants.",
-    eligibility: "Students in Class 11, Class 12, and Droppers",
+    eligibility: "Students in Class 11, Class 12",
     features: [
       "Specialized faculty with medical background",
       "Regular mock tests based on NEET pattern",
@@ -52,28 +48,6 @@ const batches = [
       "Weekends: 9:00 AM - 4:00 PM (Intensive sessions for Droppers)",
       "Special batches during school vacations"
     ],
-    achievements: [
-      "85% students qualified NEET in 2024 batch",
-      "35% students secured ranks under 50,000",
-      "15% students secured ranks under 10,000",
-      "Multiple selections in top medical colleges"
-    ],
-    testimonials: [
-      {
-        name: "Pratyusha Mishra",
-        rank: "AIR 4,382",
-        year: "2024",
-        quote: "The faculty's dedication and structured approach helped me achieve my dream of getting into a medical college.",
-        college: "SCB Medical College, Cuttack"
-      },
-      {
-        name: "Samarth Patel",
-        rank: "AIR 12,567",
-        year: "2023",
-        quote: "The integrated approach at AAA helped me balance my board exams and NEET preparation effectively.",
-        college: "MKCG Medical College, Berhampur"
-      }
-    ],
     stats: {
       success: 85,
       satisfaction: 92,
@@ -86,9 +60,9 @@ const batches = [
     id: "jee",
     name: "JEE Batch",
     icon: <Calculator />,
-    color: "#3b82f6", // Blue
+    color: "#3b82f6",
     description: "Specialized coaching for JEE Main and Advanced to help students secure admission in premier engineering institutes like IITs, NITs, and other CFTIs.",
-    eligibility: "Students in Class 11, Class 12, and Droppers",
+    eligibility: "Students in Class 11, Class 12",
     features: [
       "Expert faculty from IITs and NITs",
       "Concept-based learning approach",
@@ -104,93 +78,16 @@ const batches = [
       "Weekends: 9:00 AM - 4:00 PM (Advanced problem-solving)",
       "Evening doubt clearing sessions"
     ],
-    achievements: [
-      "75% students qualified JEE Main in 2024",
-      "42 students qualified for JEE Advanced",
-      "15 students secured admission in IITs",
-      "27 students secured admission in NITs"
-    ],
-    testimonials: [
-      {
-        name: "Rishab Mohapatra",
-        rank: "AIR 3,245 (JEE Advanced)",
-        year: "2024",
-        quote: "The problem-solving techniques and rigorous practice sessions at AAA helped me crack JEE Advanced.",
-        college: "IIT Kharagpur"
-      },
-      {
-        name: "Ananya Sahoo",
-        rank: "AIR 1,324 (JEE Main)",
-        year: "2023",
-        quote: "The faculty's approach to Mathematics made the subject enjoyable and easy to understand.",
-        college: "NIT Rourkela"
-      }
-    ],
-    stats: {
-      success: 75,
-      satisfaction: 90,
-      topRanks: 12
-    },
     image: "/sp.jpg",
     brochure: "/download/jee-brochure.pdf"
-  },
-  {
-    id: "booster",
-    name: "BOOSTER Batch",
-    icon: <Lightbulb />,
-    color: "#eab308",
-    description: "Accelerated learning program to boost academic performance for board exams while preparing for competitive exams.",
-    eligibility: "Students in Class 9, 10, 11, and 12",
-    features: [
-      "Subject-wise performance enhancement",
-      "Focus on board exam pattern and marking scheme",
-      "Weekly tests and assessments",
-      "Personalized attention with smaller batch sizes",
-      "Special focus on weak areas",
-      "Advanced learning techniques",
-      "Regular parent-teacher meetings"
-    ],
-    subjects: ["All core subjects with emphasis on Science and Mathematics"],
-    schedule: [
-      "Weekdays: 3:30 PM - 5:30 PM",
-      "Weekends: Special doubt clearing sessions",
-      "Vacation batches during school breaks"
-    ],
-    achievements: [
-      "95% students scored above 90% in board exams",
-      "Top scorer achieved 98.6% in CBSE Class 12",
-      "Significant improvement in all subject areas",
-      "Multiple school toppers from our batches"
-    ],
-    testimonials: [
-      {
-        name: "Priya Sharma",
-        marks: "96.4% in CBSE Class 12",
-        year: "2024",
-        quote: "The Booster Batch transformed my academic performance. The structured study plan and regular assessments were very helpful."
-      },
-      {
-        name: "Arnav Patnaik",
-        marks: "95.2% in CBSE Class 10",
-        year: "2023",
-        quote: "I joined the Booster Batch in Class 9, and it helped me develop strong fundamentals for higher classes."
-      }
-    ],
-    stats: {
-      success: 95,
-      satisfaction: 96,
-      topRanks: 25
-    },
-    image: "/tr.jpg",
-    brochure: "/download/booster-brochure.pdf"
   },
   {
     id: "nda",
     name: "NDA Batch",
     icon: <Sword />,
-    color: "#a855f7", // Purple
+    color: "#a855f7", 
     description: "Specialized training for National Defence Academy & Naval Academy Examination to prepare students for a career in the Armed Forces.",
-    eligibility: "Students in Class 11, 12 and Droppers",
+    eligibility: "Students in Class 11, 12",
     features: [
       "Comprehensive coverage of Mathematics and GAT",
       "Physical fitness training",
@@ -206,33 +103,6 @@ const batches = [
       "Weekends: 6:00 AM - 8:00 AM (Physical training)",
       "Special SSB preparation on holidays"
     ],
-    achievements: [
-      "32 students cleared NDA written exam in last 3 years",
-      "18 students cleared SSB and joined NDA",
-      "5 students selected for Naval Academy",
-      "Consistently producing defense officers"
-    ],
-    testimonials: [
-      {
-        name: "Vikram Singh",
-        batch: "NDA 145 Course",
-        year: "2023",
-        quote: "The NDA Batch not only prepared me for the exam but also instilled discipline and dedication required for defense services.",
-        academy: "National Defence Academy, Khadakwasla"
-      },
-      {
-        name: "Rahul Kumar",
-        batch: "NDA 144 Course",
-        year: "2022",
-        quote: "The balanced approach to academics and physical training at AAA was instrumental in my success.",
-        academy: "Naval Academy, Ezhimala"
-      }
-    ],
-    stats: {
-      success: 65,
-      satisfaction: 94,
-      selections: 18
-    },
     image: "/sc.jpg",
     brochure: "/download/nda-brochure.pdf"
   },
@@ -242,7 +112,7 @@ const batches = [
     icon: <Building />,
     color: "#ec4899", // Pink
     description: "Specialized preparation for Common University Entrance Test (CUET) to secure admission in Central Universities across India.",
-    eligibility: "Students in Class 12 and Droppers",
+    eligibility: "Students in Class 12",
     features: [
       "Domain-specific preparation for chosen subjects",
       "General Test preparation",
@@ -258,33 +128,6 @@ const batches = [
       "Weekends: 10:00 AM - 1:00 PM (Mock tests)",
       "Special batches during school vacations"
     ],
-    achievements: [
-      "92% students got admission in their preferred universities",
-      "45 students secured admission in Delhi University",
-      "25 students secured admission in BHU, JNU, and other central universities",
-      "Highest CUET score: 798/800"
-    ],
-    testimonials: [
-      {
-        name: "Kritika Gupta",
-        score: "789/800 in CUET",
-        year: "2024",
-        quote: "The targeted preparation helped me secure admission in my dream course at Delhi University.",
-        university: "Delhi University"
-      },
-      {
-        name: "Rohit Tripathy",
-        score: "765/800 in CUET",
-        year: "2023",
-        quote: "The mock tests and strategic guidance for university selection were extremely beneficial.",
-        university: "Banaras Hindu University"
-      }
-    ],
-    stats: {
-      success: 92,
-      satisfaction: 91,
-      topScores: 32
-    },
     image: "/cul.jpg",
     brochure: "/download/cuet-brochure.pdf"
   }
@@ -424,90 +267,7 @@ const IntegratedClassesPage = () => {
                     </div>
                   </div>
 
-                  {/* Quick Stats */}
-                  <div className="bg-white rounded-xl shadow-md border border-[#d4b483]/20 overflow-hidden mb-6">
-                    <div className="p-5">
-                      <h3 className="text-lg font-semibold text-[#8b1a1a] mb-4 flex items-center">
-                        <BarChart size={18} className="mr-2" />
-                        Success Metrics
-                      </h3>
-                      
-                      <div className="space-y-4">
-                        {activeBatchData.stats.success && (
-                          <div>
-                            <div className="flex justify-between mb-1">
-                              <span className="text-sm font-medium text-gray-700">Success Rate</span>
-                              <span className="text-sm font-medium text-[#8b1a1a]">{activeBatchData.stats.success}%</span>
-                            </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2.5">
-                              <div 
-                                className="h-2.5 rounded-full" 
-                                style={{ 
-                                  width: `${activeBatchData.stats.success}%`,
-                                  backgroundColor: activeBatchData.color
-                                }}
-                              ></div>
-                            </div>
-                          </div>
-                        )}
-
-                        {activeBatchData.stats.satisfaction && (
-                          <div>
-                            <div className="flex justify-between mb-1">
-                              <span className="text-sm font-medium text-gray-700">Student Satisfaction</span>
-                              <span className="text-sm font-medium text-[#8b1a1a]">{activeBatchData.stats.satisfaction}%</span>
-                            </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2.5">
-                              <div 
-                                className="h-2.5 rounded-full" 
-                                style={{ 
-                                  width: `${activeBatchData.stats.satisfaction}%`,
-                                  backgroundColor: activeBatchData.color
-                                }}
-                              ></div>
-                            </div>
-                          </div>
-                        )}
-
-                        {activeBatchData.stats.topRanks && (
-                          <div>
-                            <div className="flex justify-between mb-1">
-                              <span className="text-sm font-medium text-gray-700">Top Ranks/Scores %</span>
-                              <span className="text-sm font-medium text-[#8b1a1a]">{activeBatchData.stats.topRanks}%</span>
-                            </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2.5">
-                              <div 
-                                className="h-2.5 rounded-full" 
-                                style={{ 
-                                  width: `${activeBatchData.stats.topRanks}%`,
-                                  backgroundColor: activeBatchData.color
-                                }}
-                              ></div>
-                            </div>
-                          </div>
-                        )}
-
-                        {activeBatchData.stats.selections && (
-                          <div>
-                            <div className="flex justify-between mb-1">
-                              <span className="text-sm font-medium text-gray-700">Final Selections</span>
-                              <span className="text-sm font-medium text-[#8b1a1a]">{activeBatchData.stats.selections} students</span>
-                            </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2.5">
-                              <div 
-                                className="h-2.5 rounded-full" 
-                                style={{ 
-                                  width: `${activeBatchData.stats.selections * 2}%`,
-                                  backgroundColor: activeBatchData.color
-                                }}
-                              ></div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
+                     
                   {/* Brochure Download */}
                   <div className="bg-gradient-to-br from-[#8b1a1a] to-[#c0392b] rounded-xl shadow-md overflow-hidden text-white">
                     <div className="p-5">
@@ -624,69 +384,6 @@ const IntegratedClassesPage = () => {
                     </div>
                   </div>
 
-                  {/* Achievements */}
-                  <div className="bg-white rounded-xl shadow-md border border-[#d4b483]/20 overflow-hidden">
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-[#8b1a1a] mb-4 flex items-center">
-                        <Award className="mr-2 h-6 w-6" />
-                        Our Achievements
-                      </h3>
-                      <div className="space-y-3">
-                        {activeBatchData.achievements.map((achievement, index) => (
-                          <div key={index} className="flex items-start">
-                            <Medal className="h-5 w-5 text-[#8b1a1a] mr-2 mt-0.5 flex-shrink-0" />
-                            <span className="text-[#5a3e36]">{achievement}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Student Testimonials */}
-                  {activeBatchData.testimonials && activeBatchData.testimonials.length > 0 && (
-                    <div className="bg-white rounded-xl shadow-md border border-[#d4b483]/20 overflow-hidden">
-                      <div className="p-6">
-                        <h3 className="text-xl font-bold text-[#8b1a1a] mb-4 flex items-center">
-                          <Users className="mr-2 h-6 w-6" />
-                          Student Testimonials
-                        </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          {activeBatchData.testimonials.map((testimonial, index) => (
-                            <div key={index} className="relative bg-[#f8f3e9] p-5 rounded-lg">
-                              <div className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 text-[#8b1a1a]/10">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
-                                  <path d="M4.583 17.321c-1.167-1.458-1.75-3.396-1.75-5.875 0-3.5 1.75-6.5 5.25-8.75l1.75 3.5c-2.333 1.167-3.5 2.917-3.5 5.25 0.083 1.167 0.583 1.75 1.5 1.75 1.583 0 2.583 1.167 2.583 2.917 0 1.833-1.333 3.208-3 3.208-1.25 0-2.25-0.583-2.833-2z"></path>
-                                  <path d="M15.167 17.321c-1.167-1.458-1.75-3.396-1.75-5.875 0-3.5 1.75-6.5 5.25-8.75l1.75 3.5c-2.333 1.167-3.5 2.917-3.5 5.25 0.083 1.167 0.583 1.75 1.5 1.75 1.583 0 2.583 1.167 2.583 2.917 0 1.833-1.333 3.208-3 3.208-1.25 0-2.25-0.583-2.833-2z"></path>
-                                </svg>
-                              </div>
-                              <div>
-                                <p className="text-[#5a3e36] italic mb-4">"{testimonial.quote}"</p>
-                                <div className="font-medium">{testimonial.name}</div>
-                                {testimonial.rank && (
-                                  <div className="text-sm text-[#8b1a1a]">{testimonial.rank}</div>
-                                )}
-                                {testimonial.marks && (
-                                  <div className="text-sm text-[#8b1a1a]">{testimonial.marks}</div>
-                                )}
-                                {testimonial.score && (
-                                  <div className="text-sm text-[#8b1a1a]">{testimonial.score}</div>
-                                )}
-                                {testimonial.batch && (
-                                  <div className="text-sm text-[#8b1a1a]">{testimonial.batch}</div>
-                                )}
-                                <div className="text-xs text-gray-500 mt-1">
-                                  Batch of {testimonial.year}
-                                  {testimonial.college && ` • ${testimonial.college}`}
-                                  {testimonial.university && ` • ${testimonial.university}`}
-                                  {testimonial.academy && ` • ${testimonial.academy}`}
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  )}
                   
                   {/* Call to Action */}
                   <div className="bg-gradient-to-r from-[#8b1a1a] to-[#a52a2a] rounded-xl shadow-lg overflow-hidden text-white">
@@ -806,7 +503,7 @@ const IntegratedClassesPage = () => {
             {showDetails === 'faq2' && (
               <div className="p-5 pt-0 border-t border-[#d4b483]/20">
                 <p className="text-[#5a3e36]">
-                  The admission process typically involves an entrance test to assess the student's current knowledge level and aptitude. This helps us place students in appropriate batches and design personalized learning plans. After the test, there will be a counseling session with the student and parents to discuss the results and course details. Based on the test performance and counseling, admission will be confirmed.
+                  The admission process typically involves an entrance test to assess the student&apos;s current knowledge level and aptitude. This helps us place students in appropriate batches and design personalized learning plans. After the test, there will be a counseling session with the student and parents to discuss the results and course details. Based on the test performance and counseling, admission will be confirmed.
                 </p>
               </div>
             )}
@@ -844,7 +541,7 @@ const IntegratedClassesPage = () => {
             {showDetails === 'faq4' && (
               <div className="p-5 pt-0 border-t border-[#d4b483]/20">
                 <p className="text-[#5a3e36]">
-                  We provide comprehensive study materials that include theory books, practice workbooks, previous years' question papers, mock test papers, and digital resources. Our study materials are regularly updated to reflect the latest exam patterns and syllabus changes. Additionally, students receive topic-wise assignments, performance reports, and personalized study plans.
+                  We provide comprehensive study materials that include theory books, practice workbooks, previous years&apos; question papers, mock test papers, and digital resources. Our study materials are regularly updated to reflect the latest exam patterns and syllabus changes. Additionally, students receive topic-wise assignments, performance reports, and personalized study plans.
                 </p>
               </div>
             )}
@@ -863,7 +560,7 @@ const IntegratedClassesPage = () => {
             {showDetails === 'faq5' && (
               <div className="p-5 pt-0 border-t border-[#d4b483]/20">
                 <p className="text-[#5a3e36]">
-                  We have a robust assessment system that includes weekly tests, monthly evaluations, and comprehensive tests after completion of each topic. The performance data is analyzed to identify strengths and weaknesses. Parents receive regular progress reports, and we conduct parent-teacher meetings to discuss the student's performance. Additionally, our mentors provide one-on-one guidance to students based on their progress reports.
+                  We have a robust assessment system that includes weekly tests, monthly evaluations, and comprehensive tests after completion of each topic. The performance data is analyzed to identify strengths and weaknesses. Parents receive regular progress reports, and we conduct parent-teacher meetings to discuss the student&apos;s performance. Additionally, our mentors provide one-on-one guidance to students based on their progress reports.
                 </p>
               </div>
             )}

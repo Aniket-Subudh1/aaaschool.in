@@ -6,7 +6,6 @@ import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 import { memo } from "react";
 
-// Gallery images with CDN sources
 const galleryImages = [
   {
     title: "School Campus",
