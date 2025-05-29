@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import Footer from "@/components/ui/footer";
 import NavBar from "@/components/ui/nav-bar";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://aaaschool.in"),
@@ -100,7 +101,8 @@ export default function AdmissionLayout({
         })}
       </Script>
       <NavBar />
-      <main className="flex-grow container mx-auto px-4 py-8">{children}</main>
+      <main className="flex-grow container mx-auto px-4 py-8">
+        <Suspense fallback={<div>Loading form...</div>}> {children}</Suspense></main>
       <Footer />
     </div>
   );
