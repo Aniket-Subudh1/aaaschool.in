@@ -3,8 +3,9 @@ import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import clsx from "clsx";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ClientWrapper } from "@/components/ui/client-wrapper";
 
-const dmSans = DM_Sans({ 
+const dmSans = DM_Sans({
   subsets: ["latin"],
   display: "swap",
   weight: ["400", "500", "600", "700"],
@@ -52,7 +53,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     site: "@aaaschool",
-    title: "Aryavart Ancient Academy - Premier CBSE School in Khordha, Odisha", 
+    title: "Aryavart Ancient Academy - Premier CBSE School in Khordha, Odisha",
     description:
       "Discover world-class holistic education that fuses modern CBSE curriculum with India's ancient heritage and cultural values at Aryavart Ancient Academy.",
     images: "/seo.png",
@@ -60,28 +61,28 @@ export const metadata: Metadata = {
   robots: "index, follow",
 };
 
-
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
-  try {
-  } catch (error) {
-    console.error("Error verifying user:", error);
-  }
-
   return (
     <html lang="en" className="relative" suppressHydrationWarning>
-      <body className={clsx(dmSans.className, "antialiased bg-white pt-20 sm:pt-20 lg:pt-24 md:pt-24")}>
+      <body
+        className={clsx(
+          dmSans.className,
+          "antialiased bg-white pt-20 sm:pt-20 lg:pt-24 md:pt-24"
+        )}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
+          <ClientWrapper>
             {children}
+          </ClientWrapper>
         </ThemeProvider>
       </body>
     </html>
