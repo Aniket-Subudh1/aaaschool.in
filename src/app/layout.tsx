@@ -189,7 +189,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
       </head>
-      <body className={clsx(dmSans.className, "antialiased bg-white")}>
+      <body className={clsx(dmSans.className, "antialiased bg-white pt-20")}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
