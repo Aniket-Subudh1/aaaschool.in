@@ -3,7 +3,6 @@ import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import clsx from "clsx";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ClientWrapper } from "@/components/ui/client-wrapper";
 
 const dmSans = DM_Sans({ 
   subsets: ["latin"],
@@ -82,9 +81,7 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ClientWrapper>
             {children}
-          </ClientWrapper>
         </ThemeProvider>
       </body>
     </html>
