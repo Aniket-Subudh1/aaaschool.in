@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/seo.png",
+        url: "https://aaaschool.in/seo.png",
         width: 1200,
         height: 630,
         alt: "Aryavart Ancient Academy - Premier School in Khordha, Odisha",
@@ -56,21 +56,18 @@ export const metadata: Metadata = {
     title: "Aryavart Ancient Academy - Premier CBSE School in Khordha, Odisha", 
     description:
       "Discover world-class holistic education that fuses modern CBSE curriculum with India's ancient heritage and cultural values at Aryavart Ancient Academy.",
-    images: "/seo.png",
+    images: "https://aaaschool.in/seo.png",
   },
   robots: "index, follow",
 };
-
 
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
-
   try {
-
+    
   } catch (error) {
     console.error("Error verifying user:", error);
   }
