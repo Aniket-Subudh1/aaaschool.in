@@ -5,8 +5,6 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ClientWrapper } from "@/components/ui/client-wrapper";
 import clsx from "clsx";
-import NavBar from "@/components/ui/nav-bar";
-import Footer from "@/components/ui/footer";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -23,7 +21,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.aaaschool.in"),
+  metadataBase: new URL("https://aaaschool.in"),
   title: {
     default: "Aryavart Ancient Academy – Holistic Education in Khordha, Odisha",
     template: "%s | Aryavart Ancient Academy",
@@ -32,7 +30,7 @@ export const metadata: Metadata = {
     "Aryavart Ancient Academy offers a transformative educational experience blending modern curriculum with ancient wisdom. Located in Khordha, Odisha, we nurture well-rounded global citizens.",
   applicationName: "Aryavart Ancient Academy",
   authors: [
-    { name: "Aryavart Ancient Academy", url: "https://www.aaaschool.in" },
+    { name: "Aryavart Ancient Academy", url: "https://aaaschool.in" },
   ],
   generator: "Next.js",
   referrer: "origin",
@@ -99,7 +97,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://www.aaaschool.in",
+    url: "https://aaaschool.in",
     title: "Aryavart Ancient Academy – Premier School in Khordha, Odisha",
     description:
       "Join a pioneering institution embracing both modern and ancient educational approaches to nurture well-rounded global citizens.",
@@ -136,10 +134,10 @@ export const metadata: Metadata = {
     ],
   },
   alternates: {
-    canonical: "https://www.aaaschool.in",
+    canonical: "https://aaaschool.in",
     languages: {
-      "en-US": "https://www.aaaschool.in",
-      "hi-IN": "https://www.aaaschool.in/hi",
+      "en-US": "https://aaaschool.in",
+      "hi-IN": "https://aaaschool.in/hi",
     },
   },
   other: {
@@ -188,9 +186,9 @@ export default function RootLayout({
             "name": "Aryavart Ancient Academy",
             "alternateName": "AAA School",
             "description": "A premier CBSE educational institution in Khordha, Odisha, dedicated to holistic student development by blending modern education with ancient wisdom",
-            "url": "https://www.aaaschool.in",
-            "logo": "https://www.aaaschool.in/aaa.png",
-            "image": "https://www.aaaschool.in/seo.png",
+            "url": "https://aaaschool.in",
+            "logo": "https://aaaschool.in/aaa.png",
+            "image": "https://aaaschool.in/seo.png",
             "foundingDate": "2010",
             "address": {
               "@type": "PostalAddress",
@@ -269,31 +267,31 @@ export default function RootLayout({
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://www.aaaschool.in"
+                "item": "https://aaaschool.in"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "About",
-                "item": "https://www.aaaschool.in/about"
+                "item": "https://aaaschool.in/about"
               },
               {
                 "@type": "ListItem",
                 "position": 3,
                 "name": "Academics",
-                "item": "https://www.aaaschool.in/academics"
+                "item": "https://aaaschool.in/academics"
               },
               {
                 "@type": "ListItem",
                 "position": 4,
                 "name": "Admission",
-                "item": "https://www.aaaschool.in/admission"
+                "item": "https://aaaschool.in/admission"
               },
               {
                 "@type": "ListItem",
                 "position": 5,
                 "name": "Contact",
-                "item": "https://www.aaaschool.in/contact"
+                "item": "https://aaaschool.in/contact"
               }
             ]
           })}
@@ -309,8 +307,8 @@ export default function RootLayout({
             "@context": "https://schema.org",
             "@type": "LocalBusiness",
             "name": "Aryavart Ancient Academy",
-            "image": "https://www.aaaschool.in/aaa.png",
-            "url": "https://www.aaaschool.in",
+            "image": "https:/aaaschool.in/aaa.png",
+            "url": "https://aaaschool.in",
             "telephone": "+91-9124654094",
             "email": "aryavartaa.krd@gmail.com",
             "address": {
@@ -405,14 +403,14 @@ export default function RootLayout({
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebSite",
-            "url": "https://www.aaaschool.in",
+            "url": "https://aaaschool.in",
             "name": "Aryavart Ancient Academy",
             "alternateName": "AAA School",
             "potentialAction": {
               "@type": "SearchAction",
               "target": {
                 "@type": "EntryPoint",
-                "urlTemplate": "https://www.aaaschool.in/search?q={search_term_string}"
+                "urlTemplate": "https://aaaschool.in/search?q={search_term_string}"
               },
               "query-input": "required name=search_term_string"
             }
