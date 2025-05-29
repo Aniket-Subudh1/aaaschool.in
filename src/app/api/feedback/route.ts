@@ -134,7 +134,7 @@ export async function POST(request: NextRequest) {
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #d4b483; border-radius: 8px;">
             <div style="text-align: center; margin-bottom: 20px;">
-              <img src="https://www.aaaschool.in/aaa.png" alt="Aryavart Ancient Academy Logo" style="width: 80px;">
+              <img src="https://aaaschool.s3.ap-south-1.amazonaws.com/aaa.png" alt="Aryavart Ancient Academy Logo" style="width: 80px;">
               <h2 style="color: #8b1a1a; margin-top: 10px;">Aryavart Ancient Academy</h2>
             </div>
             
