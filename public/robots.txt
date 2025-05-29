@@ -1,0 +1,31 @@
+# Allow all web crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin and API routes
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /private/
+
+# Allow specific bots full access
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /private/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /private/
+
+# Sitemap location
+Sitemap: https://aaaschool.in/sitemap.xml
+
+# Host directive
+Host: https://aaaschool.in
+
+# Crawl delay (optional - uncomment if needed)
+# Crawl-delay: 1
