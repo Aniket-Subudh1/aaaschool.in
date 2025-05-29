@@ -74,7 +74,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className="relative" suppressHydrationWarning>
-      <body className={clsx(dmSans.className, "antialiased bg-white")}>
+      <body className={clsx(dmSans.className, "antialiased pt-24 bg-white")}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
