@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#f5f0e1] text-[#800020]">
+    <div className="min-h-screen flex -mt-24 flex-col items-center justify-center bg-[#f5f0e1] text-[#800020]">
       <div className="mb-8">
         <Image
           width={256}
