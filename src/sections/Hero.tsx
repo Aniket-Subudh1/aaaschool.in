@@ -92,7 +92,7 @@ export const Hero = () => {
         <div className="relative z-10 container lg:-top-16 mx-auto px-4 py-8 md:py-16 lg:py-20 hero-content">
           {/* Announcements Ticker */}
           <div className="mb-6 md:mb-8">
-            <AnnouncementsTicker />
+           
           </div>
 
           {/* Hero Grid - Adjusted for larger image */}
@@ -359,6 +359,10 @@ export const Hero = () => {
           </div>
         </div>
       </section>
+       <div className="mb-6 px-4 md:mb-8">
+            <AnnouncementsTicker />
+          </div>
+      
       <HeaderAcademyLogo />
       <ImageSlider />
 

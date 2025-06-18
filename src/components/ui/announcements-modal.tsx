@@ -64,12 +64,7 @@ export default function AnnouncementsModal() {
 
   return (
     <>
-      <button
-        onClick={openModal}
-        className="flex items-center text-xs text-[#5a3e36] hover:text-[#8b1a1a] transition-colors"
-      >
-        View All Announcements
-      </button>
+      
 
       <AnimatePresence>
         {isOpen && (

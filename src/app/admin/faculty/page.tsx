@@ -130,14 +130,13 @@ export default function FacultyPage() {
     });
   };
 
-  // Filter faculty based on search query
-  const filteredFaculty = faculty.filter(
-    (member) =>
-      member.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      member.position.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      member.department.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      member.email.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+ const filteredFaculty = faculty.filter(
+  (member) =>
+    (member.name?.toLowerCase() || '').includes(searchQuery.toLowerCase()) ||
+    (member.position?.toLowerCase() || '').includes(searchQuery.toLowerCase()) ||
+    (member.department?.toLowerCase() || '').includes(searchQuery.toLowerCase()) ||
+    (member.email?.toLowerCase() || '').includes(searchQuery.toLowerCase())
+);
 
   // Get unique departments for filtering
   const departments = [...new Set(faculty.map((f) => f.department))];

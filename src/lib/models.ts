@@ -287,9 +287,9 @@ export interface Faculty {
   name: string;
   position: string;
   department: string;
-  email: string;
-  photoUrl: string;
-  photoPublicId: string;
+  email?: string;
+  photoUrl?: string;
+  photoPublicId?: string;
   bio?: string;
   qualifications?: string[];
   joinDate?: string;
