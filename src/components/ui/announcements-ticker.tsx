@@ -246,12 +246,12 @@ export default function AnnouncementsTicker() {
   };
 
   const handleAnnouncementClick = () => {
-    console.log("Opening modal..."); // Debug log
+    console.log("Opening modal...");
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    console.log("Closing modal..."); // Debug log
+    console.log("Closing modal...");
     setIsModalOpen(false);
   };
 

@@ -463,6 +463,12 @@ export async function createStudyMaterial(
 }
 
 
+export function validateFileSize(file: File): boolean {
+  const maxSize = 50 * 1024 * 1024;
+  console.log('Validating file size:', file.size, 'bytes, max allowed:', maxSize, 'bytes');
+  return file.size <= maxSize;
+}
+
 export function validateFileType(file: File): boolean {
   const allowedTypes = [
     'application/pdf',
@@ -475,11 +481,6 @@ export function validateFileType(file: File): boolean {
   return allowedTypes.includes(file.type);
 }
 
-
-export function validateFileSize(file: File): boolean {
-  const maxSize = 10 * 1024 * 1024; // 10MB
-  return file.size <= maxSize;
-}
 
 export async function updateStudyMaterial(id: string, material: Partial<StudyMaterial>) {
   const collection = await getCollection("studyMaterials");

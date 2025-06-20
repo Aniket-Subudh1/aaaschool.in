@@ -22,7 +22,7 @@ const ignoredPathPrefixes = [
   '/api/notifications',
   '/api/holidays',
   '/principal.jpg',
-  '/api/study-material',
+  '/api/study-materials',
   '/api/enquiries',
   '/api/admissions',
   '/api/albums',

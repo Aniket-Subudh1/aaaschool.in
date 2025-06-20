@@ -37,6 +37,7 @@ export default function StudyMaterialsPage() {
   const [active, setActive] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fileError, setFileError] = useState<string | null>(null);
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
 
   // Delete Modal State
   const [deleteModal, setDeleteModal] = useState<{
@@ -88,22 +89,17 @@ export default function StudyMaterialsPage() {
     "image/png",
   ];
 
-  // Maximum file size (10MB)
-  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+  const MAX_FILE_SIZE = 50 * 1024 * 1024; 
 
-  // Fetch Study Materials
   useEffect(() => {
     fetchStudyMaterials();
   }, []);
 
-  // Fetch Study Materials Function
   const fetchStudyMaterials = async () => {
     try {
       setIsLoading(true);
       console.log("Fetching study materials...");
 
-      // Important: Add active=true to match what the download page is doing
-      // This is likely why the download page shows documents but admin doesn't
       const response = await authFetch("/api/study-materials?active=true");
 
       if (!response.ok) {
@@ -150,18 +146,24 @@ export default function StudyMaterialsPage() {
         return;
       }
 
-      // Validate file size
+      // Validate file size (50MB limit)
       if (selectedFile.size > MAX_FILE_SIZE) {
-        setFileError("File size exceeds 10MB limit.");
+        setFileError(`File size exceeds 50MB limit. Your file is ${(selectedFile.size / (1024 * 1024)).toFixed(2)}MB.`);
         setFile(null);
         return;
       }
 
       setFile(selectedFile);
+      console.log('File selected:', {
+        name: selectedFile.name,
+        size: selectedFile.size,
+        type: selectedFile.type,
+        sizeMB: (selectedFile.size / (1024 * 1024)).toFixed(2)
+      });
     }
   };
 
-  // Submit Handler
+  // Submit Handler with enhanced error handling
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -169,6 +171,7 @@ export default function StudyMaterialsPage() {
     setError(null);
     setFileError(null);
     setSuccessMessage(null);
+    setUploadProgress(null);
 
     // Validate form fields
     if (!title || !category || !classFilter || !file) {
@@ -178,6 +181,7 @@ export default function StudyMaterialsPage() {
 
     try {
       setIsSubmitting(true);
+      setUploadProgress(0);
 
       const formData = new FormData();
       formData.append("title", title);
@@ -189,18 +193,57 @@ export default function StudyMaterialsPage() {
       formData.append("file", file);
 
       console.log("Submitting form data...");
+      console.log("File details:", {
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        sizeMB: (file.size / (1024 * 1024)).toFixed(2)
+      });
+
+      setUploadProgress(25);
+
       const response = await authFetch("/api/study-materials", {
         method: "POST",
         body: formData,
       });
 
+      setUploadProgress(75);
+
+      console.log("Response status:", response.status);
+      
+      // Check if response is HTML (error page) instead of JSON
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("text/html")) {
+        const htmlResponse = await response.text();
+        console.error("Received HTML response instead of JSON:", htmlResponse.substring(0, 500));
+        throw new Error("Server returned an error page. This might be due to file size limits or server configuration issues.");
+      }
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to upload study material");
+        let errorMessage = "Failed to upload study material";
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.message || errorMessage;
+          console.error("API Error Response:", errorData);
+        } catch (parseError) {
+          const textResponse = await response.text();
+          console.error("Non-JSON error response:", textResponse);
+          
+          if (response.status === 413) {
+            errorMessage = "File is too large. Please try a smaller file (max 50MB).";
+          } else if (response.status === 500) {
+            errorMessage = "Server error occurred. Please try again with a smaller file.";
+          } else {
+            errorMessage = `Server error (${response.status}): ${response.statusText}`;
+          }
+        }
+        throw new Error(errorMessage);
       }
 
       const responseData = await response.json();
       console.log("Upload response:", responseData);
+
+      setUploadProgress(100);
 
       // Show success message
       setSuccessMessage(
@@ -226,6 +269,7 @@ export default function StudyMaterialsPage() {
       );
     } finally {
       setIsSubmitting(false);
+      setUploadProgress(null);
     }
   };
 
@@ -296,6 +340,7 @@ export default function StudyMaterialsPage() {
     setError(null);
     setFileError(null);
     setSuccessMessage(null);
+    setUploadProgress(null);
   };
 
   // Helper function to format file size
@@ -328,7 +373,7 @@ export default function StudyMaterialsPage() {
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-[#8b1a1a]">Study Materials</h1>
         <p className="text-gray-600">
-          Upload and manage school documents and study materials
+          Upload and manage school documents and study materials (Max file size: 50MB)
         </p>
       </div>
 
@@ -342,6 +387,22 @@ export default function StudyMaterialsPage() {
       {successMessage && (
         <div className="bg-green-50 border border-green-200 text-green-700 p-4 rounded-md mb-6">
           {successMessage}
+        </div>
+      )}
+
+      {/* Upload Progress */}
+      {uploadProgress !== null && (
+        <div className="bg-blue-50 border border-blue-200 p-4 rounded-md mb-6">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-blue-700 font-medium">Uploading...</span>
+            <span className="text-blue-700">{uploadProgress}%</span>
+          </div>
+          <div className="w-full bg-blue-200 rounded-full h-2">
+            <div 
+              className="bg-blue-600 h-2 rounded-full transition-all duration-300" 
+              style={{ width: `${uploadProgress}%` }}
+            ></div>
+          </div>
         </div>
       )}
 
@@ -520,7 +581,7 @@ export default function StudyMaterialsPage() {
                         or drag and drop
                       </p>
                       <p className="text-xs text-gray-400">
-                        PDF, DOCX, DOC, JPG, PNG (MAX. 10MB)
+                        PDF, DOCX, DOC, JPG, PNG (MAX. 50MB)
                       </p>
                     </div>
                   )}

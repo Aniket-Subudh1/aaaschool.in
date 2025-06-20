@@ -75,60 +75,48 @@ export default function DownloadsPage() {
     fetchStudyMaterials();
   }, [filter]);
 
-  const handleDownload = async (material: StudyMaterial) => {
-    try {
-      setDownloadError((prev) => ({ ...prev, [material._id]: "" }));
+ const handleDownload = (material: StudyMaterial) => {
+  try {
+    setDownloadError((prev) => ({ ...prev, [material._id]: "" }));
 
-      const getFileExtension = (fileType: string) => {
-        const map: { [key: string]: string } = {
-          "application/pdf": ".pdf",
-          "application/msword": ".doc",
-          "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-            ".docx",
-          "image/jpeg": ".jpg",
-          "image/png": ".png",
-          "image/gif": ".gif",
-        };
-        return map[fileType] || "";
+    const getFileExtension = (fileType: string) => {
+      const map: { [key: string]: string } = {
+        "application/pdf": ".pdf",
+        "application/msword": ".doc",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".docx",
+        "image/jpeg": ".jpg",
+        "image/png": ".png",
+        "image/gif": ".gif",
       };
+      return map[fileType] || "";
+    };
 
-      const response = await fetch(material.fileUrl, {
-        method: "GET",
-        headers: { "Content-Type": material.fileType },
-      });
+    
+    const link = document.createElement("a");
+    const sanitizedFilename = material.title
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, "-")
+      .replace(/-+/g, "-")
+      .trim();
 
-      if (!response.ok)
-        throw new Error(`HTTP error! status: ${response.status}`);
+    link.href = material.fileUrl;
+    link.download = `${sanitizedFilename}${getFileExtension(material.fileType)}`;
+    link.target = "_blank"; 
+    link.rel = "noopener noreferrer";
+    
+   
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-
-      const sanitizedFilename = material.title
-        .toLowerCase()
-        .replace(/[^a-z0-9]/g, "-")
-        .replace(/-+/g, "-")
-        .trim();
-
-      link.href = url;
-      link.download = `${sanitizedFilename}${getFileExtension(
-        material.fileType
-      )}`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Download failed:", error);
-      setDownloadError((prev) => ({
-        ...prev,
-        [material._id]:
-          error instanceof Error
-            ? error.message
-            : "Download failed. Please try again.",
-      }));
-    }
-  };
+  } catch (error) {
+    console.error("Download failed:", error);
+    setDownloadError((prev) => ({
+      ...prev,
+      [material._id]: "Download failed. Please try again.",
+    }));
+  }
+};
 
   const getCategoryIcon = (category: string, size = 24, className = "") => {
     switch (category) {
