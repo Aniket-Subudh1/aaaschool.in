@@ -27,12 +27,12 @@ export default function GeneralInfoCard() {
     },
     {
       label: "Principal Name",
-      value: "Diptimayee Mohanty",
+      value: "Dr. Diptimayee Mohanty",
       icon: <User className="w-5 h-5" />,
     },
     {
       label: "Principal Qualification",
-      value: "MA. B.Ed.",
+      value: "Phd. MA. B.Ed.",
       icon: <Award className="w-5 h-5" />,
     },
     {

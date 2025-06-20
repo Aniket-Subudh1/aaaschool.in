@@ -9,78 +9,115 @@ interface Document {
   id: string;
   title: string;
   downloadUrl: string;
+  fileName: string;
   icon: JSX.Element;
   color: string;
 }
 
 export default function DocumentsGrid() {
   const [downloadedDocs, setDownloadedDocs] = useState<string[]>([]);
+  const [downloadingDocs, setDownloadingDocs] = useState<string[]>([]);
 
   const documents: Document[] = [
     {
       id: "affiliation",
       title: "Affiliation Letter",
-      downloadUrl: "#",
+      downloadUrl: "/documents/AffiliationLetter.pdf",
+      fileName: "AAA_Affiliation_Letter.pdf",
       icon: <FileText className="w-6 h-6" />,
       color: "bg-[#f0e6d2] text-[#8b1a1a]",
     },
     {
       id: "registration",
       title: "Registration Certificate",
-      downloadUrl: "#",
+      downloadUrl: "/documents/RegistrationCertificate.pdf",
+      fileName: "AAA_Registration_Certificate.pdf",
       icon: <FileText className="w-6 h-6" />,
       color: "bg-[#f0e6d2] text-[#8b1a1a]",
     },
     {
       id: "noc",
       title: "No Objection Certificate",
-      downloadUrl: "#",
+      downloadUrl: "/documents/NoObjectionCertificate.pdf",
+      fileName: "AAA_NOC_Certificate.pdf",
       icon: <FileText className="w-6 h-6" />,
       color: "bg-[#f0e6d2] text-[#8b1a1a]",
     },
     {
       id: "recognition",
       title: "Recognition Certificate",
-      downloadUrl: "#",
+      downloadUrl: "/documents/RecognitionCrtificate.pdf",
+      fileName: "AAA_Recognition_Certificate.pdf",
       icon: <FileText className="w-6 h-6" />,
       color: "bg-[#f0e6d2] text-[#8b1a1a]",
     },
     {
       id: "building",
       title: "Building Safety Certificate",
-      downloadUrl: "#",
+      downloadUrl: "/documents/BuildingCertificate.pdf",
+      fileName: "AAA_Building_Safety_Certificate.pdf",
       icon: <FileText className="w-6 h-6" />,
       color: "bg-[#f0e6d2] text-[#8b1a1a]",
     },
     {
       id: "fire",
       title: "Fire Safety Certificate",
-      downloadUrl: "#",
+      downloadUrl: "/documents/FireCertificate.pdf",
+      fileName: "AAA_Fire_Safety_Certificate.pdf",
       icon: <FileText className="w-6 h-6" />,
       color: "bg-[#f0e6d2] text-[#8b1a1a]",
     },
     {
       id: "self",
       title: "Self Certification",
-      downloadUrl: "#",
+      downloadUrl: "/documents/SelfCertification.pdf",
+      fileName: "AAA_Self_Certification.pdf",
       icon: <FileText className="w-6 h-6" />,
       color: "bg-[#f0e6d2] text-[#8b1a1a]",
     },
     {
       id: "water",
       title: "Water & Sanitation Certificates",
-      downloadUrl: "#",
+      downloadUrl: "/documents/performa.jpeg",
+      fileName: "AAA_Water_Sanitation_Certificates.pdf",
       icon: <FileText className="w-6 h-6" />,
       color: "bg-[#f0e6d2] text-[#8b1a1a]",
     },
   ];
 
-  const handleDownload = (id: string) => {
-    // Simulate download
-    setDownloadedDocs((prev) => [...prev, id]);
+  const handleDownload = async (doc: Document) => {
+    setDownloadingDocs((prev) => [...prev, doc.id]);
+    
+    try {
+      // Check if file exists
+      const response = await fetch(doc.downloadUrl, { method: 'HEAD' });
+      
+      if (!response.ok) {
+        throw new Error('File not found');
+      }
+
+      // Create download link
+      const link = document.createElement('a');
+      link.href = doc.downloadUrl;
+      link.download = doc.fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Mark as downloaded
+      setDownloadedDocs((prev) => [...prev, doc.id]);
+    } catch (error) {
+      console.error('Download failed:', error);
+      alert('Sorry, this document is not available for download yet. Please contact the school administration.');
+    } finally {
+      setDownloadingDocs((prev) => prev.filter(id => id !== doc.id));
+    }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleView = (doc: Document) => {
+    window.open(doc.downloadUrl, '_blank');
+  };
+
   const [hoveredDoc, setHoveredDoc] = useState<string | null>(null);
 
   return (
@@ -103,6 +140,7 @@ export default function DocumentsGrid() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.3 }}
               onMouseEnter={() => setHoveredDoc(doc.id)}
+              onMouseLeave={() => setHoveredDoc(null)}
             >
               <div className="p-4 flex items-start">
                 <div
@@ -119,14 +157,22 @@ export default function DocumentsGrid() {
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      onClick={() => handleDownload(doc.id)}
+                      onClick={() => handleDownload(doc)}
+                      disabled={downloadingDocs.includes(doc.id)}
                       className={`px-3 py-1.5 rounded-lg text-sm font-medium flex items-center ${
                         downloadedDocs.includes(doc.id)
-                          ? "bg-[#f0e6d2] text-[#8b1a1a]"
-                          : "bg-[#8b1a1a] text-white"
+                          ? "bg-green-100 text-green-700"
+                          : downloadingDocs.includes(doc.id)
+                          ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                          : "bg-[#8b1a1a] text-white hover:bg-[#a52a2a]"
                       }`}
                     >
-                      {downloadedDocs.includes(doc.id) ? (
+                      {downloadingDocs.includes(doc.id) ? (
+                        <>
+                          <div className="w-4 h-4 mr-1 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+                          Downloading...
+                        </>
+                      ) : downloadedDocs.includes(doc.id) ? (
                         <>
                           <Check className="w-4 h-4 mr-1" />
                           Downloaded
@@ -142,7 +188,8 @@ export default function DocumentsGrid() {
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="px-3 py-1.5 bg-[#f8f3e9] text-[#8b1a1a] rounded-lg text-sm font-medium flex items-center"
+                      onClick={() => handleView(doc)}
+                      className="px-3 py-1.5 bg-[#f8f3e9] text-[#8b1a1a] rounded-lg text-sm font-medium flex items-center hover:bg-[#f0e6d2]"
                     >
                       <Eye className="w-4 h-4 mr-1" />
                       View
@@ -159,7 +206,8 @@ export default function DocumentsGrid() {
             <ExternalLink className="w-5 h-5 mr-2 flex-shrink-0" />
             <span>
               All documents are self-attested by the Chairman/Manager/Secretary
-              and Principal as per CBSE requirements.
+              and Principal as per CBSE requirements. If a document is not available
+              for download, please contact the school administration.
             </span>
           </p>
         </div>

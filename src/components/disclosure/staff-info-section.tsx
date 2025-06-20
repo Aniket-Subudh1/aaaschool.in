@@ -7,7 +7,7 @@ export default function StaffInfoSection() {
   const staffInfo = [
     {
       label: "Principal",
-      value: "Diptimayee Mohanty",
+      value: "Dr. Diptimayee Mohanty",
       icon: <User className="w-5 h-5" />,
     },
     {

@@ -1,46 +1,89 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FileText, Award, BarChart2 } from "lucide-react";
+import { FileText, Award, BarChart2, Download } from "lucide-react";
+import { useState } from "react";
 
 export default function ResultsSection() {
+  const [downloadingDocs, setDownloadingDocs] = useState<string[]>([]);
+  const [downloadedDocs, setDownloadedDocs] = useState<string[]>([]);
+
   const academicDocuments = [
     {
       id: "fee",
       title: "Fee Structure of the School",
       icon: <FileText className="w-5 h-5" />,
+      downloadUrl: "/documents/feeStructure.pdf",
+      fileName: "AAA_Fee_Structure.pdf",
     },
     {
       id: "calendar",
       title: "Annual Academic Calendar",
       icon: <FileText className="w-5 h-5" />,
+      downloadUrl: "/documents/AcademicCalender.pdf",
+      fileName: "AAA_Academic_Calendar.pdf",
     },
     {
       id: "smc",
       title: "School Management Committee",
       icon: <FileText className="w-5 h-5" />,
+      downloadUrl: "/documents/smc-details.pdf",
+      fileName: "AAA_SMC_Details.pdf",
     },
     {
       id: "pta",
       title: "Parents Teachers Association",
       icon: <FileText className="w-5 h-5" />,
+      downloadUrl: "/documents/pta-details.pdf",
+      fileName: "AAA_PTA_Details.pdf",
     },
     {
       id: "results",
       title: "Board Examination Results",
       icon: <FileText className="w-5 h-5" />,
+      downloadUrl: "/documents/board-results.pdf",
+      fileName: "AAA_Board_Results.pdf",
     },
   ];
 
+  const handleDownload = async (doc: typeof academicDocuments[0]) => {
+    setDownloadingDocs((prev) => [...prev, doc.id]);
+    
+    try {
+      // Check if file exists
+      const response = await fetch(doc.downloadUrl, { method: 'HEAD' });
+      
+      if (!response.ok) {
+        throw new Error('File not found');
+      }
+
+      // Create download link
+      const link = document.createElement('a');
+      link.href = doc.downloadUrl;
+      link.download = doc.fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Mark as downloaded
+      setDownloadedDocs((prev) => [...prev, doc.id]);
+    } catch (error) {
+      console.error('Download failed:', error);
+      alert('Sorry, this document is not available for download yet. Please contact the school administration.');
+    } finally {
+      setDownloadingDocs((prev) => prev.filter(id => id !== doc.id));
+    }
+  };
+
   const classXResults = {
-    year: "2024",
+    year: "2025",
     registered: "104",
     passed: "101",
     percentage: "97.11",
   };
 
   const classXIIResults = {
-    year: "2024",
+    year: "2025",
     registered: "14",
     passed: "13",
     percentage: "92.85",
@@ -80,9 +123,32 @@ export default function ResultsSection() {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="mt-auto px-3 py-1.5 bg-[#8b1a1a] text-white rounded-lg text-sm font-medium self-start"
+                  onClick={() => handleDownload(doc)}
+                  disabled={downloadingDocs.includes(doc.id)}
+                  className={`mt-auto px-3 py-1.5 rounded-lg text-sm font-medium self-start flex items-center ${
+                    downloadedDocs.includes(doc.id)
+                      ? "bg-green-100 text-green-700"
+                      : downloadingDocs.includes(doc.id)
+                      ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                      : "bg-[#8b1a1a] text-white hover:bg-[#a52a2a]"
+                  }`}
                 >
-                  Download
+                  {downloadingDocs.includes(doc.id) ? (
+                    <>
+                      <div className="w-4 h-4 mr-1 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+                      Downloading...
+                    </>
+                  ) : downloadedDocs.includes(doc.id) ? (
+                    <>
+                      <FileText className="w-4 h-4 mr-1" />
+                      Downloaded
+                    </>
+                  ) : (
+                    <>
+                      <Download className="w-4 h-4 mr-1" />
+                      Download
+                    </>
+                  )}
                 </motion.button>
               </motion.div>
             ))}
@@ -103,7 +169,7 @@ export default function ResultsSection() {
             >
               <div className="bg-[#8b1a1a] text-white p-4">
                 <h4 className="font-bold flex items-center">
-                  <Award className="w-5 h-5 mr-2" /> Class X Results (2024)
+                  <Award className="w-5 h-5 mr-2" /> Class X Results (2025)
                 </h4>
               </div>
 
@@ -152,7 +218,7 @@ export default function ResultsSection() {
             >
               <div className="bg-[#8b1a1a] text-white p-4">
                 <h4 className="font-bold flex items-center">
-                  <Award className="w-5 h-5 mr-2" /> Class XII Results (2024)
+                  <Award className="w-5 h-5 mr-2" /> Class XII Results (2025)
                 </h4>
               </div>
 

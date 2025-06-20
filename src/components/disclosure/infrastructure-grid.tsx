@@ -20,7 +20,7 @@ export default function InfrastructureGrid() {
     },
     {
       label: "Classrooms",
-      value: "29 rooms (56 sq mtr each)",
+      value: "36 rooms (56 sq mtr each)",
       icon: <Building className="w-6 h-6" />,
       color: "bg-[#f0e6d2] text-[#8b1a1a]",
     },
