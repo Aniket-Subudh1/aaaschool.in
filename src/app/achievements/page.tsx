@@ -9,7 +9,7 @@ import {
   Users,
   ArrowRight,
   Star,
-  Calendar,
+  GraduationCap,
   Clock,
   Medal,
   Book,
@@ -19,44 +19,55 @@ export default function AchievementsPage() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   const cards = [
-    {
-      id: "awards",
-      title: "Awards & Recognition",
-      description: "Explore our achievements and accolades in various fields",
-      icon: <Award size={32} className="text-white" />,
-      color: "from-[#8b1a1a]/90 to-[#c63030]/90",
-      stats: [
-        { icon: <Star size={12} />, text: "100+ Awards" },
-        { icon: <Medal size={12} />, text: "Excellence" },
-      ],
-      href: "/achievements/awards",
-    },
-    {
-      id: "sports",
-      title: "Sports Achievements",
-      description:
-        "Celebrating our students' excellence in sports competitions",
-      icon: <Trophy size={32} className="text-white" />,
-      color: "from-amber-700/90 to-orange-600/90",
-      stats: [
-        { icon: <Trophy size={12} />, text: "50+ Championships" },
-        { icon: <Medal size={12} />, text: "National Level" },
-      ],
-      href: "/achievements/sports",
-    },
-    {
-      id: "alumni",
-      title: "Alumni Network",
-      description: "Connect with our successful graduates making a difference",
-      icon: <Users size={32} className="text-white" />,
-      color: "from-indigo-700/90 to-blue-600/90",
-      stats: [
-        { icon: <Users size={12} />, text: "Global Network" },
-        { icon: <Star size={12} />, text: "Industry Leaders" },
-      ],
-      href: "/achievements/alumni",
-    },
-  ];
+  {
+    id: "awards",
+    title: "Awards & Recognition",
+    description: "Explore our achievements and accolades in various fields",
+    icon: <Award size={32} className="text-white" />,
+    color: "from-[#8b1a1a]/90 to-[#c63030]/90",
+    stats: [
+      { icon: <Star size={12} />, text: "100+ Awards" },
+      { icon: <Medal size={12} />, text: "Excellence" },
+    ],
+    href: "/achievements/awards",
+  },
+  {
+    id: "sports",
+    title: "Sports Achievements",
+    description: "Celebrating our students' excellence in sports competitions",
+    icon: <Trophy size={32} className="text-white" />,
+    color: "from-amber-700/90 to-orange-600/90",
+    stats: [
+      { icon: <Trophy size={12} />, text: "50+ Championships" },
+      { icon: <Medal size={12} />, text: "National Level" },
+    ],
+    href: "/achievements/sports",
+  },
+  {
+    id: "academic",
+    title: "Academic Achievements",
+    description: "Showcasing our students' academic excellence and merit",
+    icon: <GraduationCap size={32} className="text-white" />,
+    color: "from-emerald-700/90 to-green-600/90",
+    stats: [
+      { icon: <GraduationCap size={12} />, text: "Top Performers" },
+      { icon: <Star size={12} />, text: "Merit Awards" },
+    ],
+    href: "/achievements/academic",
+  },
+  {
+    id: "alumni",
+    title: "Alumni Network",
+    description: "Connect with our successful graduates making a difference",
+    icon: <Users size={32} className="text-white" />,
+    color: "from-indigo-700/90 to-blue-600/90",
+    stats: [
+      { icon: <Users size={12} />, text: "Global Network" },
+      { icon: <Star size={12} />, text: "Industry Leaders" },
+    ],
+    href: "/achievements/alumni",
+  },
+];
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
@@ -189,35 +200,35 @@ export default function AchievementsPage() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-10">
-            <div className="bg-gradient-to-br from-[#f8f3e9] to-[#f0e6d2] p-8 rounded-lg text-center transform transition-transform hover:-translate-y-1 hover:shadow-md">
-              <h3 className="text-4xl font-bold text-[#8b1a1a] mb-2">100+</h3>
-              <p className="text-gray-700 flex items-center justify-center">
-                <Book size={16} className="mr-2" />
-                Academic Awards
-              </p>
-            </div>
-            <div className="bg-gradient-to-br from-[#f8f3e9] to-[#f0e6d2] p-8 rounded-lg text-center transform transition-transform hover:-translate-y-1 hover:shadow-md">
-              <h3 className="text-4xl font-bold text-[#8b1a1a] mb-2">50+</h3>
-              <p className="text-gray-700 flex items-center justify-center">
-                <Trophy size={16} className="mr-2" />
-                Sports Championships
-              </p>
-            </div>
-            <div className="bg-gradient-to-br from-[#f8f3e9] to-[#f0e6d2] p-8 rounded-lg text-center transform transition-transform hover:-translate-y-1 hover:shadow-md">
-              <h3 className="text-4xl font-bold text-[#8b1a1a] mb-2">200+</h3>
-              <p className="text-gray-700 flex items-center justify-center">
-                <Users size={16} className="mr-2" />
-                Distinguished Alumni
-              </p>
-            </div>
-            <div className="bg-gradient-to-br from-[#f8f3e9] to-[#f0e6d2] p-8 rounded-lg text-center transform transition-transform hover:-translate-y-1 hover:shadow-md">
-              <h3 className="text-4xl font-bold text-[#8b1a1a] mb-2">25+</h3>
-              <p className="text-gray-700 flex items-center justify-center">
-                <Calendar size={16} className="mr-2" />
-                Years of Excellence
-              </p>
-            </div>
-          </div>
+  <div className="bg-gradient-to-br from-[#f8f3e9] to-[#f0e6d2] p-8 rounded-lg text-center transform transition-transform hover:-translate-y-1 hover:shadow-md">
+    <h3 className="text-4xl font-bold text-[#8b1a1a] mb-2">100+</h3>
+    <p className="text-gray-700 flex items-center justify-center">
+      <Book size={16} className="mr-2" />
+      Academic Awards
+    </p>
+  </div>
+  <div className="bg-gradient-to-br from-[#f8f3e9] to-[#f0e6d2] p-8 rounded-lg text-center transform transition-transform hover:-translate-y-1 hover:shadow-md">
+    <h3 className="text-4xl font-bold text-[#8b1a1a] mb-2">50+</h3>
+    <p className="text-gray-700 flex items-center justify-center">
+      <Trophy size={16} className="mr-2" />
+      Sports Championships
+    </p>
+  </div>
+  <div className="bg-gradient-to-br from-[#f8f3e9] to-[#f0e6d2] p-8 rounded-lg text-center transform transition-transform hover:-translate-y-1 hover:shadow-md">
+    <h3 className="text-4xl font-bold text-[#8b1a1a] mb-2">95%+</h3>
+    <p className="text-gray-700 flex items-center justify-center">
+      <GraduationCap size={16} className="mr-2" />
+      Top Performers
+    </p>
+  </div>
+  <div className="bg-gradient-to-br from-[#f8f3e9] to-[#f0e6d2] p-8 rounded-lg text-center transform transition-transform hover:-translate-y-1 hover:shadow-md">
+    <h3 className="text-4xl font-bold text-[#8b1a1a] mb-2">200+</h3>
+    <p className="text-gray-700 flex items-center justify-center">
+      <Users size={16} className="mr-2" />
+      Distinguished Alumni
+    </p>
+  </div>
+</div>
 
           {/* Timeline indicator */}
           <div className="mt-16 flex items-center justify-center">

@@ -78,7 +78,7 @@ const batches = [
       "Weekends: 9:00 AM - 4:00 PM (Advanced problem-solving)",
       "Evening doubt clearing sessions"
     ],
-    image: "/sp.jpg",
+    image: "https://aaaschool.s3.ap-south-1.amazonaws.com/lb.jpg",
     brochure: "/download/jee-brochure.pdf"
   },
   {
@@ -103,34 +103,33 @@ const batches = [
       "Weekends: 6:00 AM - 8:00 AM (Physical training)",
       "Special SSB preparation on holidays"
     ],
-    image: "/sc.jpg",
+    image: "/ncc.jpg",
     brochure: "/download/nda-brochure.pdf"
   },
   {
-    id: "cuet",
-    name: "CUET Batch",
-    icon: <Building />,
-    color: "#ec4899", // Pink
-    description: "Specialized preparation for Common University Entrance Test (CUET) to secure admission in Central Universities across India.",
-    eligibility: "Students in Class 12",
-    features: [
-      "Domain-specific preparation for chosen subjects",
-      "General Test preparation",
-      "Language Test coaching",
-      "University selection guidance",
-      "Regular practice tests",
-      "Aptitude development sessions",
-      "Career counseling for course selection"
-    ],
-    subjects: ["Domain-specific subjects", "General Test", "Language Test"],
-    schedule: [
-      "Weekdays: 4:00 PM - 6:00 PM",
-      "Weekends: 10:00 AM - 1:00 PM (Mock tests)",
-      "Special batches during school vacations"
-    ],
-    image: "/cul.jpg",
-    brochure: "/download/cuet-brochure.pdf"
-  }
+  id: "ci",
+  name: "CI Batch",
+  icon: <Building />,
+  color: "#ec4899", // Pink
+  description: "Specialized preparation for Commerce Integrated(CI) which will facilitate students to frame their career in the field of CA, CS and CMA.",
+  eligibility: "Students in Class 12",
+  features: [
+    "Domain-specific preparation for chosen subjects",
+    "Competitive preparation",
+    "University selection guidance",
+    "Regular practice tests",
+    "Aptitude development sessions",
+    "Career counseling for course selection"
+  ],
+  subjects: ["Accounting", "Business Law", "Economics", "Quantitative Aptitude"],
+  schedule: [
+    "Weekdays: 1:40 PM - 4:10 PM",
+    "Weekends: Mock tests",
+    "Special batches during school vacations"
+  ],
+  image: "https://aaaschool.s3.ap-south-1.amazonaws.com/LIB.jpg",
+  brochure: "/download/ci-brochure.pdf"
+}
 ];
 
 const IntegratedClassesPage = () => {

@@ -119,6 +119,11 @@ export default function AdminSidebar() {
           name: "Alumni",
           href: "/admin/achievements/alumni",
         },
+        {
+          name: "Academic",
+          href: "/admin/achievements/academic",
+        },
+        
       ],
     },
     {

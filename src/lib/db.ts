@@ -1,5 +1,5 @@
 import getClientPromise from "./mongodb";
-import { Announcement, Notification, Holiday, Feedback, AdminUser, Admission, Enquiry, StudyMaterial, Album, Photo, Video, NewsBulletin, Award, SportsAchievement, AlumniProfile, Faculty } from "./models";
+import { Announcement, Notification, Holiday, Feedback, AdminUser, Admission, Enquiry, StudyMaterial, Album, Photo, Video, NewsBulletin, Award, SportsAchievement, AlumniProfile, Faculty, AcademicAchievement } from "./models";
 import { ObjectId } from "mongodb";
 
 export async function getCollection(name: string) {
@@ -914,6 +914,51 @@ export async function updateFaculty(id: string, faculty: Partial<Faculty>) {
 
 export async function deleteFaculty(id: string) {
   const collection = await getCollection("faculty");
+  const result = await collection.deleteOne({ _id: new ObjectId(id) });
+  return result;
+}
+
+
+const ACADEMIC_ACHIEVEMENTS_COLLECTION = "academicAchievements";
+
+export async function getAcademicAchievements(onlyActive = false) {
+  const collection = await getCollection(ACADEMIC_ACHIEVEMENTS_COLLECTION);
+  const query = onlyActive ? { active: true } : {};
+  return collection.find(query).sort({ year: -1, marks: -1 }).toArray();
+}
+
+export async function getAcademicAchievementById(id: string) {
+  const collection = await getCollection(ACADEMIC_ACHIEVEMENTS_COLLECTION);
+  return collection.findOne({ _id: new ObjectId(id) });
+}
+
+export async function createAcademicAchievement(
+  achievement: Omit<AcademicAchievement, "_id" | "createdAt" | "updatedAt">
+) {
+  const collection = await getCollection(ACADEMIC_ACHIEVEMENTS_COLLECTION);
+  const now = new Date();
+  const newAchievement = {
+    ...achievement,
+    createdAt: now,
+    updatedAt: now,
+  };
+  const result = await collection.insertOne(newAchievement);
+  return { ...newAchievement, _id: result.insertedId };
+}
+
+export async function updateAcademicAchievement(id: string, achievement: Partial<AcademicAchievement>) {
+  const collection = await getCollection(ACADEMIC_ACHIEVEMENTS_COLLECTION);
+  const now = new Date();
+  const updateData = {
+    ...achievement,
+    updatedAt: now
+  };
+  const result = await collection.updateOne({ _id: new ObjectId(id) }, { $set: updateData });
+  return result;
+}
+
+export async function deleteAcademicAchievement(id: string) {
+  const collection = await getCollection(ACADEMIC_ACHIEVEMENTS_COLLECTION);
   const result = await collection.deleteOne({ _id: new ObjectId(id) });
   return result;
 }

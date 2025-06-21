@@ -60,6 +60,7 @@ const navItems = [
     icon: Trophy,
     submenu: [
       { name: "Achievements", href: "/achievements" },
+      { name: "Academic Achievements", href: "/achievements/academic" },
       { name: "Sports Achievements", href: "/achievements/sports" },
       { name: "Awards & Recognition", href: "/achievements/awards" },
       { name: "Alumni Network", href: "/achievements/alumni" },

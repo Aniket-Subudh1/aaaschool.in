@@ -2,40 +2,49 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Award, Trophy, Users, ArrowRight } from "lucide-react";
+import { Award, Trophy, Users, GraduationCap, ArrowRight } from "lucide-react";
 
 export default function AdminAchievementsPage() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
-  const cards = [
-    {
-      id: "awards",
-      title: "Awards & Recognition",
-      description: "Manage awards, certificates, and recognitions",
-      icon: <Award size={32} />,
-      color: "bg-purple-50 text-purple-600 border-purple-200",
-      hoverColor: "hover:bg-purple-100",
-      href: "/admin/achievements/awards",
-    },
-    {
-      id: "sports",
-      title: "Sports Achievements",
-      description: "Manage student sports achievements and competitions",
-      icon: <Trophy size={32} />,
-      color: "bg-red-50 text-red-600 border-red-200",
-      hoverColor: "hover:bg-red-100",
-      href: "/admin/achievements/sports",
-    },
-    {
-      id: "alumni",
-      title: "Alumni Network",
-      description: "Manage alumni profiles and success stories",
-      icon: <Users size={32} />,
-      color: "bg-blue-50 text-blue-600 border-blue-200",
-      hoverColor: "hover:bg-blue-100",
-      href: "/admin/achievements/alumni",
-    },
-  ];
+ const cards = [
+  {
+    id: "awards",
+    title: "Awards & Recognition",
+    description: "Manage awards, certificates, and recognitions",
+    icon: <Award size={32} />,
+    color: "bg-purple-50 text-purple-600 border-purple-200",
+    hoverColor: "hover:bg-purple-100",
+    href: "/admin/achievements/awards",
+  },
+  {
+    id: "sports",
+    title: "Sports Achievements",
+    description: "Manage student sports achievements and competitions",
+    icon: <Trophy size={32} />,
+    color: "bg-red-50 text-red-600 border-red-200",
+    hoverColor: "hover:bg-red-100",
+    href: "/admin/achievements/sports",
+  },
+  {
+    id: "academic",
+    title: "Academic Achievements",
+    description: "Manage student academic records and excellence",
+    icon: <GraduationCap size={32} />,
+    color: "bg-green-50 text-green-600 border-green-200",
+    hoverColor: "hover:bg-green-100",
+    href: "/admin/achievements/academic",
+  },
+  {
+    id: "alumni",
+    title: "Alumni Network",
+    description: "Manage alumni profiles and success stories",
+    icon: <Users size={32} />,
+    color: "bg-blue-50 text-blue-600 border-blue-200",
+    hoverColor: "hover:bg-blue-100",
+    href: "/admin/achievements/alumni",
+  },
+];
 
   return (
     <div>
@@ -81,40 +90,48 @@ export default function AdminAchievementsPage() {
         ))}
       </div>
 
-      <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
-        <h3 className="text-lg font-medium text-gray-800 mb-4">
-          Quick Tips for Achievement Management
-        </h3>
-        <ul className="space-y-3 text-gray-600">
-          <li className="flex items-start">
-            <span className="bg-[#8b1a1a] text-white w-5 h-5 rounded-full flex items-center justify-center text-xs mr-2 mt-0.5 flex-shrink-0">
-              1
-            </span>
-            <span>
-              <strong>Awards & Recognition</strong>: Add achievements with
-              photos and details for showcasing on the website.
-            </span>
-          </li>
-          <li className="flex items-start">
-            <span className="bg-[#8b1a1a] text-white w-5 h-5 rounded-full flex items-center justify-center text-xs mr-2 mt-0.5 flex-shrink-0">
-              2
-            </span>
-            <span>
-              <strong>Sports Achievements</strong>: Track student participation
-              and awards in various sports competitions.
-            </span>
-          </li>
-          <li className="flex items-start">
-            <span className="bg-[#8b1a1a] text-white w-5 h-5 rounded-full flex items-center justify-center text-xs mr-2 mt-0.5 flex-shrink-0">
-              3
-            </span>
-            <span>
-              <strong>Alumni Network</strong>: Feature alumni success stories
-              with Instagram posts to showcase their achievements.
-            </span>
-          </li>
-        </ul>
-      </div>
+     <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+  <h3 className="text-lg font-medium text-gray-800 mb-4">
+    Quick Tips for Achievement Management
+  </h3>
+  <ul className="space-y-3 text-gray-600">
+    <li className="flex items-start">
+      <span className="bg-[#8b1a1a] text-white w-5 h-5 rounded-full flex items-center justify-center text-xs mr-2 mt-0.5 flex-shrink-0">
+        1
+      </span>
+      <span>
+        <strong>Awards & Recognition</strong>: Add achievements with
+        photos and details for showcasing on the website.
+      </span>
+    </li>
+    <li className="flex items-start">
+      <span className="bg-[#8b1a1a] text-white w-5 h-5 rounded-full flex items-center justify-center text-xs mr-2 mt-0.5 flex-shrink-0">
+        2
+      </span>
+      <span>
+        <strong>Sports Achievements</strong>: Track student participation
+        and awards in various sports competitions.
+      </span>
+    </li>
+    <li className="flex items-start">
+      <span className="bg-[#8b1a1a] text-white w-5 h-5 rounded-full flex items-center justify-center text-xs mr-2 mt-0.5 flex-shrink-0">
+        3
+      </span>
+      <span>
+        <strong>Academic Achievements</strong>: Record student academic excellence, marks, and merit certificates.
+      </span>
+    </li>
+    <li className="flex items-start">
+      <span className="bg-[#8b1a1a] text-white w-5 h-5 rounded-full flex items-center justify-center text-xs mr-2 mt-0.5 flex-shrink-0">
+        4
+      </span>
+      <span>
+        <strong>Alumni Network</strong>: Feature alumni success stories
+        with Instagram posts to showcase their achievements.
+      </span>
+    </li>
+  </ul>
+</div>
     </div>
   );
 }

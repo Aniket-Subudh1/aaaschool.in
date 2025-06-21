@@ -298,3 +298,18 @@ export interface Faculty {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface AcademicAchievement {
+  _id?: string | ObjectId;
+  name: string;
+  class: string;
+  photoUrl?: string;
+  photoPublicId?: string;
+  marks: number;
+  stream: string;
+  achievement: string;
+  year: string;
+  active: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
