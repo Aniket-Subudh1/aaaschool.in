@@ -20,10 +20,11 @@ import {
   X,
   Clock,
   Check,
+  Trophy,
+  FlaskConical,
 } from "lucide-react";
 
 
-// Type definition for club
 interface Club {
   id: string;
   name: string;
@@ -31,6 +32,7 @@ interface Club {
   meetingSchedule: string;
   eligibility: string;
   activities: string[];
+  teachers: string[];
   image: string;
   icon: React.ReactNode;
   color: string;
@@ -41,65 +43,144 @@ export default function ClubsPage() {
   const [activeClub, setActiveClub] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  // Clubs Data
   const clubs: Club[] = [
     {
-      id: "book-club",
-      name: "Book Club",
+      id: "dance-club",
+      name: "Dance Club",
       description: 
-        "The Book Club at Aryavart Ancient Academy provides a platform for students to explore the world of literature, enhance their reading habits, and engage in meaningful discussions about books. Members read selected books, participate in literary discussions, and engage in various activities that promote a love for reading and critical thinking.",
-      meetingSchedule: "Every Friday, 3:30 PM - 4:30 PM",
-      eligibility: "Open to all students from Class 6 onwards",
+        "The Dance Club provides a platform for students to express themselves through various dance forms and rhythmic movements. Members learn classical, folk, and contemporary dance styles under the guidance of trained instructors. The club helps students develop physical coordination, rhythm, and artistic expression while building confidence through performances.",
+      meetingSchedule: "Classes 1-4: Every Wednesday, 3:20 PM - 4:00 PM | Classes 5-10: Every Friday, 3:20 PM - 4:00 PM",
+      eligibility: "Open to all students from Class 1 to 10",
       activities: [
-        "Book discussions and debates",
-        "Author studies and literary analysis",
-        "Creative writing workshops",
-        "Book reviews and recommendations",
-        "Annual book fair organization",
-        "Literary quizzes and competitions"
+        "Training in classical dance forms (Odissi, Bharatanatyam)",
+        "Folk dance workshops (regional and international)",
+        "Contemporary and western dance training",
+        "Choreography workshops and creative sessions",
+        "Cultural events and competition preparation",
+        "Annual dance recitals and performances"
       ],
-      image: "/book-club.jpg",
-      icon: <BookOpen className="h-8 w-8" />,
-      color: "#1E88E5",
+      teachers: ["Mohit Sir", "Sunayana Miss", "Roma Miss"],
+      image: "/cul.jpg",
+      icon: <Music className="h-8 w-8" />,
+      color: "#66BB6A",
       achievements: [
-        "Published an anthology of student writings",
-        "Organized successful inter-school literature festival",
-        "Established a student-run library corner",
-        "Conducted author visits and book signing events"
+        "State and national level dance competition winners",
+        "Performance at cultural festivals across the state",
+        "Choreographed original production showcasing local culture",
+        "Conducted outreach dance programs in the community"
       ]
     },
     {
-      id: "photography-club",
-      name: "Photography Club",
+      id: "music-club",
+      name: "Music Club",
       description: 
-        "The Photography Club helps students explore the art and science of photography. Members learn about camera techniques, composition, lighting, and digital editing to capture compelling images. The club provides hands-on experience and professional guidance to help students develop their photographic skills and creative vision.",
-      meetingSchedule: "Every Monday, 3:30 PM - 5:00 PM",
-      eligibility: "Open to students from Class 8 onwards",
+        "The Music Club nurtures musical talent and appreciation among students. Members learn vocal and instrumental music across various genres including classical, folk, and contemporary styles. The club provides opportunities for students to develop their musical abilities, perform before audiences, and appreciate diverse musical traditions.",
+      meetingSchedule: "Classes 1-4: Every Thursday, 3:20 PM - 4:00 PM | Classes 5-10: Every Monday, 3:20 PM - 4:00 PM",
+      eligibility: "Open to all students from Class 1 to 10",
       activities: [
-        "Photography workshops and skill sessions",
-        "Photo walks and outdoor shoots",
-        "Digital editing and post-processing classes",
-        "Photo exhibitions and competitions",
-        "Yearbook and school event coverage",
-        "Guest lectures by professional photographers"
+        "Vocal music training (classical and contemporary)",
+        "Instrumental music sessions",
+        "Music theory and composition workshops",
+        "Choir and ensemble practice",
+        "School event performances and competitions",
+        "Annual music concert and recitals"
       ],
-      image: "/photography-club.jpg",
-      icon: <Camera className="h-8 w-8" />,
-      color: "#8E24AA",
+      teachers: ["Jomesh Sir", "Shouvik Sir"],
+      image: "/ms.jpg",
+      icon: <Music className="h-8 w-8" />,
+      color: "#F06292",
       achievements: [
-        "Multiple winners in state-level photography competitions",
-        "Annual photography exhibition with public viewings",
-        "Published photography books showcasing student work",
-        "Documentary project on local cultural heritage"
+        "Regular performances at district and state cultural events",
+        "Published album of original student compositions",
+        "Winners in national school music competitions",
+        "Organized successful music festival with professional artists"
+      ]
+    },
+    {
+      id: "robotics-club",
+      name: "Robotics Club",
+      description: 
+        "The Robotics Club provides hands-on experience in designing, building, and programming robots. Members learn the fundamentals of robotics, electronics, and mechanical engineering through practical projects and competitions. The club nurtures innovation, problem-solving, and teamwork while introducing students to STEM concepts in an engaging way.",
+      meetingSchedule: "Classes 5-10: Every Saturday, 10:00 AM - 12:00 PM",
+      eligibility: "Open to students from Class 5 to 10",
+      activities: [
+        "Robot design and construction",
+        "Programming and coding for robotics",
+        "Electronics and circuit building",
+        "Robotics competitions and challenges",
+        "Tech exhibitions and demonstrations",
+        "Collaborative problem-solving projects"
+      ],
+      teachers: ["Swadhin Sir", "Satyanarayan Sir", "Bindhani Sir"],
+      image: "/robotics-club.jpg",
+      icon: <Code className="h-8 w-8" />,
+      color: "#5C6BC0",
+      achievements: [
+        "Regional champions in robotics competition",
+        "Built functional robots for school applications",
+        "Represented school at national robotics festival",
+        "Conducted workshops for younger students"
+      ]
+    },
+    {
+      id: "science-club",
+      name: "Science Club",
+      description: 
+        "The Science Club encourages scientific inquiry and exploration among students. Members engage in hands-on experiments, scientific projects, and research activities across various fields of science. The club fosters curiosity, analytical thinking, and a deep appreciation for the natural world through practical learning experiences.",
+      meetingSchedule: "Junior (Classes 1-4): Friday, 9:00 AM - 9:40 AM | Senior (Classes 5-10): Tuesday, 3:20 PM - 4:00 PM",
+      eligibility: "Open to all students from Class 1 to 10",
+      activities: [
+        "Laboratory experiments and demonstrations",
+        "Science project development and research",
+        "Science fair participation and exhibitions",
+        "Field trips to science centers and museums",
+        "Guest lectures by scientists and researchers",
+        "Environmental awareness and conservation projects"
+      ],
+      teachers: ["Dibakar Sir", "Jalaj Sir (Classes 5-10)", "Abanti Miss (Classes 1-4)"],
+      image: "/science-club.jpg",
+      icon: <FlaskConical className="h-8 w-8" />,
+      color: "#4CAF50",
+      achievements: [
+        "Multiple winners in state science competitions",
+        "Published research papers in school science journal",
+        "Organized successful science exhibition for community",
+        "Students selected for national science olympiad"
+      ]
+    },
+    {
+      id: "sports-club",
+      name: "Sports Club",
+      description: 
+        "The Sports Club promotes physical fitness, sportsmanship, and healthy competition among students. Members participate in various indoor and outdoor sports, learn game strategies, and develop teamwork skills. The club encourages active lifestyle and helps students excel in their chosen sports disciplines.",
+      meetingSchedule: "Classes 5-10: Daily practice sessions, 6:00 AM - 7:00 AM and 3:30 PM - 5:00 PM",
+      eligibility: "Open to students from Class 5 to 10",
+      activities: [
+        "Training in various sports disciplines",
+        "Inter-house and inter-school competitions",
+        "Physical fitness and conditioning programs",
+        "Sports tournaments and championships",
+        "Yoga and meditation sessions",
+        "Sports leadership and coaching workshops"
+      ],
+      teachers: ["Nrusingh Sir", "Pratap Majhi Sir", "Sunita Miss", "Namita Miss"],
+      image: "/sports.jpg",
+      icon: <Trophy className="h-8 w-8" />,
+      color: "#FF9800",
+      achievements: [
+        "District champions in multiple sports categories",
+        "State level representation in athletics",
+        "Organized successful inter-school sports meet",
+        "Students selected for state sports teams"
       ]
     },
     {
       id: "art-club",
-      name: "Art Club",
+      name: "Art & Craft Club",
       description: 
-        "The Art Club fosters creativity and artistic expression among students through various visual arts mediums. Members explore drawing, painting, sketching, pottery, sculpture, and various craft forms under the guidance of experienced art teachers. The club provides a space for students to express themselves artistically and develop their talents.",
-      meetingSchedule: "Every Tuesday and Thursday, 3:30 PM - 5:00 PM",
-      eligibility: "Open to all students",
+        "The Art & Craft Club fosters creativity and artistic expression among students through various visual arts mediums. Members explore drawing, painting, sketching, pottery, sculpture, and various craft forms under the guidance of experienced art teachers. The club provides a space for students to express themselves artistically and develop their talents.",
+      meetingSchedule: "Classes 1-4: Every Tuesday, 3:20 PM - 4:00 PM | Classes 5-10: Every Thursday, 3:20 PM - 4:00 PM",
+      eligibility: "Open to all students from Class 1 to 10",
       activities: [
         "Drawing and painting sessions",
         "Pottery and clay modeling",
@@ -108,6 +189,7 @@ export default function ClubsPage() {
         "Mural painting and school beautification",
         "Art appreciation and history discussions"
       ],
+      teachers: ["Swadhin Sir", "Zullu Sir (Classes 5-10)", "Sunita Miss", "Partha Sir (Classes 1-4)"],
       image: "/art-club.jpg",
       icon: <Palette className="h-8 w-8" />,
       color: "#EC407A",
@@ -119,112 +201,12 @@ export default function ClubsPage() {
       ]
     },
     {
-      id: "dance-club",
-      name: "Dance Club",
-      description: 
-        "The Dance Club provides a platform for students to express themselves through various dance forms and rhythmic movements. Members learn classical, folk, and contemporary dance styles under the guidance of trained instructors. The club helps students develop physical coordination, rhythm, and artistic expression while building confidence through performances.",
-      meetingSchedule: "Every Wednesday and Friday, 3:30 PM - 5:00 PM",
-      eligibility: "Open to all students",
-      activities: [
-        "Training in classical dance forms (Odissi, Bharatanatyam)",
-        "Folk dance workshops (regional and international)",
-        "Contemporary and western dance training",
-        "Choreography workshops and creative sessions",
-        "Cultural events and competition preparation",
-        "Annual dance recitals and performances"
-      ],
-      image: "/dance-club.jpg",
-      icon: <Music className="h-8 w-8" />,
-      color: "#66BB6A",
-      achievements: [
-        "State and national level dance competition winners",
-        "Performance at cultural festivals across the state",
-        "Choreographed original production showcasing local culture",
-        "Conducted outreach dance programs in the community"
-      ]
-    },
-    {
-      id: "chess-club",
-      name: "Chess Club",
-      description: 
-        "The Chess Club promotes strategic thinking, concentration, and sportsmanship through the game of chess. Members learn chess strategies, opening moves, and endgame techniques, and participate in regular practice sessions and tournaments. The club helps develop analytical skills, foresight, and patience while fostering healthy competition.",
-      meetingSchedule: "Every Monday and Thursday, 3:30 PM - 4:30 PM",
-      eligibility: "Open to all students from Class 3 onwards",
-      activities: [
-        "Chess theory and strategy sessions",
-        "Practice matches and simultaneous exhibitions",
-        "Tactics training and problem-solving",
-        "Intra-school tournaments and ladder competitions",
-        "Inter-school chess tournaments",
-        "Analysis of famous games and championship matches"
-      ],
-      image: "/chess-club.jpg",
-      icon: <Award className="h-8 w-8" />,
-      color: "#FFA000",
-      achievements: [
-        "District and state chess championship winners",
-        "Hosted regional school chess tournament",
-        "Multiple students achieving FIDE ratings",
-        "Organized chess exhibition with Grandmaster visit"
-      ]
-    },
-    {
-      id: "coding-club",
-      name: "Coding Club",
-      description: 
-        "The Coding Club introduces students to the world of programming and computational thinking. Members learn various programming languages, develop applications, solve problems, and work on innovative tech projects. The club nurtures logical thinking, problem-solving abilities, and digital literacy while preparing students for the technology-driven future.",
-      meetingSchedule: "Every Tuesday, 3:30 PM - 5:00 PM",
-      eligibility: "Open to students from Class 6 onwards",
-      activities: [
-        "Programming basics and language tutorials",
-        "Web development and app creation projects",
-        "Game development and design",
-        "Hackathons and coding competitions",
-        "Robotics and hardware programming",
-        "Tech talks and industry expert sessions"
-      ],
-      image: "/coding-club.jpg",
-      icon: <Code className="h-8 w-8" />,
-      color: "#00897B",
-      achievements: [
-        "Winners in multiple hackathons and coding competitions",
-        "Developed applications used within the school",
-        "Organized successful tech fairs and exhibition",
-        "Students selected for national coding championships"
-      ]
-    },
-    {
-      id: "music-club",
-      name: "Music Club",
-      description: 
-        "The Music Club nurtures musical talent and appreciation among students. Members learn vocal and instrumental music across various genres including classical, folk, and contemporary styles. The club provides opportunities for students to develop their musical abilities, perform before audiences, and appreciate diverse musical traditions.",
-      meetingSchedule: "Every Wednesday, 3:30 PM - 5:00 PM",
-      eligibility: "Open to all students",
-      activities: [
-        "Vocal music training (classical and contemporary)",
-        "Instrumental music sessions",
-        "Music theory and composition workshops",
-        "Choir and ensemble practice",
-        "School event performances and competitions",
-        "Annual music concert and recitals"
-      ],
-      image: "/music-club.jpg",
-      icon: <Music className="h-8 w-8" />,
-      color: "#F06292",
-      achievements: [
-        "Regular performances at district and state cultural events",
-        "Published album of original student compositions",
-        "Winners in national school music competitions",
-        "Organized successful music festival with professional artists"
-      ]
-    },
-    {
       id: "tourism-club",
       name: "Tourism Club",
       description: 
         "The Tourism Club encourages students to explore and appreciate local and national heritage, geography, and culture. Members learn about various tourist destinations, cultural practices, and environmental conservation while participating in educational trips and excursions. The club fosters a sense of appreciation for diversity, history, and natural beauty.",
-      meetingSchedule: "Every Friday, 3:30 PM - 4:30 PM and scheduled field trips",
-      eligibility: "Open to students from Class 7 onwards",
+      meetingSchedule: "Classes 5-10: Every Friday, 3:30 PM - 4:30 PM and scheduled field trips",
+      eligibility: "Open to students from Class 5 to 10",
       activities: [
         "Study of tourist destinations and heritage sites",
         "Local history and culture documentation",
@@ -233,6 +215,7 @@ export default function ClubsPage() {
         "Map reading and navigation skills",
         "Eco-tourism and sustainable travel practices"
       ],
+      teachers: ["Jyotirmayee Devi Sir", "Shantilata Miss", "Pradeep Sir"],
       image: "/tourism-club.jpg",
       icon: <Map className="h-8 w-8" />,
       color: "#FF7043",
@@ -244,38 +227,91 @@ export default function ClubsPage() {
       ]
     },
     {
-      id: "robotics-club",
-      name: "Robotics Club",
+      id: "photography-club",
+      name: "Photography Club",
       description: 
-        "The Robotics Club provides hands-on experience in designing, building, and programming robots. Members learn the fundamentals of robotics, electronics, and mechanical engineering through practical projects and competitions. The club nurtures innovation, problem-solving, and teamwork while introducing students to STEM concepts in an engaging way.",
-      meetingSchedule: "Every Saturday, 10:00 AM - 12:00 PM",
-      eligibility: "Open to students from Class 7 onwards",
+        "The Photography Club helps students explore the art and science of photography. Members learn about camera techniques, composition, lighting, and digital editing to capture compelling images. The club provides hands-on experience and professional guidance to help students develop their photographic skills and creative vision.",
+      meetingSchedule: "Classes 5-10: Every Monday, 3:30 PM - 5:00 PM",
+      eligibility: "Open to students from Class 5 to 10",
       activities: [
-        "Robot design and construction",
-        "Programming and coding for robotics",
-        "Electronics and circuit building",
-        "Robotics competitions and challenges",
-        "Tech exhibitions and demonstrations",
-        "Collaborative problem-solving projects"
+        "Photography workshops and skill sessions",
+        "Photo walks and outdoor shoots",
+        "Digital editing and post-processing classes",
+        "Photo exhibitions and competitions",
+        "Yearbook and school event coverage",
+        "Guest lectures by professional photographers"
       ],
-      image: "/robotics-club.jpg",
-      icon: <Code className="h-8 w-8" />,
-      color: "#5C6BC0",
+      teachers: ["Lalit Sir", "Swati Miss"],
+      image: "/photography-club.jpg",
+      icon: <Camera className="h-8 w-8" />,
+      color: "#8E24AA",
       achievements: [
-        "Regional champions in robotics competition",
-        "Built functional robots for school applications",
-        "Represented school at national robotics festival",
-        "Conducted workshops for younger students"
+        "Multiple winners in state-level photography competitions",
+        "Annual photography exhibition with public viewings",
+        "Published photography books showcasing student work",
+        "Documentary project on local cultural heritage"
+      ]
+    },
+    {
+      id: "book-club",
+      name: "Book Club",
+      description: 
+        "The Book Club at Aryavart Ancient Academy provides a platform for students to explore the world of literature, enhance their reading habits, and engage in meaningful discussions about books. Members read selected books, participate in literary discussions, and engage in various activities that promote a love for reading and critical thinking.",
+      meetingSchedule: "Classes 5-10: Every Friday, 3:30 PM - 4:30 PM",
+      eligibility: "Open to students from Class 5 to 10",
+      activities: [
+        "Book discussions and debates",
+        "Author studies and literary analysis",
+        "Creative writing workshops",
+        "Book reviews and recommendations",
+        "Annual book fair organization",
+        "Literary quizzes and competitions"
+      ],
+      teachers: ["Bhagyalaxmi Miss", "Sarita Miss", "Anayana Miss"],
+      image: "/LIB.jpg",
+      icon: <BookOpen className="h-8 w-8" />,
+      color: "#1E88E5",
+      achievements: [
+        "Published an anthology of student writings",
+        "Organized successful inter-school literature festival",
+        "Established a student-run library corner",
+        "Conducted author visits and book signing events"
+      ]
+    },
+    {
+      id: "chess-club",
+      name: "Chess Club",
+      description: 
+        "The Chess Club promotes strategic thinking, concentration, and sportsmanship through the game of chess. Members learn chess strategies, opening moves, and endgame techniques, and participate in regular practice sessions and tournaments. The club helps develop analytical skills, foresight, and patience while fostering healthy competition.",
+      meetingSchedule: "Classes 5-10: Every Monday and Thursday, 3:30 PM - 4:30 PM",
+      eligibility: "Open to students from Class 5 to 10",
+      activities: [
+        "Chess theory and strategy sessions",
+        "Practice matches and simultaneous exhibitions",
+        "Tactics training and problem-solving",
+        "Intra-school tournaments and ladder competitions",
+        "Inter-school chess tournaments",
+        "Analysis of famous games and championship matches"
+      ],
+      teachers: ["Subodh Sir", "Avinash Sir"],
+      image: "/chess-club.jpg",
+      icon: <Award className="h-8 w-8" />,
+      color: "#FFA000",
+      achievements: [
+        "District and state chess championship winners",
+        "Hosted regional school chess tournament",
+        "Multiple students achieving FIDE ratings",
+        "Organized chess exhibition with Grandmaster visit"
       ]
     }
   ];
 
-  // Categories for filtering
+  // Updated Categories for filtering
   const categories = [
-    { id: "arts", name: "Arts & Culture", clubs: ["book-club", "art-club", "music-club"] },
-    { id: "tech", name: "Technology & STEM", clubs: ["coding-club", "robotics-club"] },
-    { id: "creative", name: "Creative Expression", clubs: ["photography-club", "dance-club"] },
-    { id: "games", name: "Games & Strategy", clubs: ["chess-club"] },
+    { id: "arts", name: "Arts & Culture", clubs: ["book-club", "art-club", "music-club", "dance-club"] },
+    { id: "tech", name: "Technology & STEM", clubs: ["robotics-club", "science-club"] },
+    { id: "creative", name: "Creative Expression", clubs: ["photography-club", "art-club"] },
+    { id: "sports", name: "Sports & Games", clubs: ["chess-club", "sports-club"] },
     { id: "exploration", name: "Exploration", clubs: ["tourism-club"] }
   ];
 
@@ -406,9 +442,13 @@ export default function ClubsPage() {
                 <div className="p-4">
                   <div className="flex items-center text-sm text-[#5a3e36] mb-3">
                     <Clock className="h-4 w-4 mr-2 text-[#8b1a1a]" />
-                    {club.meetingSchedule}
+                    <span className="line-clamp-2">{club.meetingSchedule}</span>
                   </div>
                   <p className="text-[#5a3e36] text-sm line-clamp-3">{club.description}</p>
+                  <div className="mt-3 mb-4">
+                    <p className="text-xs text-[#8b1a1a] font-medium">Teachers:</p>
+                    <p className="text-xs text-[#5a3e36]">{club.teachers.join(", ")}</p>
+                  </div>
                   <button className="mt-4 inline-flex items-center text-[#8b1a1a] font-medium text-sm">
                     View Details <ChevronRight className="h-4 w-4 ml-1" />
                   </button>
@@ -472,7 +512,6 @@ export default function ClubsPage() {
             </div>
           </div>
         </section>
-
 
         {/* Join a Club CTA */}
         <section className="container mx-auto px-4">
@@ -580,10 +619,10 @@ export default function ClubsPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                   <div>
-                    <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Meeting Schedule</h3>
-                    <div className="flex items-center bg-[#f8f3e9] p-3 rounded-md">
-                      <Clock className="h-5 w-5 text-[#8b1a1a] mr-3" />
-                      <p className="text-[#5a3e36]">
+                    <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Club Schedule</h3>
+                    <div className="flex items-start bg-[#f8f3e9] p-3 rounded-md">
+                      <Clock className="h-5 w-5 text-[#8b1a1a] mr-3 mt-0.5 flex-shrink-0" />
+                      <p className="text-[#5a3e36] text-sm">
                         {clubs.find(club => club.id === activeClub)?.meetingSchedule}
                       </p>
                     </div>
@@ -596,6 +635,22 @@ export default function ClubsPage() {
                       <p className="text-[#5a3e36]">
                         {clubs.find(club => club.id === activeClub)?.eligibility}
                       </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mb-6">
+                  <h3 className="text-xl font-bold text-[#8b1a1a] mb-3">Club Teachers</h3>
+                  <div className="bg-[#f8f3e9] p-4 rounded-lg">
+                    <div className="flex flex-wrap gap-2">
+                      {clubs.find(club => club.id === activeClub)?.teachers.map((teacher, index) => (
+                        <span 
+                          key={index}
+                          className="px-3 py-1 bg-[#8b1a1a] text-white text-sm rounded-full"
+                        >
+                          {teacher}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>

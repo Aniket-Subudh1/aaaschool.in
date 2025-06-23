@@ -10,6 +10,7 @@ import {
   Users,
   Shield,
   Sparkles,
+  Anchor,
   Heart,
   GraduationCap,
   Globe,
@@ -61,6 +62,31 @@ export default function ServiceUnitsPage() {
       ]
     },
     {
+      id: "naval",
+      name: "Naval Unit",
+      shortName: "Naval",
+      description: 
+        "The Naval Unit is a specialized wing that introduces students to maritime traditions, naval discipline, and seafaring skills. Our Naval Unit provides cadets with unique opportunities to learn about marine life, naval history, seamanship, and water safety. Students develop leadership qualities while gaining knowledge about India's rich maritime heritage and naval traditions.",
+      features: [
+        "Maritime training and water safety education",
+        "Naval traditions and seamanship skills",
+        "Leadership development through naval discipline",
+        "Environmental awareness of marine ecosystems",
+        "Opportunities to participate in naval camps and sailing expeditions",
+        "Training in nautical skills and navigation basics"
+      ],
+      image: "/naval.jpg",
+      icon: <Anchor className="h-8 w-8" />,
+      color: "#1E3A8A",
+      achievements: [
+        "Represented school at National Naval Camp in Mumbai",
+        "Winners of Inter-School Naval Quiz Competition for 2 consecutive years",
+        "Successfully organized Maritime Awareness Week",
+        "Students selected for Advanced Naval Training Programs",
+        "Recognition for outstanding performance in seamanship activities"
+      ]
+    },
+    {
       id: "scout-guide",
       name: "Scout & Guide",
       shortName: "Scout & Guide",
@@ -73,7 +99,7 @@ export default function ServiceUnitsPage() {
         "Nature conservation and environmental awareness",
         "Leadership development and team building"
       ],
-      image: "/sg.jpg",
+      image: "/scout.png",
       icon: <GraduationCap className="h-8 w-8" />,
       color: "#28A745",
       achievements: [
@@ -119,7 +145,7 @@ export default function ServiceUnitsPage() {
         "Environmental awareness",
         "Community helpers recognition"
       ],
-      image: "/cb.jpg",
+      image: "/cub.jpg",
       icon: <Sparkles className="h-8 w-8" />,
       color: "#FFC107",
       achievements: [

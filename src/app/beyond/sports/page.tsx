@@ -61,7 +61,7 @@ export default function SportsPage() {
         "CBSE National Tournament Participation - 2023",
         "All-India School Games - Top 8 finish"
       ],
-      image: "/basketball.jpg",
+      image: "/bask.jpg",
       icon: <Dribbble className="h-8 w-8" />,
       color: "#E65100",
       ageGroups: ["Under-14", "Under-17", "Under-19"],
@@ -94,32 +94,6 @@ export default function SportsPage() {
       tournaments: ["CBSE Regional and National", "District Championships", "State School Games", "Interschool tournaments"]
     },
     {
-      id: "tennisball",
-      name: "Tennis Ball Cricket",
-      description: 
-        "Tennis Ball Cricket is a modified version of cricket played with a tennis ball instead of a traditional cricket ball. This adaptation makes the game safer and more accessible to students across age groups. Our program focuses on batting techniques, bowling skills, fielding, and game strategy. The sport helps develop hand-eye coordination, reflexes, and tactical thinking.",
-      schedule: "Monday, Wednesday: 3:30 PM - 5:30 PM, Saturday: 8:00 AM - 10:00 AM",
-      coaches: ["Coach Vikram Singh (Former Ranji player)", "Coach Anand Sharma (Cricket certification)"],
-      facilities: [
-        "Multiple cricket nets for practice",
-        "Dedicated field with proper pitch",
-        "Batting cages for focused practice",
-        "Bowling machines",
-        "High-quality tennis balls and cricket equipment"
-      ],
-      achievements: [
-        "Interschool Tennis Ball Cricket Champions - 3 consecutive years",
-        "District Tournament Winners - 2024",
-        "Regional School Cricket Festival - Champions",
-        "Several students selected for district cricket training"
-      ],
-      image: "/cricket.jpg",
-      icon: <Dribbble className="h-8 w-8" />,
-      color: "#1B5E20",
-      ageGroups: ["Under-12", "Under-14", "Under-17", "Open category"],
-      tournaments: ["Interschool tournaments", "District level competitions", "Cricket festivals", "Annual school cricket league"]
-    },
-    {
       id: "taekwondo",
       name: "Taekwondo",
       description: 
@@ -139,7 +113,7 @@ export default function SportsPage() {
         "CBSE National Martial Arts Meet - 5 medalists",
         "Over 45 students achieved Black Belt status"
       ],
-      image: "/taekwondo.jpg",
+      image: "/tk.jpg",
       icon: <Dumbbell className="h-8 w-8" />,
       color: "#0D47A1",
       ageGroups: ["6-9 years", "10-13 years", "14-17 years", "18+ years"],
@@ -165,7 +139,7 @@ export default function SportsPage() {
         "District Champions - 3 consecutive years",
         "5 students selected for state cricket academy"
       ],
-      image: "/cricket-hard.jpg",
+      image: "/cric.jpg",
       icon: <Dribbble className="h-8 w-8" />,
       color: "#00796B",
       ageGroups: ["Under-14", "Under-17", "Under-19"],
@@ -435,7 +409,7 @@ export default function SportsPage() {
               <div className="md:w-2/3 p-8">
                 <h2 className="text-3xl font-bold mb-4">Join Our Sports Programs</h2>
                 <p className="mb-6">
-                  Whether you're a beginner or an experienced player, our sports programs offer something for everyone. Develop your skills, stay fit, and represent your school in competitions!
+                  Whether you&apos;re a beginner or an experienced player, our sports programs offer something for everyone. Develop your skills, stay fit, and represent your school in competitions!
                 </p>
                 <div className="flex space-x-4">
                   <a 

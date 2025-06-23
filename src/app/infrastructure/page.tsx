@@ -8,7 +8,6 @@ import {
   Microscope, 
   Music, 
   BookOpen, 
-  TreePine, 
   Dumbbell, 
   Server, 
   PaintBucket, 
@@ -145,7 +144,7 @@ const InfrastructurePage = () => {
         image: "/sch.jpeg",
         icon: <Building />,
         features: [
-          "24 modern classrooms equipped with smart boards",
+          "36 modern classrooms equipped with smart boards",
           "Administrative wing with offices for principal and staff",
           "Student counseling center",
           "Spacious and naturally lit corridors",
@@ -157,7 +156,7 @@ const InfrastructurePage = () => {
         id: "auditorium",
         title: "Multipurpose Auditorium",
         description: "A 500-seat auditorium equipped with advanced audio-visual systems for assemblies, cultural programs, special events, and performances. The acoustically designed space enhances every sound and creates an immersive experience.",
-        image: "/cul.jpg",
+        image: "/ ",
         icon: <Images />,
         features: [
           "Seating capacity for 500 persons",
@@ -173,7 +172,7 @@ const InfrastructurePage = () => {
         id: "gardens",
         title: "Meditation Gardens",
         description: "Beautifully landscaped gardens that provide a serene environment for meditation and connecting with nature. The gardens feature native plants, walking paths, and quiet seating areas for reflection and mindfulness practices.",
-        image: "/hs.jpg",
+        image: "/yoga.jpg",
         icon: <Flower />,
         features: [
           "Designed following principles of Vastu and sacred geometry",
@@ -182,7 +181,7 @@ const InfrastructurePage = () => {
           "Herb garden with traditional Ayurvedic plants",
           "Seasonal flowering plants for year-round beauty"
         ],
-        mapPosition: { top: "45%", left: "65%" }
+        mapPosition: { top: "80%", left: "75%" }
       }
     ],
     laboratories: [
@@ -205,7 +204,7 @@ const InfrastructurePage = () => {
         id: "chemistry-lab",
         title: "Chemistry Laboratory",
         description: "Well-ventilated chemistry laboratory with safety equipment and materials for practical demonstrations and experiments. Our chemistry lab adheres to the highest safety standards while providing a comprehensive learning experience.",
-        image: "/sp.jpg",
+        image: "/tr.jpg",
         icon: <Microscope />,
         features: [
           "Chemical storage with proper segregation and labeling",
@@ -220,7 +219,7 @@ const InfrastructurePage = () => {
         id: "biology-lab",
         title: "Biology Laboratory",
         description: "Biology lab with specimens, microscopes, and tools for exploring the wonders of life sciences. Students engage with biological concepts through hands-on exploration of specimens and microorganisms.",
-        image: "/tr.jpg",
+        image: "/lb.jpg",
         icon: <Microscope />,
         features: [
           "Advanced binocular and digital microscopes",
@@ -235,7 +234,7 @@ const InfrastructurePage = () => {
         id: "computer-lab",
         title: "Computer Laboratory",
         description: "Modern computer lab with high-speed internet access and the latest software for teaching computer science and digital skills. Our computer lab provides a technology-rich environment for developing 21st-century skills.",
-        image: "/lb.jpg",
+        image: "/cmp.jpg",
         icon: <Server />,
         features: [
           "50 workstations with the latest hardware configurations",
@@ -252,7 +251,7 @@ const InfrastructurePage = () => {
         id: "sports-field",
         title: "Sports Field",
         description: "Expansive sports field for cricket, football, and athletic events, surrounded by a 400-meter track. Our well-maintained field supports a variety of sports activities and promotes physical fitness among students.",
-        image: "/sp.jpg",
+        image: "/cric.jpg",
         icon: <Dumbbell />,
         features: [
           "Professional-grade cricket pitch",
@@ -267,7 +266,7 @@ const InfrastructurePage = () => {
         id: "basketball-court",
         title: "Basketball & Volleyball Courts",
         description: "Well-maintained courts for basketball and volleyball with proper marking and equipment. These multipurpose courts foster teamwork and competitive spirit among students.",
-        image: "/sc.jpg",
+        image: "/bask.jpg",
         icon: <Dumbbell />,
         features: [
           "Standard NBA dimensions for basketball court",
@@ -278,21 +277,7 @@ const InfrastructurePage = () => {
         ],
         mapPosition: { top: "65%", left: "55%" }
       },
-      {
-        id: "indoor-sports",
-        title: "Indoor Sports Complex",
-        description: "Indoor facility for table tennis, chess, carrom, and other indoor games. The climate-controlled environment allows for year-round enjoyment of indoor sports and recreational activities.",
-        image: "/dr.jpg",
-        icon: <Dumbbell />,
-        features: [
-          "Four tournament-grade table tennis tables",
-          "Chess and carrom board stations",
-          "Badminton courts with proper lighting",
-          "Gymnastics and yoga area",
-          "Sports equipment storage and lending system"
-        ],
-        mapPosition: { top: "55%", left: "40%" }
-      }
+      
     ],
     facilities: [
       {
@@ -314,7 +299,7 @@ const InfrastructurePage = () => {
         id: "music-room",
         title: "Music Room",
         description: "Dedicated space for music education with various instruments and audio equipment for students to explore their musical talents. The acoustically designed room enhances the learning experience for budding musicians.",
-        image: "/cul.jpg",
+        image: "/tb.jpg",
         icon: <Music />,
         features: [
           "Acoustic treatment for optimal sound quality",
@@ -329,7 +314,7 @@ const InfrastructurePage = () => {
         id: "art-studio",
         title: "Art Studio",
         description: "Creative space equipped with materials and tools for drawing, painting, pottery, and other visual arts. Natural lighting and ample space encourage artistic expression and skill development.",
-        image: "/sc.jpg",
+        image: "/ ",
         icon: <PaintBucket />,
         features: [
           "Naturally lit space with north-facing windows",
@@ -344,7 +329,7 @@ const InfrastructurePage = () => {
         id: "smart-classrooms",
         title: "Smart Classrooms",
         description: "Technology-enhanced learning spaces equipped with interactive displays, digital learning tools, and multimedia capabilities to enrich the educational experience and accommodate diverse learning styles.",
-        image: "/il.jpg",
+        image: "/ ",
         icon: <Wifi />,
         features: [
           "Interactive smart boards in every classroom",
@@ -694,7 +679,7 @@ const InfrastructurePage = () => {
                 {/* Map container */}
                 <div className="relative w-full h-full">
                   <Image
-                    src="/sc.jpg"
+                    src="/top.png"
                     alt="Campus map"
                     fill
                     className="object-cover transition-all duration-500"
@@ -874,11 +859,11 @@ const InfrastructurePage = () => {
                     <div className="text-sm text-[#5a3e36]">Acres Campus</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-[#8b1a1a]">24</div>
+                    <div className="text-3xl font-bold text-[#8b1a1a]">36</div>
                     <div className="text-sm text-[#5a3e36]">Classrooms</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-[#8b1a1a]">4</div>
+                    <div className="text-3xl font-bold text-[#8b1a1a]">7</div>
                     <div className="text-sm text-[#5a3e36]">Laboratories</div>
                   </div>
                   <div className="text-center">

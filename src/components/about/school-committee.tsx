@@ -11,8 +11,6 @@ import {
   Heart,
   FileText,
   Flame,
-  Truck,
-  Activity,
 } from "lucide-react";
 
 // Define interfaces for committee members
@@ -89,7 +87,7 @@ export default function SchoolCommittees() {
   const committees = [
     {
       id: "managing",
-      title: "School Managing Committee",
+      title: "Core Committee ",
       icon: <Users className="h-6 w-6" />,
       description:
         "Our school is guided by a dedicated committee of educators, parents, and community members who work together to ensure excellence in education.",
@@ -105,7 +103,7 @@ export default function SchoolCommittees() {
     },
     {
       id: "disaster",
-      title: "Disaster Management Team",
+      title: "Building Safety Committee",
       icon: <AlertTriangle className="h-6 w-6" />,
       description:
         "Responsible for emergency preparedness, this team develops and implements plans to respond effectively to natural disasters and other emergencies.",
@@ -113,7 +111,7 @@ export default function SchoolCommittees() {
     },
     {
       id: "sexualHarassment",
-      title: "Sexual Harassment Committee",
+      title: "Anti Sexual Harassment Committee",
       icon: <FileText className="h-6 w-6" />,
       description:
         "This committee ensures a safe environment for all by addressing concerns related to sexual harassment through education, prevention, and intervention.",
@@ -128,14 +126,6 @@ export default function SchoolCommittees() {
       color: "#3b6ec1",
     },
     {
-      id: "firstAid",
-      title: "First Aid Committee",
-      icon: <Activity className="h-6 w-6" />,
-      description:
-        "Trained to provide immediate medical assistance in case of injuries or health emergencies on campus.",
-      color: "#3b6ec1",
-    },
-    {
       id: "fireSafety",
       title: "Fire Safety Committee",
       icon: <Flame className="h-6 w-6" />,
@@ -143,14 +133,7 @@ export default function SchoolCommittees() {
         "Responsible for fire prevention, evacuation planning, and regular drills to ensure readiness in case of fire emergencies.",
       color: "#3b6ec1",
     },
-    {
-      id: "transport",
-      title: "Transport Committee",
-      icon: <Truck className="h-6 w-6" />,
-      description:
-        "Oversees school transportation services, ensuring safe and efficient transit for students with proper routes and safety protocols.",
-      color: "#3b6ec1",
-    },
+    
   ];
 
   // Helper functions for modal
