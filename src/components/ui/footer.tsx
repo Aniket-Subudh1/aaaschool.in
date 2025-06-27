@@ -5,10 +5,11 @@ import {
   Mail,
   MapPin,
   Facebook,
-  Twitter,
   Instagram,
   Youtube,
   ArrowRight,
+  X,
+  Linkedin,
 } from "lucide-react";
 
 export default function Footer() {
@@ -43,11 +44,15 @@ export default function Footer() {
               <h4 className="text-[#5a3e36] font-medium text-sm md:text-base text-center">
                 Address
               </h4>
-              <p className="text-gray-600 text-xs md:text-sm text-center">
-                Plot no 684, Haladipada,
-                <br />
-                Khorda, Pin-752056
-              </p>
+              <div className="text-gray-600 text-xs md:text-sm text-center">
+                <p className="font-medium">Main Campus:</p>
+                <p className="mb-2">
+                  Plot no 684, Haladipada,
+                  <br />
+                  Khorda, Pin-752056
+                </p>
+                
+              </div>
             </div>
 
             {/* Phone */}
@@ -182,7 +187,17 @@ export default function Footer() {
               <div className="space-y-3">
                 <div className="flex items-start">
                   <MapPin className="h-5 w-5 text-[#d4b483] mr-3 mt-1" />
-                  <p className="text-white/80">Khordha, Odisha, India</p>
+                  <div>
+                    <p className="text-white/80 font-medium">Main Campus:</p>
+                    <p className="text-white/80">Plot no 684, Haladipada, Khordha, Pin-752056</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <MapPin className="h-5 w-5 text-[#d4b483] mr-3 mt-1" />
+                  <div>
+                    <p className="text-white/80 font-medium">City Office:</p>
+                    <p className="text-white/80">B-12, BDA Duplex colony, Baramunda RBI colony, Bhubaneswar, Pin-751003</p>
+                  </div>
                 </div>
                 <div className="flex items-start">
                   <Phone className="h-5 w-5 text-[#d4b483] mr-3 mt-1" />
@@ -190,7 +205,10 @@ export default function Footer() {
                 </div>
                 <div className="flex items-start">
                   <Mail className="h-5 w-5 text-[#d4b483] mr-3 mt-1" />
-                  <p className="text-white/80">aryavartaa.krd@gmail.com</p>
+                  <div>
+                    <p className="text-white/80">aryavartaa.krd@gmail.com</p>
+                    <p className="text-white/80">care@aryavartancientacademy.in</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -328,25 +346,41 @@ export default function Footer() {
               </h4>
               <div className="flex space-x-3 mb-6">
                 <a
-                  href="#"
+                  href="https://www.facebook.com/aaaschoolkrd/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="bg-white/10 hover:bg-[#d4b483]/20 p-2 rounded-full transition-colors"
                 >
                   <Facebook className="h-5 w-5" />
                 </a>
                 <a
-                  href="#"
+                  href="https://x.com/aaaschool"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="bg-white/10 hover:bg-[#d4b483]/20 p-2 rounded-full transition-colors"
                 >
-                  <Twitter className="h-5 w-5" />
+                  <X className="h-5 w-5" />
                 </a>
                 <a
-                  href="#"
+                  href="https://www.linkedin.com/company/aaaschool/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-white/10 hover:bg-[#d4b483]/20 p-2 rounded-full transition-colors"
+                >
+                  <Linkedin className="h-5 w-5" />
+                </a>
+                <a
+                  href="https://www.instagram.com/aaaschoolkrd/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="bg-white/10 hover:bg-[#d4b483]/20 p-2 rounded-full transition-colors"
                 >
                   <Instagram className="h-5 w-5" />
                 </a>
                 <a
-                  href="#"
+                  href="https://www.youtube.com/@aaaschool"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="bg-white/10 hover:bg-[#d4b483]/20 p-2 rounded-full transition-colors"
                 >
                   <Youtube className="h-5 w-5" />

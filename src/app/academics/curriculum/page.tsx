@@ -127,7 +127,7 @@ const CurriculumPage = () => {
       color: "#b33939",
       image: "/tr.jpg",
       details: {
-        timings: ["10:00am – 4:00pm: General Class", "4:00 pm – 5:00pm: Special Class"],
+        timings: ["10:00am – 4:00pm: General Class", "8:10 pm – 9:30pm: Personalised Coaching"],
         coaching: ["NTSE", "OLYMPIAD", "FOUNDATION COURSE FOR JEE & NEET"],
         facilities: [
           "Day Boarding",
@@ -173,17 +173,17 @@ const CurriculumPage = () => {
           {
             stream: "Science",
             compulsory: ["English", "Physics", "Chemistry"],
-            optional: ["Mathematics", "Biology", "Computer Science", "Physical Education", "Yoga and Painting"]
+            optional: ["Mathematics", "Biology", "Computer Science", "Physical Education", "Yoga" ,"Painting"],
           },
           {
             stream: "Commerce",
             compulsory: ["English", "Accountancy", "Economics", "BST"],
-            optional: ["Entrepreneurship", "Math", "Physical Education", "Yoga and Painting"]
+            optional: ["Entrepreneurship", "Math", "Business Studies", "Yoga", "Painting"],
           },
           {
             stream: "Humanities",
             compulsory: ["English", "Psychology", "Economics", "Education"],
-            optional: ["Pol. Sc.", "Geography", "History", "Math", "Physical Education", "Sociology"]
+            optional: ["Pol. Sc.", "Geography", "History", "Math", "Odia", "Sociology"],
           }
         ],
         note: "A student has to choose minimum 5 subjects and can keep Physical Education or Yoga or painting as 6th optional."

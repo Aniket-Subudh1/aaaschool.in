@@ -8,9 +8,10 @@ import {
   Clock,
   ExternalLink,
   Facebook,
-  Twitter,
   Instagram,
   Youtube,
+  Linkedin,
+  X,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -66,10 +67,11 @@ export default function ContactInfo() {
   ];
 
   const socialMedia = [
-    { icon: <Facebook className="w-5 h-5" />, url: "#", name: "Facebook" },
-    { icon: <Twitter className="w-5 h-5" />, url: "#", name: "Twitter" },
-    { icon: <Instagram className="w-5 h-5" />, url: "#", name: "Instagram" },
-    { icon: <Youtube className="w-5 h-5" />, url: "#", name: "YouTube" },
+    { icon: <Facebook className="w-5 h-5" />, url: "https://www.facebook.com/aaaschoolkrd/", name: "Facebook" },
+    { icon: <X className="w-5 h-5" />, url: "https://x.com/aaaschool", name: "Twitter" },
+    { icon: <Instagram className="w-5 h-5" />, url: "https://www.instagram.com/aaaschoolkrd/", name: "Instagram" },
+    { icon: <Youtube className="w-5 h-5" />, url: "https://www.youtube.com/@aaaschool", name: "YouTube" },
+    { icon: <Linkedin className="w-5 h-5" />, url: "https://www.linkedin.com/company/aaaschool/", name: "YouTube" },
   ];
 
   return (

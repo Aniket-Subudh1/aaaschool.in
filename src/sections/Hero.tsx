@@ -364,6 +364,7 @@ export const Hero = () => {
           </div>
       
       <HeaderAcademyLogo />
+       <NotificationSection />
       <ImageSlider />
 
       <SchoolLevels />
@@ -374,7 +375,7 @@ export const Hero = () => {
       </div>
 
       {/* Notification Section */}
-      <NotificationSection />
+     
       <SchoolCalendar />
       <SchoolActivities />
       <AryavartHouses />

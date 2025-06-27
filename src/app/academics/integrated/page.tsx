@@ -44,7 +44,7 @@ const batches = [
     ],
     subjects: ["Physics", "Chemistry", "Biology"],
     schedule: [
-      "Weekdays: 4:00 PM - 6:30 PM (Class 11 & 12)",
+      "Weekdays: 8:30 PM - 4:10 PM (Class 11 & 12)",
       "Weekends: 9:00 AM - 4:00 PM (Intensive sessions for Droppers)",
       "Special batches during school vacations"
     ],
@@ -74,7 +74,7 @@ const batches = [
     ],
     subjects: ["Physics", "Chemistry", "Mathematics"],
     schedule: [
-      "Weekdays: 4:00 PM - 6:30 PM (Class 11 & 12)",
+      "Weekdays: 8:30 PM - 4:10 PM (Class 11 & 12)",
       "Weekends: 9:00 AM - 4:00 PM (Advanced problem-solving)",
       "Evening doubt clearing sessions"
     ],
@@ -99,7 +99,7 @@ const batches = [
     ],
     subjects: ["Mathematics", "General Ability Test (English, Science, History, Geography, Current Affairs)"],
     schedule: [
-      "Weekdays: 4:00 PM - 6:00 PM (Academic preparation)",
+      "Weekdays: 8:30 PM - 4:10 PM (Academic preparation)",
       "Weekends: 6:00 AM - 8:00 AM (Physical training)",
       "Special SSB preparation on holidays"
     ],
@@ -110,7 +110,7 @@ const batches = [
   id: "ci",
   name: "CI Batch",
   icon: <Building />,
-  color: "#ec4899", // Pink
+  color: "#ec4899", 
   description: "Specialized preparation for Commerce Integrated(CI) which will facilitate students to frame their career in the field of CA, CS and CMA.",
   eligibility: "Students in Class 12",
   features: [

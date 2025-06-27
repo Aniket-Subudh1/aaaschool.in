@@ -193,7 +193,7 @@ export default function AboutHeroParallax() {
             >
               <div className="absolute inset-0 bg-[#8b1a1a]/10 rounded-full blur-lg"></div>
               <Image
-                src="https://aniket-1.s3.ap-south-1.amazonaws.com/aaa.png"
+                src="https://aaaschool.s3.ap-south-1.amazonaws.com/aaa.png"
                 alt="Aryavart Ancient Academy Logo"
                 width={120}
                 height={120}

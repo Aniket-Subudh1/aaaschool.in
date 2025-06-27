@@ -25,6 +25,7 @@ const navItems = [
     submenu: [
       { name: "Admission Process", href: "/admission" },
       { name: "ATAT", href: "/admission/atat" },
+      { name: "Scholarships", href: "/admission/scholarship" }
     ],
   },
   {
