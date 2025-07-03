@@ -27,14 +27,14 @@ export default function ResultsSection() {
       id: "smc",
       title: "School Management Committee",
       icon: <FileText className="w-5 h-5" />,
-      downloadUrl: "/documents/smc-details.pdf",
+      downloadUrl: "/documents/smc.pdf",
       fileName: "AAA_SMC_Details.pdf",
     },
     {
       id: "pta",
       title: "Parents Teachers Association",
       icon: <FileText className="w-5 h-5" />,
-      downloadUrl: "/documents/pta-details.pdf",
+      downloadUrl: "/documents/pta.pdf",
       fileName: "AAA_PTA_Details.pdf",
     },
     {
