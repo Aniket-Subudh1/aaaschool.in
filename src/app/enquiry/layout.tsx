@@ -4,7 +4,7 @@ import Footer from "@/components/ui/footer";
 import NavBar from "@/components/ui/nav-bar";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://aaaschool.in"),
+  metadataBase: new URL("https://www.aaaschool.in"),
   title: "Admission Enquiry | Aryavart Ancient Academy - Start Your Journey",
   description:
     "Submit your admission enquiry for Aryavart Ancient Academy. Start your child's educational journey with us through a simple and straightforward enquiry process. Our team will guide you through the admission process.",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    url: "https://aaaschool.in/enquiry",
+    url: "https://www.aaaschool.in/enquiry",
     title: "Admission Enquiry | Aryavart Ancient Academy",
     description:
       "Easily submit your enquiry and take the first step towards joining Aryavart Ancient Academy. Our admission team will guide you through the process.",
@@ -63,16 +63,16 @@ export default function EnquiryLayout({
           "@type": "WebPage",
           "name": "Admission Enquiry | Aryavart Ancient Academy",
           "description": "Submit your admission enquiry for Aryavart Ancient Academy",
-          "url": "https://aaaschool.in/enquiry",
+          "url": "https://www.aaaschool.in/enquiry",
           "isPartOf": {
             "@type": "WebSite",
             "name": "Aryavart Ancient Academy",
-            "url": "https://aaaschool.in"
+            "url": "https://www.aaaschool.in"
           },
           "mainEntity": {
             "@type": "WebForm",
             "name": "Admission Enquiry Form",
-            "target": "https://aaaschool.in/api/enquiries",
+            "target": "https://www.aaaschool.in/api/enquiries",
             "encodingType": "application/json",
             "method": "POST"
           }

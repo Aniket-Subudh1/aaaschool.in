@@ -3,7 +3,7 @@ import Script from "next/script";
 import NavBar from "@/components/ui/nav-bar";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://aaaschool.in"),
+  metadataBase: new URL("https://www.aaaschool.in"),
   title: "Contact Us | Aryavart Ancient Academy - Get in Touch",
   description:
     "Get in touch with Aryavart Ancient Academy in Khordha, Odisha. We're here to answer your questions about admissions, academics, infrastructure, and more. Contact our dedicated team for personalized assistance.",
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    url: "https://aaaschool.in/contact",
+    url: "https://www.aaaschool.in/contact",
     title: "Contact Us | Aryavart Ancient Academy",
     description:
       "Reach out to Aryavart Ancient Academy for inquiries about admissions, academics, or to schedule a campus visit. Our team is ready to assist you.",
@@ -62,11 +62,11 @@ export default function ContactLayout({
           "@type": "ContactPage",
           "name": "Contact Us | Aryavart Ancient Academy",
           "description": "Get in touch with Aryavart Ancient Academy. We're here to answer your questions and provide information about admissions, academics, and more.",
-          "url": "https://aaaschool.in/contact",
+          "url": "https://www.aaaschool.in/contact",
           "isPartOf": {
             "@type": "WebSite",
             "name": "Aryavart Ancient Academy",
-            "url": "https://aaaschool.in"
+            "url": "https://www.aaaschool.in"
           },
           "about": {
             "@type": "EducationalOrganization",

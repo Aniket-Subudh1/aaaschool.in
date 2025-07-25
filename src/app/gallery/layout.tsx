@@ -4,7 +4,7 @@ import NavBar from "@/components/ui/nav-bar";
 import Footer from "@/components/ui/footer";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://aaaschool.in"),
+  metadataBase: new URL("https://www.aaaschool.in"),
   title: "School Gallery | Aryavart Ancient Academy - Photos & Videos",
   description:
     "Browse photos, videos, and news from Aryavart Ancient Academy's cultural events, educational activities, and student achievements. Explore our vibrant campus life through our comprehensive media gallery.",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    url: "https://aaaschool.in/gallery",
+    url: "https://www.aaaschool.in/gallery",
     title: "School Gallery | Aryavart Ancient Academy",
     description:
       "Explore our rich collection of photos, videos, and news bulletins showcasing the vibrant life at Aryavart Ancient Academy.",
@@ -68,9 +68,9 @@ export default function GalleryLayout({
           "publisher": {
             "@type": "EducationalOrganization",
             "name": "Aryavart Ancient Academy",
-            "logo": "https://aaaschool.in/aaa.png",
+            "logo": "https://www.aaaschool.in/aaa.png",
           },
-          "url": "https://aaaschool.in/gallery",
+          "url": "https://www.aaaschool.in/gallery",
           "mainEntity": {
             "@type": "ItemList",
             "itemListElement": [

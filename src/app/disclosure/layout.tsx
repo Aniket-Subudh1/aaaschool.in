@@ -4,7 +4,7 @@ import Footer from "@/components/ui/footer";
 import NavBar from "@/components/ui/nav-bar";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://aaaschool.in"),
+  metadataBase: new URL("https://www.aaaschool.in"),
   title: "Mandatory Disclosure | Aryavart Ancient Academy - CBSE Compliance",
   description:
     "Mandatory public disclosure of Aryavart Ancient Academy as per CBSE requirements, including general information, documents, academic results, staff details, and infrastructure. Ensuring transparency and compliance with educational standards.",
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    url: "https://aaaschool.in/disclosure",
+    url: "https://www.aaaschool.in/disclosure",
     title: "Mandatory Disclosure | Aryavart Ancient Academy",
     description:
       "Access mandatory public disclosure information of Aryavart Ancient Academy as per CBSE requirements. Review our academic standards, infrastructure, and compliance documentation.",
@@ -62,11 +62,11 @@ export default function DisclosureLayout({
           "@type": "WebPage",
           "name": "Mandatory Disclosure | Aryavart Ancient Academy",
           "description": "Mandatory public disclosure of Aryavart Ancient Academy as per CBSE requirements",
-          "url": "https://aaaschool.in/disclosure",
+          "url": "https://www.aaaschool.in/disclosure",
           "isPartOf": {
             "@type": "WebSite",
             "name": "Aryavart Ancient Academy",
-            "url": "https://aaaschool.in"
+            "url": "https://www.aaaschool.in"
           },
           "about": {
             "@type": "EducationalOrganization",

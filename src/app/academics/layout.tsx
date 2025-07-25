@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://aaaschool.in"),
+  metadataBase: new URL("https://www.aaaschool.in"),
   title: "Academics | Aryavart Ancient Academy - CBSE Curriculum Excellence",
   description:
     "Discover our comprehensive academic programs combining traditional wisdom with modern CBSE curriculum. Explore our faculty, courses, and educational approach at Aryavart Ancient Academy.",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    url: "https://aaaschool.in/academics",
+    url: "https://www.aaaschool.in/academics",
     title: "Academics | Aryavart Ancient Academy",
     description:
       "Explore our academic excellence, learn about our faculty, curriculum, teaching methodology, and educational programs at Aryavart Ancient Academy.",
@@ -64,11 +64,11 @@ export default function AcademicsLayout({
           "@type": "WebPage",
           "name": "Academics | Aryavart Ancient Academy",
           "description": "Comprehensive academic programs from primary to secondary education combining traditional wisdom with modern curriculum",
-          "url": "https://aaaschool.in/academics",
+          "url": "https://www.aaaschool.in/academics",
           "isPartOf": {
             "@type": "WebSite",
             "name": "Aryavart Ancient Academy",
-            "url": "https://aaaschool.in"
+            "url": "https://www.aaaschool.in"
           },
           "about": {
             "@type": "EducationalOrganization",

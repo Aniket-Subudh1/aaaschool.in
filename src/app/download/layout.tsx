@@ -4,7 +4,7 @@ import Footer from "@/components/ui/footer";
 import NavBar from "@/components/ui/nav-bar";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://aaaschool.in"),
+  metadataBase: new URL("https://www.aaaschool.in"),
   title: "Download Center | Aryavart Ancient Academy - Academic Resources",
   description:
     "Access and download academic resources, study materials, syllabus, and important documents from Aryavart Ancient Academy. Keep up with your educational needs with our comprehensive collection of downloadable resources.",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    url: "https://aaaschool.in/download",
+    url: "https://www.aaaschool.in/download",
     title: "Download Center | Aryavart Ancient Academy",
     description:
       "Access and download academic materials, syllabus, and important documents. Find all the resources you need for your academic journey.",
@@ -63,11 +63,11 @@ export default function DownloadLayout({
           "@type": "WebPage",
           "name": "Download Center | Aryavart Ancient Academy",
           "description": "Access and download academic resources, study materials, syllabus, and important documents from Aryavart Ancient Academy",
-          "url": "https://aaaschool.in/download",
+          "url": "https://www.aaaschool.in/download",
           "isPartOf": {
             "@type": "WebSite",
             "name": "Aryavart Ancient Academy",
-            "url": "https://aaaschool.in"
+            "url": "https://www.aaaschool.in"
           },
           "mainEntity": {
             "@type": "ItemList",

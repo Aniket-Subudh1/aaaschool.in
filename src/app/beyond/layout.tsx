@@ -4,7 +4,7 @@ import Footer from "@/components/ui/footer";
 import NavBar from "@/components/ui/nav-bar";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://aaaschool.in"),
+  metadataBase: new URL("https://www.aaaschool.in"),
   title: "Beyond Academics | Aryavart Ancient Academy - Extracurricular Excellence",
   description:
     "Explore our comprehensive Beyond Academics programs including clubs, sports, and service units that nurture talents, build character, and develop holistic individuals at Aryavart Ancient Academy.",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    url: "https://aaaschool.in/beyond",
+    url: "https://www.aaaschool.in/beyond",
     title: "Beyond Academics | Aryavart Ancient Academy",
     description:
       "Discover a world of opportunities beyond the classroom through our diverse range of clubs, sports programs, and service units that develop skills, character, and talents.",
@@ -64,11 +64,11 @@ export default function BeyondAcademicsLayout({
           "@type": "WebPage",
           "name": "Beyond Academics Programs at Aryavart Ancient Academy",
           "description": "Comprehensive extracurricular programs including clubs, sports, and service units that nurture talents and build character",
-          "url": "https://aaaschool.in/beyond",
+          "url": "https://www.aaaschool.in/beyond",
           "isPartOf": {
             "@type": "WebSite",
             "name": "Aryavart Ancient Academy",
-            "url": "https://aaaschool.in"
+            "url": "https://www.aaaschool.in"
           },
           "mainEntity": {
             "@type": "ItemList",

@@ -5,7 +5,7 @@ import Footer from "@/components/ui/footer";
 import Script from "next/script";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://aaaschool.in"),
+  metadataBase: new URL("https://www.aaaschool.in"),
   title: "About Aryavart Ancient Academy | Holistic Education in Khordha, Odisha",
   description:
     "Discover Aryavart Ancient Academy's rich history, mission, vision, and our commitment to blending modern education with ancient wisdom in Khordha, Odisha.",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: "About Aryavart Ancient Academy | Leading School in Odisha",
     description:
       "Learn about our journey of excellence in education, blending modern curriculum with timeless Indian values and heritage at Aryavart Ancient Academy.",
-    url: "https://aaaschool.in/about",
+    url: "https://www.aaaschool.in/about",
     type: "website",
     images: [
       {
@@ -67,15 +67,15 @@ export default function AboutLayout({
           "isPartOf": {
             "@type": "WebSite",
             "name": "Aryavart Ancient Academy",
-            "url": "https://aaaschool.in"
+            "url": "https://www.aaaschool.in"
           },
           "mainEntity": {
             "@type": "EducationalOrganization",
             "name": "Aryavart Ancient Academy",
             "description": "A premier educational institution in Khordha, Odisha, offering holistic education blending modern curriculum with ancient wisdom",
             "foundingDate": "2010",
-            "url": "https://aaaschool.in",
-            "logo": "https://aaaschool.in/aaa.png",
+            "url": "https://www.aaaschool.in",
+            "logo": "https://www.aaaschool.in/aaa.png",
             "address": {
               "@type": "PostalAddress",
               "streetAddress": "School Address Line",

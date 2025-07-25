@@ -12,7 +12,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://aaaschool.in"),
+  metadataBase: new URL("https://www.aaaschool.in"),
   title: "Aryavart Ancient Academy - Premier CBSE School in Khordha, Odisha",
   description:
     "Aryavart Ancient Academy offers transformative holistic education blending modern CBSE curriculum with ancient wisdom. Located in Khordha, Odisha, we nurture well-rounded global citizens through quality education, extracurricular activities, and cultural values.",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     title: "Aryavart Ancient Academy - Premier CBSE School in Khordha, Odisha",
     description:
       "Join a pioneering educational institution that blends modern CBSE curriculum with ancient Indian wisdom to nurture well-rounded global citizens in Khordha, Odisha.",
-    url: "https://aaaschool.in",
+    url: "https://www.aaaschool.in",
     type: "website",
     images: [
       {

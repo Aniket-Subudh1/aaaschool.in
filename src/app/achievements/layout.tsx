@@ -4,7 +4,7 @@ import Footer from "@/components/ui/footer";
 import NavBar from "@/components/ui/nav-bar";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://aaaschool.in"),
+  metadataBase: new URL("https://www.aaaschool.in"),
   title: "Achievements | Aryavart Ancient Academy - Student Success Stories",
   description:
     "Explore the remarkable achievements of students, alumni, and faculty at Aryavart Ancient Academy. Discover academic excellence, sports accomplishments, and notable success stories from Khordha's premier educational institution.",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    url: "https://aaaschool.in/achievements",
+    url: "https://www.aaaschool.in/achievements",
     title: "Achievements | Aryavart Ancient Academy",
     description:
       "Explore our students' and alumni's achievements in academics, sports, and beyond. Celebrating excellence at Aryavart Ancient Academy.",
@@ -64,11 +64,11 @@ export default function AchievementsLayout({
           "@type": "WebPage",
           "name": "Achievements | Aryavart Ancient Academy",
           "description": "Explore the remarkable achievements of students, alumni, and faculty at Aryavart Ancient Academy",
-          "url": "https://aaaschool.in/achievements",
+          "url": "https://www.aaaschool.in/achievements",
           "isPartOf": {
             "@type": "WebSite",
             "name": "Aryavart Ancient Academy",
-            "url": "https://aaaschool.in"
+            "url": "https://www.aaaschool.in"
           },
           "mainEntity": {
             "@type": "ItemList",

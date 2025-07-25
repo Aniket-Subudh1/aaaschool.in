@@ -5,7 +5,7 @@ import NavBar from "@/components/ui/nav-bar";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://aaaschool.in"),
+  metadataBase: new URL("https://www.aaaschool.in"),
   title: "Admission Process | Aryavart Ancient Academy - Join Our School",
   description:
     "Comprehensive admission process for Aryavart Ancient Academy. Discover our streamlined steps for student enrollment, enquiry, and application. Join our premier CBSE school in Khordha, Odisha for a holistic educational experience.",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    url: "https://aaaschool.in/admission",
+    url: "https://www.aaaschool.in/admission",
     title: "Admission Process | Aryavart Ancient Academy",
     description:
       "Navigate the admission journey at Aryavart Ancient Academy with our user-friendly process. Start your child's educational journey with us today.",
@@ -65,11 +65,11 @@ export default function AdmissionLayout({
           "@type": "WebPage",
           "name": "Admission Process | Aryavart Ancient Academy",
           "description": "Comprehensive admission process for student enrollment at Aryavart Ancient Academy",
-          "url": "https://aaaschool.in/admission",
+          "url": "https://www.aaaschool.in/admission",
           "isPartOf": {
             "@type": "WebSite",
             "name": "Aryavart Ancient Academy",
-            "url": "https://aaaschool.in"
+            "url": "https://www.aaaschool.in"
           },
           "mainEntity": {
             "@type": "HowTo",

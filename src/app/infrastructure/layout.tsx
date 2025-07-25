@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://aaaschool.in"),
+  metadataBase: new URL("https://www.aaaschool.in"),
   title: "World-Class Infrastructure | Aryavart Ancient Academy - Modern Facilities",
   description:
     "Explore our state-of-the-art campus, modern laboratories, sports facilities, and specialized learning spaces designed to nurture holistic education at Aryavart Ancient Academy in Khordha, Odisha.",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: "World-Class Infrastructure | Aryavart Ancient Academy",
     description:
       "Explore our campus featuring modern classrooms, laboratories, sports facilities, and specialized learning spaces designed for holistic education.",
-    url: "https://aaaschool.in/infrastructure",
+    url: "https://www.aaaschool.in/infrastructure",
     type: "website",
     images: [
       {
@@ -66,11 +66,11 @@ export default function InfrastructureLayout({
           "@type": "WebPage",
           "name": "Infrastructure | Aryavart Ancient Academy",
           "description": "Explore our world-class infrastructure and facilities designed to provide an optimal learning environment",
-          "url": "https://aaaschool.in/infrastructure",
+          "url": "https://www.aaaschool.in/infrastructure",
           "isPartOf": {
             "@type": "WebSite",
             "name": "Aryavart Ancient Academy",
-            "url": "https://aaaschool.in"
+            "url": "https://www.aaaschool.in"
           },
           "about": {
             "@type": "EducationalOrganization",
