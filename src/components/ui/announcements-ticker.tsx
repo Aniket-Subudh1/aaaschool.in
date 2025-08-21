@@ -205,11 +205,7 @@ export default function AnnouncementsTicker() {
         setHasRealData(true);
       } else {
         setAnnouncements([
-          "🎓 Admission for the new academic year 2025-26 is now open - Apply today!",
-          "👥 Parent-Teacher Meeting scheduled for next Friday at 2:00 PM",
-          "🏆 Congratulations to our students for excellent board exam results - 98% pass rate!",
-          "📚 New library books have arrived - Check out the latest collection",
-          "🎨 Annual Art Exhibition will be held on March 15th - Submit your entries now",
+          "No Notifications",
         ]);
         setHasRealData(false);
       }
@@ -218,11 +214,7 @@ export default function AnnouncementsTicker() {
       setError("Failed to load announcements");
 
       setAnnouncements([
-        "🎓 Admission for the new academic year 2025-26 is now open - Apply today!",
-        "👥 Parent-Teacher Meeting scheduled for next Friday at 2:00 PM",
-        "🏆 Congratulations to our students for excellent board exam results - 98% pass rate!",
-        "📚 New library books have arrived - Check out the latest collection",
-        "🎨 Annual Art Exhibition will be held on March 15th - Submit your entries now",
+        "No Notifications",
       ]);
       setHasRealData(false);
     } finally {
@@ -457,7 +449,7 @@ export default function AnnouncementsTicker() {
               }`}></div>
               <span className="text-xs text-[#5a3e36]">
                 {autoplay && !isPaused ? 'Auto' : 'Paused'}
-                {!hasRealData && <span className="text-[#8b1a1a]"> (Demo)</span>}
+                {!hasRealData && <span className="text-[#8b1a1a]"> </span>}
               </span>
             </div>
           </div>
@@ -490,7 +482,7 @@ export default function AnnouncementsTicker() {
           }`}></div>
           <span className="text-xs text-[#5a3e36]">
             {autoplay && !isPaused ? 'Auto-playing' : 'Paused'} • {announcements.length} announcements
-            {!hasRealData && <span className="text-[#8b1a1a]"> (Demo)</span>}
+            {!hasRealData && <span className="text-[#8b1a1a]"> </span>}
           </span>
         </div>
 
