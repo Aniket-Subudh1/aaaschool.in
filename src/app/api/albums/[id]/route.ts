@@ -49,7 +49,7 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const { title, description, active } = body;
+    const { title, description, customDate, active } = body; 
     
     if (!title) {
       return NextResponse.json(
@@ -61,6 +61,7 @@ export async function PUT(
     const updateResult = await updateAlbum(params.id, {
       title,
       description,
+      customDate,
       active
     });
     
@@ -124,7 +125,7 @@ export async function DELETE(
         await deleteFromCloudinary(photo.imagePublicId);
       } catch (cloudinaryError) {
         console.error(`Error deleting photo ${photo._id} from Cloudinary:`, cloudinaryError);
-        // Continue with deletion even if Cloudinary deletion fails
+       
       }
     }
     

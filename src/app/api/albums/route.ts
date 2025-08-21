@@ -34,6 +34,7 @@ export async function POST(request: NextRequest) {
     // Extract form fields
     const title = formData.get('title') as string;
     const description = formData.get('description') as string;
+    const customDate = formData.get('customDate') as string; // New field
     const active = formData.get('active') === 'true';
     
     if (!title) {
@@ -70,6 +71,7 @@ export async function POST(request: NextRequest) {
     const newAlbum = await createAlbum({
       title,
       description,
+      customDate, 
       coverImageUrl: uploadResult.secure_url,
       coverImagePublicId: uploadResult.public_id,
       active

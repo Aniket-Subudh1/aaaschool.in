@@ -24,6 +24,7 @@ type Album = {
   title: string;
   coverImageUrl: string;
   imageCount: number;
+  customDate?: string;
   createdAt: string;
 };
 
@@ -88,9 +89,11 @@ export default function GalleryPage() {
     fetchGalleryData();
   }, []);
 
-  const formatDate = (dateString: string) => {
-    if (!dateString) return "N/A";
-    const date = new Date(dateString);
+  // Format date function - use customDate if available for albums, otherwise use original date
+  const formatDate = (dateString: string, customDate?: string) => {
+    const dateToUse = customDate || dateString;
+    if (!dateToUse) return "N/A";
+    const date = new Date(dateToUse);
     return date.toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
@@ -365,7 +368,7 @@ export default function GalleryPage() {
                             <div className="p-3">
                               <div className="flex items-center text-xs text-gray-500">
                                 <CalendarDays size={12} className="mr-1" />
-                                {formatDate(album.createdAt)}
+                                {formatDate(album.createdAt, album.customDate)}
                               </div>
                             </div>
                           </Link>

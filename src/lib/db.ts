@@ -1,5 +1,5 @@
 import getClientPromise from "./mongodb";
-import { Announcement, Notification, Holiday, Feedback, AdminUser, Admission, Enquiry, StudyMaterial, Album, Photo, Video, NewsBulletin, Award, SportsAchievement, AlumniProfile, Faculty, AcademicAchievement } from "./models";
+import { Announcement, Notification, Holiday,Banner,Feedback, AdminUser, Admission, Enquiry, StudyMaterial, Album, Photo, Video, NewsBulletin, Award, SportsAchievement, AlumniProfile, Faculty, AcademicAchievement } from "./models";
 import { ObjectId } from "mongodb";
 
 export async function getCollection(name: string) {
@@ -959,6 +959,72 @@ export async function updateAcademicAchievement(id: string, achievement: Partial
 
 export async function deleteAcademicAchievement(id: string) {
   const collection = await getCollection(ACADEMIC_ACHIEVEMENTS_COLLECTION);
+  const result = await collection.deleteOne({ _id: new ObjectId(id) });
+  return result;
+}
+
+export async function getBanners(onlyActive = false) {
+  const collection = await getCollection("banners");
+  let query: Record<string, unknown> = {};
+  
+  if (onlyActive) {
+    const now = new Date();
+    query = {
+      $and: [
+        { active: true },
+        {
+          $or: [
+            { startDate: { $exists: false } },
+            { startDate: null },
+            { startDate: { $lte: now.toISOString() } }
+          ]
+        },
+        {
+          $or: [
+            { endDate: { $exists: false } },
+            { endDate: null },
+            { endDate: { $gte: now.toISOString() } }
+          ]
+        }
+      ]
+    };
+  }
+  
+  return collection.find(query).sort({ order: 1 }).toArray();
+}
+
+export async function getBannerById(id: string) {
+  const collection = await getCollection("banners");
+  return collection.findOne({ _id: new ObjectId(id) });
+}
+
+export async function createBanner(
+  banner: Omit<Banner, "_id" | "createdAt" | "updatedAt">
+) {
+  const collection = await getCollection("banners");
+  const now = new Date();
+  const newBanner = {
+    ...banner,
+    createdAt: now,
+    updatedAt: now,
+  };
+  const result = await collection.insertOne(newBanner);
+  return { ...newBanner, _id: result.insertedId };
+}
+
+export async function updateBanner(id: string, banner: Partial<Banner>) {
+  const collection = await getCollection("banners");
+  const now = new Date();
+  const updateData = {
+    ...banner,
+    updatedAt: now,
+  };
+  const result = await collection.updateOne({ _id: new ObjectId(id) }, { $set: updateData });
+  return result;
+}
+
+export async function deleteBanner(id: string) {
+  const collection = await getCollection("banners");
   const result = await collection.deleteOne({ _id: new ObjectId(id) });
   return result;
 }

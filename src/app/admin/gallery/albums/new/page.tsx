@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Upload, X, ImageOff } from "lucide-react";
+import { ArrowLeft, Upload, X, ImageOff, Calendar } from "lucide-react";
 import { FormControls } from "@/components/admin/FormControls";
 import { authFetch } from "@/lib/authFetch";
 
@@ -14,6 +14,7 @@ export default function NewAlbumPage() {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    customDate: new Date().toISOString().split("T")[0], 
     active: true,
   });
   const [coverImage, setCoverImage] = useState<File | null>(null);
@@ -99,6 +100,7 @@ export default function NewAlbumPage() {
       const submitData = new FormData();
       submitData.append("title", formData.title);
       submitData.append("description", formData.description);
+      submitData.append("customDate", formData.customDate); // Include custom date
       submitData.append("active", formData.active.toString());
       submitData.append("coverImage", coverImage);
 
@@ -149,7 +151,7 @@ export default function NewAlbumPage() {
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md mb-6">
+          <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md mx-6 mt-6">
             {error}
           </div>
         )}
@@ -190,6 +192,33 @@ export default function NewAlbumPage() {
               className="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
               placeholder="Enter album description (optional)"
             ></textarea>
+          </div>
+
+          {/* New Custom Date Field */}
+          <div className="mb-6">
+            <label
+              htmlFor="customDate"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Album Date <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Calendar size={18} className="text-gray-400" />
+              </div>
+              <input
+                type="date"
+                id="customDate"
+                name="customDate"
+                value={formData.customDate}
+                onChange={handleChange}
+                className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#8b1a1a]/50"
+                required
+              />
+            </div>
+            <p className="mt-1 text-xs text-gray-500">
+              This date will be displayed on the website for this album
+            </p>
           </div>
 
           <div className="mb-6">

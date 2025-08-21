@@ -24,6 +24,7 @@ type Album = {
   coverImageUrl: string;
   imageCount: number;
   active: boolean;
+  customDate?: string; // New field for custom date
   createdAt: string;
 };
 
@@ -57,12 +58,13 @@ export default function PhotoGalleryPage() {
       setAlbums(albumsData);
       setFilteredAlbums(albumsData);
 
-      // Extract years for filtering
+      // Extract years for filtering - use customDate if available, otherwise createdAt
       const uniqueYears = Array.from(
         new Set(
-          albumsData.map((album) =>
-            new Date(album.createdAt).getFullYear().toString()
-          )
+          albumsData.map((album) => {
+            const dateToUse = album.customDate || album.createdAt;
+            return new Date(dateToUse).getFullYear().toString();
+          })
         )
       ).sort((a, b) => parseInt(b) - parseInt(a)); // Sort descending (newest first)
 
@@ -89,21 +91,22 @@ export default function PhotoGalleryPage() {
       );
     }
 
-    // Apply year filter
+    // Apply year filter - use customDate if available, otherwise createdAt
     if (selectedYear) {
-      results = results.filter(
-        (album) =>
-          new Date(album.createdAt).getFullYear().toString() === selectedYear
-      );
+      results = results.filter((album) => {
+        const dateToUse = album.customDate || album.createdAt;
+        return new Date(dateToUse).getFullYear().toString() === selectedYear;
+      });
     }
 
     setFilteredAlbums(results);
   }, [searchQuery, selectedYear, albums]);
 
-  // Format date function
-  const formatDate = (dateString: string) => {
-    if (!dateString) return "N/A";
-    const date = new Date(dateString);
+  // Format date function - use customDate if available, otherwise createdAt
+  const formatDate = (album: Album) => {
+    const dateToUse = album.customDate || album.createdAt;
+    if (!dateToUse) return "N/A";
+    const date = new Date(dateToUse);
     return date.toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
@@ -370,7 +373,7 @@ export default function PhotoGalleryPage() {
                   <div className="p-4 flex justify-between items-center">
                     <div className="flex items-center text-sm text-gray-500">
                       <CalendarDays size={14} className="mr-1" />
-                      {formatDate(album.createdAt)}
+                      {formatDate(album)}
                     </div>
                     <div className="text-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity flex items-center text-sm font-medium">
                       View Album

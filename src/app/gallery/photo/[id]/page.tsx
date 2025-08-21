@@ -28,6 +28,7 @@ type Album = {
   coverImageUrl: string;
   imageCount: number;
   active: boolean;
+  customDate?: string; 
   createdAt: string;
 };
 
@@ -51,9 +52,6 @@ export default function AlbumDetailPage() {
   const [gridColumns, setGridColumns] = useState<2 | 3>(3);
   const [showShare, setShowShare] = useState(false);
 
-  /* ------------------------------------------------------------------ */
-  /*                         DATA FETCHING                              */
-  /* ------------------------------------------------------------------ */
 
   useEffect(() => {
     fetchAlbumDetails();
@@ -82,10 +80,6 @@ export default function AlbumDetailPage() {
       setIsLoading(false);
     }
   };
-
-  /* ------------------------------------------------------------------ */
-  /*                       LIGHTBOX HANDLERS                            */
-  /* ------------------------------------------------------------------ */
 
   const openLightbox = (index: number) => {
     setActivePhotoIndex(index);
@@ -129,13 +123,10 @@ export default function AlbumDetailPage() {
     };
   }, [handleKeyDown]);
 
-  /* ------------------------------------------------------------------ */
-  /*                          UTILITIES                                 */
-  /* ------------------------------------------------------------------ */
-
-  const formatDate = (dateString: string) => {
-    if (!dateString) return "N/A";
-    return new Date(dateString).toLocaleDateString("en-US", {
+  const formatDate = (album: Album) => {
+    const dateToUse = album.customDate || album.createdAt;
+    if (!dateToUse) return "N/A";
+    return new Date(dateToUse).toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -148,9 +139,6 @@ export default function AlbumDetailPage() {
     setShowShare(false);
   };
 
-  /* ------------------------------------------------------------------ */
-  /*                             VARIANTS                               */
-  /* ------------------------------------------------------------------ */
 
   const staggerContainer = {
     hidden: { opacity: 0 },
@@ -169,9 +157,6 @@ export default function AlbumDetailPage() {
     },
   };
 
-  /* ------------------------------------------------------------------ */
-  /*                     OUTSIDE-CLICK for SHARE                        */
-  /* ------------------------------------------------------------------ */
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -182,9 +167,6 @@ export default function AlbumDetailPage() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showShare]);
 
-  /* ------------------------------------------------------------------ */
-  /*                               RENDER                               */
-  /* ------------------------------------------------------------------ */
 
   if (isLoading)
     return (
@@ -231,17 +213,11 @@ export default function AlbumDetailPage() {
       backgroundClass="from-indigo-600 to-blue-600"
     >
       <div className="max-w-7xl mx-auto px-3 md:px-4 py-6 md:py-12">
-        {/* ------------------------------------------------------------------ */}
-        {/*                      ALBUM META CARD (fixed)                       */}
-        {/* ------------------------------------------------------------------ */}
+    
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          /* ----------------------------------------------------------- */
-          /*  FIX: allow share‑dropdown to escape card’s bounding box   */
-          /* ----------------------------------------------------------- */
-          className="mb-8 bg-white rounded-xl shadow-md overflow-visible   // ★ changed
-                     border border-gray-100 relative" // ★ changed
+          className="mb-8 bg-white rounded-xl shadow-md overflow-visible border border-gray-100 relative"
         >
           <div className="md:flex">
             <div className="md:flex-shrink-0 md:w-64 h-full">
@@ -276,7 +252,7 @@ export default function AlbumDetailPage() {
               <div className="mt-4 flex flex-wrap items-center text-sm text-gray-500 gap-4">
                 <div className="flex items-center">
                   <Calendar size={16} className="mr-1 text-gray-400" />
-                  {formatDate(album.createdAt)}
+                  {formatDate(album)}
                 </div>
                 <div className="flex items-center">
                   <Camera size={16} className="mr-1 text-gray-400" />

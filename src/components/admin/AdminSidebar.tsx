@@ -14,6 +14,7 @@ import {
   Award,
   BookOpen,
   FolderOpen,
+  Image,
 } from "lucide-react";
 
 interface SidebarLink {
@@ -46,6 +47,11 @@ export default function AdminSidebar() {
       href: "/admin/admissions",
       icon: <ClipboardCheck size={20} />,
     },
+    {
+  name: "Banners",
+  href: "/admin/banners",
+  icon: <Image size={20} />,
+},
     {
       name: "Announcements",
       href: "/admin/announcements",

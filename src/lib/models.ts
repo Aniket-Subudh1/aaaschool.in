@@ -203,6 +203,7 @@ export interface Album {
   coverImageUrl: string;
   coverImagePublicId: string;
   imageCount: number;
+  customDate?: string;
   active: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -310,6 +311,20 @@ export interface AcademicAchievement {
   achievement: string;
   year: string;
   active: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Banner {
+  _id?: string;
+  title: string;
+  imageUrl: string;
+  imagePublicId: string;
+  linkUrl?: string; 
+  order: number; 
+  active: boolean;
+  startDate?: string;
+  endDate?: string;
   createdAt: Date;
   updatedAt: Date;
 }
