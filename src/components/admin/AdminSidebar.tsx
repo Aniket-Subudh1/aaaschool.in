@@ -7,7 +7,6 @@ import {
   Bell,
   Calendar,
   MessageSquare,
-  Settings,
   ClipboardCheck,
   FileText,
   GraduationCap,
@@ -131,11 +130,6 @@ export default function AdminSidebar() {
         },
         
       ],
-    },
-    {
-      name: "Settings",
-      href: "/admin/settings",
-      icon: <Settings size={20} />,
     },
   ];
 
