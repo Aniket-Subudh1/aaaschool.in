@@ -4,6 +4,7 @@ import "./globals.css";
 import clsx from "clsx";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ClientWrapper } from "@/components/ui/client-wrapper";
+import GlobalBannerProvider from "@/components/ui/global-banner-provider";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -81,7 +82,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ClientWrapper>
-            {children}
+            <GlobalBannerProvider>
+              {children}
+            </GlobalBannerProvider>
           </ClientWrapper>
         </ThemeProvider>
       </body>

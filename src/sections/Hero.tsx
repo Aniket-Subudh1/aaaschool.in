@@ -23,7 +23,6 @@ import NavBar from "@/components/ui/nav-bar";
 import Footer from "@/components/ui/footer";
 import StudentTestimonials from "@/components/ui/student-testimonials";
 import HeaderAcademyLogo from "@/components/ui/header-academylogo";
-import BannerPopup from "@/components/ui/banner-popup";
 
 const featureImages = [
   {
@@ -56,16 +55,6 @@ export const Hero = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
 
-  // Banner-related state
-  const [banners, setBanners] = useState<Array<{
-    _id: string;
-    title: string;
-    imageUrl: string;
-    linkUrl?: string;
-    order: number;
-  }>>([]);
-  const [showBannerPopup, setShowBannerPopup] = useState(false);
-
   const nextImage = useCallback(() => {
     setCurrentImageIndex((prev) => (prev + 1) % featureImages.length);
   }, []);
@@ -85,49 +74,11 @@ export const Hero = () => {
     return () => clearInterval(interval);
   }, [isPlaying, nextImage]);
 
-  // Banner fetching effect
-  useEffect(() => {
-    const fetchBanners = async () => {
-      try {
-        const response = await fetch('/api/banners?active=true');
-        if (response.ok) {
-          const data = await response.json();
-          if (Array.isArray(data) && data.length > 0) {
-            setBanners(data);
-            // Show banner popup only once per session
-            const sessionKey = 'banner-popup-shown';
-            const popupShown = sessionStorage.getItem(sessionKey);
-            if (!popupShown) {
-              setShowBannerPopup(true);
-              sessionStorage.setItem(sessionKey, 'true');
-            }
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching banners:', error);
-      }
-    };
-
-    fetchBanners();
-  }, []);
-
-  const handleCloseBannerPopup = () => {
-    setShowBannerPopup(false);
-  };
-
   const currentImage = featureImages[currentImageIndex];
 
   return (
     <main className="min-h-screen bg-[#f8f3e9] overflow-x-hidden">
       <NavBar />
-      
-      {/* Banner Popup */}
-      {showBannerPopup && banners.length > 0 && (
-        <BannerPopup 
-          banners={banners} 
-          onClose={handleCloseBannerPopup} 
-        />
-      )}
 
       {/* Hero Section */}
       <section className="relative overflow-hidden">
