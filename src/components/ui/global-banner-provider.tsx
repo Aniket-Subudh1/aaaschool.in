@@ -20,38 +20,38 @@ export default function GlobalBannerProvider({ children }: GlobalBannerProviderP
   const [banners, setBanners] = useState<Banner[]>([]);
   const [showBannerPopup, setShowBannerPopup] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
- 
-    const isPageRefresh = () => {
+    const shouldShowBanner = () => {
       if (typeof window !== 'undefined' && window.performance) {
         const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-        return navigation.type === 'reload';
+        // Show banner on reload or navigate (first visit)
+        return navigation.type === 'reload' || navigation.type === 'navigate';
       }
       
+      // Fallback: check if this is a fresh session
       try {
         const hasNavigated = sessionStorage.getItem('has-navigated');
         return !hasNavigated;
       } catch {
-        return true; 
+        return true;
       }
     };
 
-    if (isInitialLoad && isPageRefresh()) {
+    if (shouldShowBanner()) {
       fetchBanners();
     } else {
       setIsLoading(false);
     }
 
-    setIsInitialLoad(false);
-
+    // Mark that we've navigated (for route changes)
     try {
       sessionStorage.setItem('has-navigated', 'true');
     } catch {
+      // Handle cases where sessionStorage is not available
     }
-  }, [isInitialLoad]);
+  }, []);
 
   useEffect(() => {
     const handlePopState = () => {
@@ -68,8 +68,10 @@ export default function GlobalBannerProvider({ children }: GlobalBannerProviderP
   useEffect(() => {
     const handleBeforeUnload = () => {
       try {
+        // Clear the flag when leaving the page completely
         sessionStorage.removeItem('has-navigated');
       } catch {
+        // Handle cases where sessionStorage is not available
       }
     };
 
@@ -108,8 +110,8 @@ export default function GlobalBannerProvider({ children }: GlobalBannerProviderP
       
       {!isLoading && showBannerPopup && banners.length > 0 && (
         <BannerPopup 
-          banners={banners} 
-          onClose={handleCloseBannerPopup} 
+          banners={banners}
+          onClose={handleCloseBannerPopup}
         />
       )}
     </>
