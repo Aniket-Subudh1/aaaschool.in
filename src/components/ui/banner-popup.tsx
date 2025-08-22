@@ -21,6 +21,7 @@ interface BannerPopupProps {
 export default function BannerPopup({ banners, onClose }: BannerPopupProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
+  const [imageDimensions, setImageDimensions] = useState<{[key: string]: {width: number, height: number}}>({});
 
   const handleClose = () => {
     setIsVisible(false);
@@ -42,6 +43,40 @@ export default function BannerPopup({ banners, onClose }: BannerPopupProps) {
     setCurrentIndex((prev) => (prev - 1 + banners.length) % banners.length);
   };
 
+  // Load image dimensions for all banners
+  useEffect(() => {
+    const loadImageDimensions = async () => {
+      const dimensions: {[key: string]: {width: number, height: number}} = {};
+      
+      for (const banner of banners) {
+        try {
+          const img = new window.Image();
+          await new Promise((resolve, reject) => {
+            img.onload = () => {
+              dimensions[banner._id] = {
+                width: img.naturalWidth,
+                height: img.naturalHeight
+              };
+              resolve(null);
+            };
+            img.onerror = reject;
+            img.src = banner.imageUrl;
+          });
+        } catch (error) {
+          console.error(`Failed to load image dimensions for banner ${banner._id}:`, error);
+          // Fallback dimensions
+          dimensions[banner._id] = { width: 1200, height: 600 };
+        }
+      }
+      
+      setImageDimensions(dimensions);
+    };
+
+    if (banners.length > 0) {
+      loadImageDimensions();
+    }
+  }, [banners]);
+
   // Auto-advance for multiple banners
   useEffect(() => {
     if (banners.length <= 1) return;
@@ -56,6 +91,44 @@ export default function BannerPopup({ banners, onClose }: BannerPopupProps) {
   if (banners.length === 0) return null;
 
   const currentBanner = banners[currentIndex];
+  const currentDimensions = imageDimensions[currentBanner._id];
+
+  // Calculate responsive dimensions while maintaining aspect ratio
+  const getResponsiveDimensions = () => {
+    if (!currentDimensions) {
+      return { width: '100%', height: 'auto', maxWidth: '90vw', maxHeight: '90vh' };
+    }
+
+    const { width: naturalWidth, height: naturalHeight } = currentDimensions;
+    const aspectRatio = naturalWidth / naturalHeight;
+    
+    // Get viewport dimensions
+    const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 1200;
+    const viewportHeight = typeof window !== 'undefined' ? window.innerHeight : 800;
+    
+    // Maximum dimensions (90% of viewport)
+    const maxWidth = Math.min(viewportWidth * 0.9, 1400); // Cap at 1400px
+    const maxHeight = Math.min(viewportHeight * 0.9, 900); // Cap at 900px
+    
+    // Calculate dimensions maintaining aspect ratio
+    let finalWidth = Math.min(naturalWidth, maxWidth);
+    let finalHeight = finalWidth / aspectRatio;
+    
+    // If height exceeds max height, recalculate based on height
+    if (finalHeight > maxHeight) {
+      finalHeight = maxHeight;
+      finalWidth = finalHeight * aspectRatio;
+    }
+    
+    return {
+      width: finalWidth,
+      height: finalHeight,
+      maxWidth: 'none',
+      maxHeight: 'none'
+    };
+  };
+
+  const responsiveDimensions = getResponsiveDimensions();
 
   return (
     <AnimatePresence>
@@ -75,13 +148,19 @@ export default function BannerPopup({ banners, onClose }: BannerPopupProps) {
             aria-label="Close banner"
           />
           
-          {/* Banner Container */}
+          {/* Banner Container with dynamic dimensions */}
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="relative max-w-4xl w-full max-h-[90vh] bg-white rounded-2xl shadow-2xl overflow-hidden"
+            className="relative bg-white rounded-2xl shadow-2xl overflow-hidden"
+            style={{
+              width: responsiveDimensions.width,
+              height: responsiveDimensions.height,
+              maxWidth: responsiveDimensions.maxWidth,
+              maxHeight: responsiveDimensions.maxHeight,
+            }}
             onClick={(e) => e.stopPropagation()} // Prevent closing when clicking banner
           >
             {/* Close Button */}
@@ -118,29 +197,31 @@ export default function BannerPopup({ banners, onClose }: BannerPopupProps) {
               className={`relative w-full h-full ${currentBanner.linkUrl ? 'cursor-pointer' : ''}`}
               onClick={currentBanner.linkUrl ? handleBannerClick : undefined}
             >
-              <div className="relative w-full" style={{ aspectRatio: '2/1', minHeight: '300px', maxHeight: '600px' }}>
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={currentIndex}
-                    initial={{ opacity: 0, scale: 1.05 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.5, ease: "easeInOut" }}
-                    className="absolute inset-0"
-                  >
-                    <Image
-                      src={currentBanner.imageUrl}
-                      alt={currentBanner.title}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 95vw, (max-width: 1200px) 80vw, 1000px"
-                      priority
-                    />
-                    
-                    {/* Gradient Overlay for Title */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentIndex}
+                  initial={{ opacity: 0, scale: 1.05 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="absolute inset-0"
+                >
+                  <Image
+                    src={currentBanner.imageUrl}
+                    alt={currentBanner.title}
+                    fill
+                    className="object-contain" // Changed from object-cover to object-contain
+                    sizes="90vw"
+                    priority
+                  />
+                  
+                  {/* Gradient Overlay for Title - only if there's a title */}
+                  {currentBanner.title && (
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    
-                    {/* Banner Title */}
+                  )}
+                  
+                  {/* Banner Title */}
+                  {currentBanner.title && (
                     <div className="absolute bottom-0 left-0 right-0 p-6 text-white z-10">
                       <AnimatePresence mode="wait">
                         <motion.h2
@@ -161,9 +242,9 @@ export default function BannerPopup({ banners, onClose }: BannerPopupProps) {
                         </p>
                       )}
                     </div>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
+                  )}
+                </motion.div>
+              </AnimatePresence>
             </div>
 
             {/* Pagination Dots for Multiple Banners */}
