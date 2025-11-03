@@ -1,7 +1,6 @@
 // Update src/app/api/faculty/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { getFaculty, createFaculty } from '@/lib/db';
-import { verifyAuth } from '@/lib/auth';
 import { uploadToCloudinary } from '@/lib/cloudinary';
 
 export async function GET(request: NextRequest) {
@@ -38,15 +37,6 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    // Verify authentication
-    const authResult = await verifyAuth(request);
-    if (!authResult.isAuthenticated) {
-      return NextResponse.json(
-        { message: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
-
     const formData = await request.formData();
     
     const name = formData.get('name') as string;

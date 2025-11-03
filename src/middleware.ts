@@ -17,7 +17,8 @@ export async function middleware(request: NextRequest) {
     (request.nextUrl.pathname.startsWith('/api/announcements') ||
      request.nextUrl.pathname.startsWith('/api/notifications') ||
      request.nextUrl.pathname.startsWith('/api/holidays') ||
-     request.nextUrl.pathname.startsWith('/api/feedback'))
+     request.nextUrl.pathname.startsWith('/api/feedback') ||
+     request.nextUrl.pathname.startsWith('/api/faculty'))
   ) {
     return NextResponse.next();
   }

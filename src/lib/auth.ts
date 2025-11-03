@@ -14,10 +14,10 @@ interface AuthResult {
 }
 
 const ignoredPathPrefixes = [
-  '/_next/', 
-  '/favicon.ico', 
-  '/api/feedback', 
-  '/manifest.json', 
+  '/_next/',
+  '/favicon.ico',
+  '/api/feedback',
+  '/manifest.json',
   '/robots.txt',
   '/api/notifications',
   '/api/holidays',
@@ -29,7 +29,6 @@ const ignoredPathPrefixes = [
   '/api/videos',
   '/api/news-bulletins',
   '/api/achievements',
-  '/api/faculty',
   '/api/banners',
 ];
 
@@ -38,7 +37,7 @@ export async function verifyAuth(request: NextRequest, options: { allowPublic?: 
     const { allowPublic = false } = options;
 
     const pathname = new URL(request.url).pathname;
-    const shouldIgnoreAuth = ignoredPathPrefixes.some(prefix => 
+    const shouldIgnoreAuth = ignoredPathPrefixes.some(prefix =>
       pathname.startsWith(prefix)
     );
 
@@ -50,19 +49,19 @@ export async function verifyAuth(request: NextRequest, options: { allowPublic?: 
     console.log('Request method:', request.method);
 
     const authHeader = request.headers.get('authorization');
-    
+
     console.log('Auth header exists:', !!authHeader);
-    
+
     if (!authHeader) {
       const cookies = request.cookies;
       const tokenCookie = cookies.get('admin-token');
-      
+
       console.log('Token cookie exists:', !!tokenCookie);
-      
+
       if (allowPublic) {
         return { isAuthenticated: true };
       }
-      
+
       if (tokenCookie && tokenCookie.value) {
         try {
           const secret = new TextEncoder().encode(process.env.JWT_SECRET);
@@ -70,9 +69,9 @@ export async function verifyAuth(request: NextRequest, options: { allowPublic?: 
             tokenCookie.value,
             secret
           );
-          
+
           console.log('Authenticated via cookie:', payload.username);
-          
+
           return {
             isAuthenticated: true,
             userId: payload.id as string,
@@ -81,49 +80,49 @@ export async function verifyAuth(request: NextRequest, options: { allowPublic?: 
           };
         } catch (jwtError) {
           console.error('Cookie token verification failed:', jwtError);
-          
+
           if (allowPublic) {
             return { isAuthenticated: true };
           }
-          
+
           return { isAuthenticated: false, error: 'Invalid token' };
         }
       }
-      
+
       if (allowPublic) {
         return { isAuthenticated: true };
       }
-      
+
       return { isAuthenticated: false, error: 'No token provided' };
     }
-    
+
     if (!authHeader.startsWith('Bearer ')) {
       console.log('Auth header format incorrect:', authHeader.substring(0, 15) + '...');
-      
+
       if (allowPublic) {
         return { isAuthenticated: true };
       }
-      
+
       return { isAuthenticated: false, error: 'Invalid token format' };
     }
-    
+
     const token = authHeader.split(' ')[1];
-    
+
     if (!token) {
       if (allowPublic) {
         return { isAuthenticated: true };
       }
-      
+
       return { isAuthenticated: false, error: 'Invalid token format' };
     }
-    
+
     console.log('Token extracted from header:', token.substring(0, 10) + '...');
-    
+
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
     const { payload } = await jose.jwtVerify(token, secret);
-    
+
     console.log('Authentication successful for:', payload.username);
-    
+
     return {
       isAuthenticated: true,
       userId: payload.id as string,
@@ -131,11 +130,11 @@ export async function verifyAuth(request: NextRequest, options: { allowPublic?: 
       role: payload.role as 'admin' | 'editor',
     };
   } catch (error) {
-   
+
     if (options.allowPublic) {
       return { isAuthenticated: true };
     }
-    
+
     console.error('Authentication error:', error);
     return { isAuthenticated: false, error: 'Authentication failed' };
   }
