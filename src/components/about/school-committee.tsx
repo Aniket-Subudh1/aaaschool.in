@@ -11,6 +11,9 @@ import {
   Heart,
   FileText,
   Flame,
+  Bus,
+  HandHeart,
+  FileWarning,
 } from "lucide-react";
 
 // Define interfaces for committee members
@@ -131,6 +134,30 @@ export default function SchoolCommittees() {
       icon: <Flame className="h-6 w-6" />,
       description:
         "Responsible for fire prevention, evacuation planning, and regular drills to ensure readiness in case of fire emergencies.",
+      color: "#3b6ec1",
+    },
+    {
+      id: "transport",
+      title: "Transport Committee",
+      icon: <Bus className="h-6 w-6" />,
+      description:
+        "Oversees the safety and efficiency of school transportation services, ensuring safe commutes for all students.",
+      color: "#3b6ec1",
+    },
+    {
+      id: "rehabilitation",
+      title: "Rehabilitation and Relief Fund Raising Committee",
+      icon: <HandHeart className="h-6 w-6" />,
+      description:
+        "Dedicated to organizing fundraising initiatives and providing support for rehabilitation and relief efforts within the school community.",
+      color: "#3b6ec1",
+    },
+    {
+      id: "internalComplaints",
+      title: "Internal Complaints Committee",
+      icon: <FileWarning className="h-6 w-6" />,
+      description:
+        "Handles internal grievances and complaints with confidentiality and fairness, ensuring a supportive environment for all.",
       color: "#3b6ec1",
     },
     

@@ -34,7 +34,9 @@ import {
   TrainTrack,
   School,
   MapPin,
-  Lightbulb
+  Lightbulb,
+  Stethoscope,
+  
 } from "lucide-react";
 
 const CurriculumPage = () => {
@@ -187,6 +189,62 @@ const CurriculumPage = () => {
           }
         ],
         note: "A student has to choose minimum 5 subjects and can keep Physical Education or Yoga or painting as 6th optional."
+      }
+    },
+    {
+      id: "nursing",
+      title: "Pancham Sopan",
+      subtitle: "Nursing Education",
+      icon: <Stethoscope />,
+      color: "#d64545",
+      image: "/nursing.jpg",
+      details: {
+        timings: ["Full-time program with clinical rotations", "Theory Classes: 9:00am – 4:00pm", "Clinical Training: Hospital rotations as per schedule"],
+        academics: [
+          "GNM (General Nursing and Midwifery) - 3.5 years",
+          "BSc Nursing - 4 years",
+          "Anatomy & Physiology",
+          "Biochemistry",
+          "Nutrition & Dietetics",
+          "Microbiology",
+          "Nursing Foundation",
+          "Medical-Surgical Nursing",
+          "Community Health Nursing",
+          "Pediatric Nursing",
+          "Obstetrics & Gynecological Nursing",
+          "Mental Health Nursing",
+          "Nursing Research & Statistics",
+          "Nursing Administration",
+          "Professional Ethics"
+        ],
+        inNutshell: [
+          "Professional Healthcare Training",
+          "Hands-on Clinical Experience",
+          "Industry-Ready Graduates",
+          "Comprehensive Curriculum"
+        ],
+        facilities: [
+          "Modern Nursing Labs",
+          "Hospital Attachments",
+          "Clinical Training Centers",
+          "Anatomy & Physiology Lab",
+          "Microbiology Lab",
+          "Nutrition Lab",
+          "Community Health Practice",
+          "Medical-Surgical Nursing Units",
+          "Pediatric Nursing Training",
+          "Obstetric & Gynecological Training",
+          "Mental Health Nursing Units",
+          "Emergency & Critical Care Training",
+          "Simulation Labs",
+          "Library with Medical Resources",
+          "Hostel Facilities",
+          "Experienced Faculty",
+          "Industry Expert Sessions",
+          "Career Counselling",
+          "Placement Assistance",
+          "Safe Environment"
+        ]
       }
     }
   ];

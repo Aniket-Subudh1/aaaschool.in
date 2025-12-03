@@ -30,9 +30,11 @@ import {
   Beaker,
   FlaskConical,
   Laptop,
+  Stethoscope,
+ 
 } from "lucide-react"
 
-type ProgramLevel = "pratham" | "dwitiya" | "tritya" | "chaturtha"
+type ProgramLevel = "pratham" | "dwitiya" | "tritya" | "chaturtha" | "pancham"
 
 interface Program {
   id: ProgramLevel
@@ -203,6 +205,60 @@ export default function AcademicPrograms() {
             compulsory: ["English", "Psychology", "Economics", "Education"],
             optional: ["Pol. Sc.", "Geography", "History", "Math", "Odia", "Sociology"],
           },
+        ],
+      },
+    },
+    {
+      id: "pancham",
+      title: "Pancham Sopan",
+      subtitle: "Nursing Education",
+      icon: <Stethoscope className="h-8 w-8" />,
+      color: "#d64545",
+      description:
+        "Our nursing education programs include GNM (General Nursing and Midwifery) and BSc Nursing, designed to prepare compassionate and skilled healthcare professionals. These comprehensive programs combine theoretical knowledge with practical training, equipping students with the expertise needed to excel in the healthcare industry.",
+      details: {
+        timings: ["Full-time program with clinical rotations"],
+        facilities: [
+          "Modern Nursing Labs",
+          "Hospital Attachments",
+          "Clinical Training",
+          "Anatomy & Physiology Lab",
+          "Microbiology Lab",
+          "Nutrition Lab",
+          "Community Health Practice",
+          "Medical-Surgical Nursing",
+          "Pediatric Nursing Training",
+          "Obstetric & Gynecological Training",
+          "Mental Health Nursing",
+          "Emergency & Critical Care",
+          "Simulation Labs",
+          "Library with Medical Resources",
+          "Hostel Facilities",
+          "Experienced Faculty",
+          "Industry Expert Sessions",
+          "Career Counselling",
+          "Placement Assistance",
+        ],
+        academics: [
+          "GNM (General Nursing and Midwifery) - 3.5 years",
+          "BSc Nursing - 4 years",
+          "Anatomy & Physiology",
+          "Biochemistry",
+          "Nutrition",
+          "Microbiology",
+          "Nursing Foundation",
+          "Medical-Surgical Nursing",
+          "Community Health Nursing",
+          "Pediatric Nursing",
+          "Obstetrics & Gynecological Nursing",
+          "Mental Health Nursing",
+          "Research & Statistics",
+        ],
+        inNutshell: [
+          "Professional Healthcare Training",
+          "Hands-on Clinical Experience",
+          "Industry-Ready Graduates",
+          "Comprehensive Curriculum",
         ],
       },
     },

@@ -12,6 +12,7 @@ import {
   GraduationCap,
   ChevronRight,
   ChevronLeft,
+  Stethoscope,
 } from "lucide-react";
 
 interface SchoolLevel {
@@ -69,6 +70,16 @@ export default function SchoolLevels() {
       description:
         "Comprising classes IX to XII, the senior school is where early life's lessons are put to test. Rigorous practice and study techniques with special emphasis on analysis and conceptualization are woven into the curriculum, as students prepare to appear for their board examinations.",
       image: "https://aaaschool.s3.ap-south-1.amazonaws.com/lb.jpg",
+    },
+    {
+      id: "pancham",
+      title: "Pancham Sopan",
+      subtitle: "Nursing Education",
+      icon: <Stethoscope className="h-6 w-6" />,
+      color: "#d64545",
+      description:
+        "Our nursing education programs include GNM (General Nursing and Midwifery) and BSc Nursing, designed to prepare compassionate and skilled healthcare professionals. These comprehensive programs combine theoretical knowledge with practical training, equipping students with the expertise needed to excel in the healthcare industry.",
+      image: "https://aaaschool.s3.ap-south-1.amazonaws.com/nursing.jpg",
     },
   ];
 
